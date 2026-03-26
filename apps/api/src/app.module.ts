@@ -5,6 +5,7 @@ import { AppController } from './app.controller'
 import { ProductsModule } from './products/products.module'
 import { CategoriesModule } from './categories/categories.module'
 import { AmazonModule } from './amazon/amazon.module'
+import { DatabaseModule } from './database/database.module'
 import { CategoryEntity } from './categories/category.entity'
 import { ProductEntity } from './products/product.entity'
 
@@ -24,6 +25,7 @@ import { ProductEntity } from './products/product.entity'
     ProductsModule,
     CategoriesModule,
     AmazonModule,
+    DatabaseModule,
   ],
   controllers: [AppController],
 })
