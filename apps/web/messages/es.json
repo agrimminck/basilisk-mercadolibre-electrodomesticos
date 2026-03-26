@@ -1,0 +1,34 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "categories": "Categorías",
+    "about": "Nosotros"
+  },
+  "home": {
+    "hero": {
+      "title": "El Hardware Gaming que Necesitas",
+      "subtitle": "Comparativas honestas de monitores, GPUs, periféricos y más. Sin publicidad pagada.",
+      "cta": "Explorar categorías"
+    },
+    "categories": {
+      "title": "¿Qué estás buscando?"
+    }
+  },
+  "category": {
+    "products": "productos"
+  },
+  "product": {
+    "viewOnAmazon": "Ver en Amazon",
+    "rating": "Valoración",
+    "reviews": "reseñas",
+    "notAvailable": "No disponible"
+  },
+  "footer": {
+    "tagline": "Comparativas honestas para gamers de verdad.",
+    "disclaimer": "Como afiliado de Amazon, ganamos comisiones por compras que califican.",
+    "links": {
+      "privacy": "Privacidad",
+      "contact": "Contacto"
+    }
+  }
+}

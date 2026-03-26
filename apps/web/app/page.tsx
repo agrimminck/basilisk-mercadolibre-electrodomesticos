@@ -1,102 +1,68 @@
-import Image, { type ImageProps } from "next/image";
-import { Button } from "@repo/ui/button";
-import styles from "./page.module.css";
+import type { Metadata } from 'next'
+import Link from 'next/link'
+import { api } from '../lib/api'
+import { ProductGrid } from '../components/product/product-grid'
 
-type Props = Omit<ImageProps, "src"> & {
-  srcLight: string;
-  srcDark: string;
-};
+export const metadata: Metadata = {
+  title: 'GameGear — Gaming Hardware Reviews & Comparisons',
+  description:
+    'Honest comparisons of monitors, GPUs, peripherals and more. No paid ads. Real recommendations.',
+}
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
+const CATEGORIES = [
+  { slug: 'monitors', label: 'Monitors', icon: '🖥️' },
+  { slug: 'gpus', label: 'Graphics Cards', icon: '🎮' },
+  { slug: 'peripherals', label: 'Peripherals', icon: '🖱️' },
+  { slug: 'gaming-chairs', label: 'Gaming Chairs', icon: '🪑' },
+] as const
+
+export default async function HomePage() {
+  const featured = await api.products.list().catch(() => [])
 
   return (
     <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
-};
+      {/* Hero */}
+      <section className="px-4 py-20 text-center">
+        <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">
+          The Gaming Hardware You Need
+        </h1>
+        <p className="mt-4 text-lg text-[var(--color-muted)] max-w-2xl mx-auto">
+          Honest comparisons of monitors, GPUs, peripherals and more. No paid ads.
+        </p>
+        <Link
+          href="/categoria/monitors"
+          className="mt-8 inline-block rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] transition-colors"
+        >
+          Explore categories
+        </Link>
+      </section>
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <ThemeImage
-          className={styles.logo}
-          srcLight="turborepo-dark.svg"
-          srcDark="turborepo-light.svg"
-          alt="Turborepo logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>apps/web/app/page.tsx</code>
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
-
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new/clone?demo-description=Learn+to+implement+a+monorepo+with+a+two+Next.js+sites+that+has+installed+three+local+packages.&demo-image=%2F%2Fimages.ctfassets.net%2Fe5382hct74si%2F4K8ZISWAzJ8X1504ca0zmC%2F0b21a1c6246add355e55816278ef54bc%2FBasic.png&demo-title=Monorepo+with+Turborepo&demo-url=https%3A%2F%2Fexamples-basic-web.vercel.sh%2F&from=templates&project-name=Monorepo+with+Turborepo&repository-name=monorepo-turborepo&repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fturborepo%2Ftree%2Fmain%2Fexamples%2Fbasic&root-directory=apps%2Fdocs&skippable-integrations=1&teamSlug=vercel&utm_source=create-turbo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            href="https://turborepo.dev/docs?utm_source"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+      {/* Categories */}
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <h2 className="text-2xl font-bold text-white mb-8">What are you looking for?</h2>
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+          {CATEGORIES.map((category) => (
+            <Link
+              key={category.slug}
+              href={`/categoria/${category.slug}`}
+              className="flex flex-col items-center gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-6 text-center hover:border-[var(--color-accent)] transition-colors"
+            >
+              <span className="text-4xl" role="img" aria-label={category.label}>
+                {category.icon}
+              </span>
+              <span className="text-sm font-medium text-white">{category.label}</span>
+            </Link>
+          ))}
         </div>
-        <Button appName="web" className={styles.secondary}>
-          Open alert
-        </Button>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com/templates?search=turborepo&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://turborepo.dev?utm_source=create-turbo"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to turborepo.dev →
-        </a>
-      </footer>
-    </div>
-  );
+      </section>
+
+      {/* Featured products */}
+      {featured.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-12">
+          <h2 className="text-2xl font-bold text-white mb-8">Top Picks</h2>
+          <ProductGrid products={featured.slice(0, 8)} />
+        </section>
+      )}
+    </>
+  )
 }
