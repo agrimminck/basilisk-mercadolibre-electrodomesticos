@@ -18,6 +18,8 @@ export const api = {
     bySlug: (slug: string): Promise<Product> => fetchApi(`/products/${slug}`),
     byCategory: (categorySlug: string): Promise<Product[]> =>
       fetchApi(`/products?category=${categorySlug}`),
+    search: (q: string): Promise<Product[]> =>
+      fetchApi(`/products?q=${encodeURIComponent(q)}`, 0),
   },
   categories: {
     list: (): Promise<Category[]> => fetchApi('/categories'),

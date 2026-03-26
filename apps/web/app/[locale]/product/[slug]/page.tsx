@@ -1,11 +1,13 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
-import Link from 'next/link'
-import { api } from '../../../lib/api'
-import { JsonLd } from '../../../components/seo/json-ld'
+import { getTranslations } from 'next-intl/server'
+import { Link } from '../../../../i18n/navigation'
+import { api } from '../../../../lib/api'
+import { JsonLd } from '../../../../components/seo/json-ld'
 
 interface Params {
+  locale: string
   slug: string
 }
 
@@ -55,6 +57,7 @@ export default async function ProductPage({
     notFound()
   }
 
+  const t = await getTranslations('product')
   const category = product.category
 
   return (
@@ -62,11 +65,16 @@ export default async function ProductPage({
       <JsonLd product={product} />
       <section className="mx-auto max-w-4xl px-4 py-12">
         <nav className="mb-6 text-sm text-[var(--color-muted)]" aria-label="breadcrumb">
-          <Link href="/" className="hover:text-white transition-colors">Home</Link>
+          <Link href="/" className="hover:text-white transition-colors">
+            {t('breadcrumb.home')}
+          </Link>
           {category && (
             <>
               <span className="mx-2">/</span>
-              <Link href={`/categoria/${category.slug}`} className="hover:text-white transition-colors">
+              <Link
+                href={`/categoria/${category.slug}`}
+                className="hover:text-white transition-colors"
+              >
                 {category.name}
               </Link>
             </>
@@ -103,7 +111,9 @@ export default async function ProductPage({
                 <span className="text-yellow-400">★</span>
                 <span>{Number(product.rating).toFixed(1)}</span>
                 {product.reviewCount !== null && (
-                  <span>({product.reviewCount.toLocaleString('en-US')} reviews)</span>
+                  <span>
+                    ({product.reviewCount.toLocaleString('en-US')} {t('reviews')})
+                  </span>
                 )}
               </div>
             )}
@@ -125,10 +135,10 @@ export default async function ProductPage({
                   rel="noopener noreferrer sponsored"
                   className="rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] transition-colors"
                 >
-                  View on Amazon →
+                  {t('viewOnAmazon')} →
                 </a>
               ) : (
-                <span className="text-sm text-[var(--color-muted)]">Currently unavailable</span>
+                <span className="text-sm text-[var(--color-muted)]">{t('notAvailable')}</span>
               )}
             </div>
           </div>

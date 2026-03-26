@@ -1,9 +1,10 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { api } from '../../../lib/api'
-import { ProductGrid } from '../../../components/product/product-grid'
+import { api } from '../../../../lib/api'
+import { ProductGrid } from '../../../../components/product/product-grid'
 
 interface Params {
+  locale: string
   slug: string
 }
 

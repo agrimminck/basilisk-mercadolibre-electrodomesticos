@@ -2,7 +2,13 @@
   "nav": {
     "home": "Home",
     "categories": "Categories",
-    "about": "About"
+    "searchPlaceholder": "Search products...",
+    "searchLabel": "Search"
+  },
+  "search": {
+    "title": "Results for \"{query}\"",
+    "empty": "No products found for \"{query}\".",
+    "emptyHint": "Try a different term."
   },
   "home": {
     "hero": {
@@ -11,17 +17,23 @@
       "cta": "Explore categories"
     },
     "categories": {
-      "title": "What are you looking for?"
-    }
-  },
-  "category": {
-    "products": "products"
+      "title": "What are you looking for?",
+      "monitors": "Monitors",
+      "gpus": "Graphics Cards",
+      "peripherals": "Mice",
+      "keyboards": "Keyboards",
+      "headsets": "Headsets",
+      "gamingChairs": "Gaming Chairs"
+    },
+    "topPicks": "Top Picks"
   },
   "product": {
     "viewOnAmazon": "View on Amazon",
-    "rating": "Rating",
     "reviews": "reviews",
-    "notAvailable": "Unavailable"
+    "notAvailable": "Unavailable",
+    "breadcrumb": {
+      "home": "Home"
+    }
   },
   "footer": {
     "tagline": "Honest comparisons for real gamers.",

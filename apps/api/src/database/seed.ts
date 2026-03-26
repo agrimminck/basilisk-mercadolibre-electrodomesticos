@@ -37,7 +37,17 @@ const CATEGORIES = [
   {
     name: 'Peripherals',
     slug: 'peripherals',
-    description: 'Gaming mice, keyboards, and headsets trusted by competitive players.',
+    description: 'Gaming mice trusted by competitive players.',
+  },
+  {
+    name: 'Keyboards',
+    slug: 'keyboards',
+    description: 'Mechanical and optical gaming keyboards for every play style.',
+  },
+  {
+    name: 'Headsets',
+    slug: 'headsets',
+    description: 'Gaming headsets with spatial audio, wireless freedom, and pro-grade mics.',
   },
   {
     name: 'Gaming Chairs',
@@ -82,6 +92,50 @@ const PRODUCTS = [
     rating: 4.4,
     reviewCount: 12800,
   },
+  {
+    categorySlug: 'monitors',
+    asin: 'B08ZDB8GTM',
+    name: 'AOC CQ27G2 27" QHD Curved 144Hz',
+    slug: 'aoc-cq27g2',
+    description:
+      '1500R curved VA panel with QHD resolution and 144Hz refresh rate. Adaptive-Sync compatible and priced for budget-conscious builders who refuse to compromise on size.',
+    price: 199.99,
+    rating: 4.5,
+    reviewCount: 11200,
+  },
+  {
+    categorySlug: 'monitors',
+    asin: 'B0BJCVHKL6',
+    name: 'Alienware AW2723DF 27" QHD 280Hz',
+    slug: 'alienware-aw2723df',
+    description:
+      'Fast IPS at 280Hz with 1ms GtG — among the fastest QHD panels on the market. AMD FreeSync Premium Pro and G-Sync Compatible for tear-free gameplay at any frame rate.',
+    price: 599.99,
+    rating: 4.7,
+    reviewCount: 4380,
+  },
+  {
+    categorySlug: 'monitors',
+    asin: 'B09BJTKCJR',
+    name: 'BenQ MOBIUZ EX2510S 25" FHD 165Hz',
+    slug: 'benq-mobiuz-ex2510s',
+    description:
+      'IPS panel at 165Hz with HDRi and BenQ\'s built-in speaker system. A compact, accurate display that punches above its price for esports and competitive shooters.',
+    price: 229.99,
+    rating: 4.4,
+    reviewCount: 3750,
+  },
+  {
+    categorySlug: 'monitors',
+    asin: 'B0C8QKB4QR',
+    name: 'LG UltraGear 32GQ850-B 32" QHD 260Hz',
+    slug: 'lg-ultragear-32gq850-b',
+    description:
+      'Nano IPS at 32" and 260Hz — a rare combination. VESA DisplayHDR 600, 1ms GtG, and G-Sync Compatible. For players who want both screen real estate and extreme refresh rate.',
+    price: 699.99,
+    rating: 4.6,
+    reviewCount: 2100,
+  },
   // ── GPUs ──────────────────────────────────────────────────────────────────
   {
     categorySlug: 'gpus',
@@ -116,7 +170,51 @@ const PRODUCTS = [
     rating: 4.4,
     reviewCount: 4120,
   },
-  // ── Peripherals ───────────────────────────────────────────────────────────
+  {
+    categorySlug: 'gpus',
+    asin: 'B0CS4G7HFP',
+    name: 'ASUS TUF Gaming RTX 4080 Super OC 16GB',
+    slug: 'asus-tuf-rtx-4080-super',
+    description:
+      '16GB GDDR6X with the full Ada Lovelace AD103 die. Handles 4K gaming with headroom to spare. DLSS 3.5 with Ray Reconstruction brings next-gen visuals to demanding titles.',
+    price: 999.99,
+    rating: 4.8,
+    reviewCount: 3140,
+  },
+  {
+    categorySlug: 'gpus',
+    asin: 'B0C7BFRSGH',
+    name: 'Gigabyte GeForce RTX 4060 Windforce OC 8GB',
+    slug: 'gigabyte-rtx-4060-windforce',
+    description:
+      'Entry-level Ada Lovelace with efficient 115W TDP. A strong upgrade for 1080p high-refresh gaming, with DLSS 3 adding bonus frames in supported titles.',
+    price: 299.99,
+    rating: 4.3,
+    reviewCount: 6800,
+  },
+  {
+    categorySlug: 'gpus',
+    asin: 'B0BQPTDG1N',
+    name: 'Sapphire Nitro+ RX 7900 XTX 24GB',
+    slug: 'sapphire-nitro-rx-7900-xtx',
+    description:
+      '24GB GDDR6 on a 384-bit bus — the top of AMD\'s RDNA 3 stack. Crushes 4K and even competes in 8K scenarios. Best rasterization performance per dollar at the high end.',
+    price: 979.99,
+    rating: 4.7,
+    reviewCount: 1850,
+  },
+  {
+    categorySlug: 'gpus',
+    asin: 'B0CJYM7PJW',
+    name: 'PowerColor Red Devil RX 7700 XT 12GB',
+    slug: 'powercolor-red-devil-rx-7700-xt',
+    description:
+      '12GB GDDR6 at a budget-friendly price. Solid 1080p and capable 1440p performance with FSR 3 support. Great value for builders who want AMD\'s driver stack.',
+    price: 349.99,
+    rating: 4.4,
+    reviewCount: 2300,
+  },
+  // ── Peripherals (mice) ────────────────────────────────────────────────────
   {
     categorySlug: 'peripherals',
     asin: 'B09LMXMK5X',
@@ -149,6 +247,173 @@ const PRODUCTS = [
     price: 119.99,
     rating: 4.3,
     reviewCount: 3210,
+  },
+  {
+    categorySlug: 'peripherals',
+    asin: 'B0B17XRBZK',
+    name: 'Logitech G502 X Plus Wireless',
+    slug: 'logitech-g502-x-plus',
+    description:
+      'LIGHTFORCE hybrid optical-mechanical switches in the main buttons. LIGHTSPEED wireless at 130-hour battery. The iconic G502 weight and button layout, now untethered.',
+    price: 149.99,
+    rating: 4.6,
+    reviewCount: 5120,
+  },
+  {
+    categorySlug: 'peripherals',
+    asin: 'B09LCFJWXY',
+    name: 'Zowie EC2-C Gaming Mouse',
+    slug: 'zowie-ec2-c',
+    description:
+      'No software, no RGB, plug-and-play. The EC2-C features the 3610 sensor, paracord cable, and the ergonomic EC shape trusted by pro CS:GO and Valorant players.',
+    price: 69.99,
+    rating: 4.5,
+    reviewCount: 4400,
+  },
+  {
+    categorySlug: 'peripherals',
+    asin: 'B0CG3TBWDX',
+    name: 'Razer Viper V3 HyperSpeed',
+    slug: 'razer-viper-v3-hyperspeed',
+    description:
+      'Ambidextrous wireless mouse with Focus X 30K optical sensor. 280-hour battery life and HyperSpeed low-latency wireless. The most affordable esports wireless option from Razer.',
+    price: 79.99,
+    rating: 4.6,
+    reviewCount: 7650,
+  },
+  // ── Keyboards ─────────────────────────────────────────────────────────────
+  {
+    categorySlug: 'keyboards',
+    asin: 'B09DGQSYKL',
+    name: 'SteelSeries Apex Pro TKL Wireless',
+    slug: 'steelseries-apex-pro-tkl-wireless',
+    description:
+      'Adjustable OmniPoint 2.0 magnetic switches with per-key actuation from 0.1 to 4.0mm. The most customizable gaming keyboard ever made, now with 200-hour wireless.',
+    price: 199.99,
+    rating: 4.7,
+    reviewCount: 6200,
+  },
+  {
+    categorySlug: 'keyboards',
+    asin: 'B07D5S24W2',
+    name: 'Corsair K70 RGB MK.2 Mechanical',
+    slug: 'corsair-k70-rgb-mk2',
+    description:
+      'Aircraft-grade aluminum frame with Cherry MX switches. Per-key RGB, dedicated media controls, and a USB pass-through port. A durable, feature-rich tenkeyless option.',
+    price: 129.99,
+    rating: 4.5,
+    reviewCount: 21400,
+  },
+  {
+    categorySlug: 'keyboards',
+    asin: 'B0B7ZB8VXH',
+    name: 'Razer BlackWidow V4 Pro',
+    slug: 'razer-blackwidow-v4-pro',
+    description:
+      'Razer Yellow optical switches, multi-function roller, media keys, and Razer Chroma RGB. Full-size layout with wrist rest included — suited for long typing and gaming sessions.',
+    price: 229.99,
+    rating: 4.5,
+    reviewCount: 3870,
+  },
+  {
+    categorySlug: 'keyboards',
+    asin: 'B09TPLVJZM',
+    name: 'Logitech G Pro X TKL Mechanical',
+    slug: 'logitech-g-pro-x-tkl',
+    description:
+      'Swappable GX mechanical switches in a tournament-grade TKL form factor. Used by Logitech-sponsored esports athletes. No numpad means more mousepad room.',
+    price: 109.99,
+    rating: 4.6,
+    reviewCount: 8900,
+  },
+  {
+    categorySlug: 'keyboards',
+    asin: 'B08BSVMK29',
+    name: 'HyperX Alloy Origins Core TKL',
+    slug: 'hyperx-alloy-origins-core',
+    description:
+      'HyperX Red linear switches on a solid steel frame. NGENUITY software for RGB customization. One of the best budget TKL keyboards with zero flex and excellent build quality.',
+    price: 79.99,
+    rating: 4.7,
+    reviewCount: 14300,
+  },
+  {
+    categorySlug: 'keyboards',
+    asin: 'B0BJDGZ4CV',
+    name: 'Wooting 60HE+ Compact 60%',
+    slug: 'wooting-60he-plus',
+    description:
+      'Lekker switches with Rapid Trigger — activate at 0.1mm for the fastest possible response in FPS titles. The keyboard of choice for top Valorant and CS2 players globally.',
+    price: 174.99,
+    rating: 4.9,
+    reviewCount: 3100,
+  },
+  // ── Headsets ──────────────────────────────────────────────────────────────
+  {
+    categorySlug: 'headsets',
+    asin: 'B09ZPVJCRN',
+    name: 'SteelSeries Arctis Nova Pro Wireless',
+    slug: 'steelseries-arctis-nova-pro-wireless',
+    description:
+      'Dual-wireless with simultaneous Bluetooth and 2.4GHz. Infinite battery via hot-swappable packs and active noise cancellation. The most complete wireless gaming headset available.',
+    price: 349.99,
+    rating: 4.5,
+    reviewCount: 5430,
+  },
+  {
+    categorySlug: 'headsets',
+    asin: 'B09X4ZSPDY',
+    name: 'HyperX Cloud Alpha Wireless',
+    slug: 'hyperx-cloud-alpha-wireless',
+    description:
+      'Legendary Cloud comfort with 300-hour wireless battery life. Dual-chamber drivers reduce distortion across the frequency range. A standout for marathon gaming sessions.',
+    price: 179.99,
+    rating: 4.7,
+    reviewCount: 12600,
+  },
+  {
+    categorySlug: 'headsets',
+    asin: 'B08PL1FWL5',
+    name: 'Logitech G535 Lightspeed Wireless',
+    slug: 'logitech-g535-lightspeed',
+    description:
+      'Only 236g — one of the lightest wireless headsets available. LIGHTSPEED wireless, 33-hour battery, and clean microphone performance. Ideal for players sensitive to headset weight.',
+    price: 99.99,
+    rating: 4.4,
+    reviewCount: 7800,
+  },
+  {
+    categorySlug: 'headsets',
+    asin: 'B0BL8DFMLM',
+    name: 'Razer BlackShark V2 Pro (2023)',
+    slug: 'razer-blackshark-v2-pro-2023',
+    description:
+      'TriForce Titanium 50mm drivers with HyperClear Super Wideband mic — broadcast quality straight out of the box. 70-hour battery and 2.4GHz wireless for competitive play.',
+    price: 199.99,
+    rating: 4.6,
+    reviewCount: 9200,
+  },
+  {
+    categorySlug: 'headsets',
+    asin: 'B094BSKMQV',
+    name: 'Corsair HS80 RGB Wireless',
+    slug: 'corsair-hs80-rgb-wireless',
+    description:
+      'Dolby Atmos spatial audio with plush memory foam earcups and a flexible microphone. 20-hour battery on a lightweight frame. Strong value for immersive single-player titles.',
+    price: 99.99,
+    rating: 4.3,
+    reviewCount: 6100,
+  },
+  {
+    categorySlug: 'headsets',
+    asin: 'B0C9NZ2DHJ',
+    name: 'Astro A50 X Gen 5 Wireless',
+    slug: 'astro-a50-x-gen-5',
+    description:
+      'Base station charging with simultaneous PS5, Xbox, and PC switching. 24-bit/96kHz audio and 40-hour battery. The multi-platform solution for multi-console setups.',
+    price: 379.99,
+    rating: 4.5,
+    reviewCount: 2900,
   },
   // ── Gaming Chairs ─────────────────────────────────────────────────────────
   {
@@ -183,6 +448,28 @@ const PRODUCTS = [
     price: 329.00,
     rating: 4.1,
     reviewCount: 18900,
+  },
+  {
+    categorySlug: 'gaming-chairs',
+    asin: 'B087WG8TN7',
+    name: 'Noblechairs Hero Black Edition',
+    slug: 'noblechairs-hero-black',
+    description:
+      'Cold foam padding with a steel frame and tilt mechanism. XL size accommodates up to 6\'2" / 265 lbs. Premium build quality and clean aesthetics for those who prefer understated setups.',
+    price: 449.00,
+    rating: 4.5,
+    reviewCount: 4250,
+  },
+  {
+    categorySlug: 'gaming-chairs',
+    asin: 'B01M7XSXPE',
+    name: 'RESPAWN 110 Racing Style Gaming Chair',
+    slug: 'respawn-110-racing',
+    description:
+      'Segmented padding design, adjustable headrest and lumbar pillow, retractable footrest, and 135° recline. Solid entry-level option for gamers setting up their first dedicated space.',
+    price: 199.99,
+    rating: 4.1,
+    reviewCount: 22700,
   },
 ]
 

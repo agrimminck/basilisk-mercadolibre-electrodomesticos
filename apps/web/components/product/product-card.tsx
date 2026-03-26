@@ -1,5 +1,6 @@
 import Image from 'next/image'
-import Link from 'next/link'
+import { useTranslations } from 'next-intl'
+import { Link } from '../../i18n/navigation'
 import type { Product } from '@affiliate-gaming/shared'
 
 interface ProductCardProps {
@@ -7,11 +8,15 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-  const productUrl = `/product/${product.slug}`
+  const t = useTranslations('product')
+  const productUrl = `/product/${product.slug}` as const
 
   return (
     <article className="flex flex-col rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] overflow-hidden hover:border-[var(--color-accent)] transition-colors">
-      <Link href={productUrl} className="relative aspect-square block overflow-hidden bg-[var(--color-bg)]">
+      <Link
+        href={productUrl}
+        className="relative aspect-square block overflow-hidden bg-[var(--color-bg)]"
+      >
         {product.imageUrl ? (
           <Image
             src={product.imageUrl}
@@ -39,7 +44,9 @@ export function ProductCard({ product }: ProductCardProps) {
             <span className="text-yellow-400">★</span>
             <span>{Number(product.rating).toFixed(1)}</span>
             {product.reviewCount !== null && (
-              <span>({product.reviewCount.toLocaleString('en-US')} reviews)</span>
+              <span>
+                ({product.reviewCount.toLocaleString('en-US')} {t('reviews')})
+              </span>
             )}
           </div>
         )}
@@ -60,10 +67,10 @@ export function ProductCard({ product }: ProductCardProps) {
               rel="noopener noreferrer sponsored"
               className="rounded-lg bg-[var(--color-accent)] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[var(--color-accent-hover)] transition-colors"
             >
-              View on Amazon
+              {t('viewOnAmazon')}
             </a>
           ) : (
-            <span className="text-xs text-[var(--color-muted)]">Unavailable</span>
+            <span className="text-xs text-[var(--color-muted)]">{t('notAvailable')}</span>
           )}
         </div>
       </div>

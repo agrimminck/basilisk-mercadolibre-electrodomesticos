@@ -11,7 +11,7 @@ export class ProductsService {
     private readonly productRepository: Repository<ProductEntity>,
   ) {}
 
-  async FindAll(categorySlug?: string): Promise<Product[]> {
+  async FindAll(categorySlug?: string, searchQuery?: string): Promise<Product[]> {
     const query = this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
@@ -20,6 +20,14 @@ export class ProductsService {
 
     if (categorySlug) {
       query.andWhere('category.slug = :slug', { slug: categorySlug })
+    }
+
+    if (searchQuery) {
+      const term = `%${searchQuery}%`
+      query.andWhere(
+        '(LOWER(product.name) LIKE LOWER(:term) OR LOWER(product.description) LIKE LOWER(:term))',
+        { term },
+      )
     }
 
     return query.getMany()

@@ -7,8 +7,11 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Get()
-  FindAll(@Query('category') category?: string): Promise<Product[]> {
-    return this.productsService.FindAll(category)
+  FindAll(
+    @Query('category') category?: string,
+    @Query('q') q?: string,
+  ): Promise<Product[]> {
+    return this.productsService.FindAll(category, q)
   }
 
   @Get(':slug')
