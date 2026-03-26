@@ -16,9 +16,29 @@ export async function generateMetadata({
   const { slug } = await params
   const product = await api.products.bySlug(slug).catch(() => null)
   if (!product) return {}
+
+  const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gamegear-eight.vercel.app'
+  const url = `${BASE_URL}/product/${product.slug}`
+
   return {
     title: product.name,
     description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      url,
+      type: 'website',
+      images: product.imageUrl ? [{ url: product.imageUrl, alt: product.name }] : [],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description,
+      images: product.imageUrl ? [product.imageUrl] : [],
+    },
+    alternates: {
+      canonical: url,
+    },
   }
 }
 

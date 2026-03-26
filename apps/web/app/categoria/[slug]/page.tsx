@@ -15,9 +15,27 @@ export async function generateMetadata({
   const { slug } = await params
   const category = await api.categories.bySlug(slug).catch(() => null)
   if (!category) return {}
+
+  const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gamegear-eight.vercel.app'
+  const url = `${BASE_URL}/categoria/${category.slug}`
+
   return {
     title: category.name,
     description: category.description ?? undefined,
+    openGraph: {
+      title: category.name,
+      description: category.description ?? undefined,
+      url,
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title: category.name,
+      description: category.description ?? undefined,
+    },
+    alternates: {
+      canonical: url,
+    },
   }
 }
 
