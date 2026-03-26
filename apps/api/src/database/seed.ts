@@ -13,7 +13,7 @@ const dataSource = new DataSource({
   synchronize: true,
 })
 
-const PARTNER_TAG = process.env.AMAZON_PARTNER_TAG ?? 'gamegear-20'
+const PARTNER_TAG = process.env.AMAZON_PARTNER_TAG ?? 'gamegear0b-20'
 
 function AmazonUrl(asin: string): string {
   return `https://www.amazon.com/dp/${asin}?tag=${PARTNER_TAG}`
@@ -215,10 +215,13 @@ async function Seed(): Promise<void> {
     const exists = await productRepo.findOne({ where: { asin: product.asin } })
     if (exists) {
       const newImageUrl = AmazonImageUrl(product.asin)
-      if (exists.imageUrl !== newImageUrl) {
+      const newAffiliateUrl = AmazonUrl(product.asin)
+      const needsUpdate = exists.imageUrl !== newImageUrl || exists.affiliateUrl !== newAffiliateUrl
+      if (needsUpdate) {
         exists.imageUrl = newImageUrl
+        exists.affiliateUrl = newAffiliateUrl
         await productRepo.save(exists)
-        console.log(`Updated image for: ${product.name}`)
+        console.log(`Updated image/affiliateUrl for: ${product.name}`)
       } else {
         console.log(`Skipped existing product: ${product.name}`)
       }

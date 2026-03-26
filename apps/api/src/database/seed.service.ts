@@ -4,7 +4,7 @@ import { Repository } from 'typeorm'
 import { CategoryEntity } from '../categories/category.entity'
 import { ProductEntity } from '../products/product.entity'
 
-const PARTNER_TAG = process.env.AMAZON_PARTNER_TAG ?? 'gamegear-20'
+const PARTNER_TAG = process.env.AMAZON_PARTNER_TAG ?? 'gamegear0b-20'
 
 function AmazonUrl(asin: string): string {
   return `https://www.amazon.com/dp/${asin}?tag=${PARTNER_TAG}`
@@ -48,6 +48,8 @@ export class SeedService implements OnModuleInit {
   ) {}
 
   async onModuleInit(): Promise<void> {
+    await this.FixAffiliateUrls()
+
     const count = await this.categoryRepo.count()
     if (count > 0) return
 
@@ -77,5 +79,22 @@ export class SeedService implements OnModuleInit {
     }
 
     this.logger.log('Seed complete')
+  }
+
+  // Fixes affiliateUrl for any products seeded before AMAZON_PARTNER_TAG was set
+  private async FixAffiliateUrls(): Promise<void> {
+    const products = await this.productRepo.find()
+    let fixed = 0
+    for (const product of products) {
+      const expected = AmazonUrl(product.asin)
+      if (product.affiliateUrl !== expected) {
+        product.affiliateUrl = expected
+        await this.productRepo.save(product)
+        fixed++
+      }
+    }
+    if (fixed > 0) {
+      this.logger.log(`Fixed affiliateUrl for ${fixed} products (partner tag: ${PARTNER_TAG})`)
+    }
   }
 }

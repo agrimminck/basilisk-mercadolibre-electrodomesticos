@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import Image from 'next/image'
 import Link from 'next/link'
 import { api } from '../../../lib/api'
 import { JsonLd } from '../../../components/seo/json-ld'
@@ -54,50 +55,83 @@ export default async function ProductPage({
     notFound()
   }
 
+  const category = product.category
+
   return (
     <>
       <JsonLd product={product} />
       <section className="mx-auto max-w-4xl px-4 py-12">
         <nav className="mb-6 text-sm text-[var(--color-muted)]" aria-label="breadcrumb">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
+          {category && (
+            <>
+              <span className="mx-2">/</span>
+              <Link href={`/categoria/${category.slug}`} className="hover:text-white transition-colors">
+                {category.name}
+              </Link>
+            </>
+          )}
           <span className="mx-2">/</span>
           <span className="text-white">{product.name}</span>
         </nav>
 
-        <h1 className="text-3xl font-bold text-white">{product.name}</h1>
-
-        {product.rating !== null && (
-          <div className="mt-3 flex items-center gap-2 text-sm text-[var(--color-muted)]">
-            <span className="text-yellow-400">★</span>
-            <span>{Number(product.rating).toFixed(1)}</span>
-            {product.reviewCount !== null && (
-              <span>({product.reviewCount.toLocaleString('en-US')} reviews)</span>
+        <div className="grid gap-10 md:grid-cols-2">
+          {/* Image */}
+          <div className="relative aspect-square overflow-hidden rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)]">
+            {product.imageUrl ? (
+              <Image
+                src={product.imageUrl}
+                alt={product.name}
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain p-6"
+                priority
+              />
+            ) : (
+              <div className="flex h-full items-center justify-center text-6xl text-[var(--color-muted)]">
+                🎮
+              </div>
             )}
           </div>
-        )}
 
-        <p className="mt-6 text-[var(--color-muted)] leading-relaxed">{product.description}</p>
+          {/* Info */}
+          <div className="flex flex-col">
+            <h1 className="text-3xl font-bold text-white">{product.name}</h1>
 
-        <div className="mt-8 flex items-center gap-6">
-          <span className="text-3xl font-bold text-white">
-            {new Intl.NumberFormat('en-US', {
-              style: 'currency',
-              currency: product.currency,
-            }).format(Number(product.price))}
-          </span>
+            {product.rating !== null && (
+              <div className="mt-3 flex items-center gap-2 text-sm text-[var(--color-muted)]">
+                <span className="text-yellow-400">★</span>
+                <span>{Number(product.rating).toFixed(1)}</span>
+                {product.reviewCount !== null && (
+                  <span>({product.reviewCount.toLocaleString('en-US')} reviews)</span>
+                )}
+              </div>
+            )}
 
-          {product.available ? (
-            <a
-              href={product.affiliateUrl}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
-              className="rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] transition-colors"
-            >
-              View on Amazon →
-            </a>
-          ) : (
-            <span className="text-sm text-[var(--color-muted)]">Currently unavailable</span>
-          )}
+            <p className="mt-6 text-[var(--color-muted)] leading-relaxed">{product.description}</p>
+
+            <div className="mt-auto pt-8 flex items-center gap-6">
+              <span className="text-3xl font-bold text-white">
+                {new Intl.NumberFormat('en-US', {
+                  style: 'currency',
+                  currency: product.currency,
+                }).format(Number(product.price))}
+              </span>
+
+              {product.available ? (
+                <a
+                  href={product.affiliateUrl}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="rounded-lg bg-[var(--color-accent)] px-6 py-3 text-sm font-semibold text-white hover:bg-[var(--color-accent-hover)] transition-colors"
+                >
+                  View on Amazon →
+                </a>
+              ) : (
+                <span className="text-sm text-[var(--color-muted)]">Currently unavailable</span>
+              )}
+            </div>
+          </div>
         </div>
       </section>
     </>

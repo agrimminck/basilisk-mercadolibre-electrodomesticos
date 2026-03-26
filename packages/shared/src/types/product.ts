@@ -1,3 +1,5 @@
+import type { Category } from './category'
+
 export interface Product {
   id: string
   asin: string // Amazon Standard Identification Number
@@ -9,6 +11,7 @@ export interface Product {
   currency: string
   affiliateUrl: string
   categoryId: string
+  category?: Pick<Category, 'id' | 'name' | 'slug'>
   rating: number | null
   reviewCount: number | null
   available: boolean
