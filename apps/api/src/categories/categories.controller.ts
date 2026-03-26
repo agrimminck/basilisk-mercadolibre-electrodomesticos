@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common'
 import { CategoriesService } from './categories.service'
-import type { Category } from '@affiliate-gaming/shared'
+import type { CategoryEntity as Category } from './category.entity'
 
 @Controller('categories')
 export class CategoriesController {

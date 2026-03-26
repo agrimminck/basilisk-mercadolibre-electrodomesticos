@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common'
 import { ProductsService } from './products.service'
-import type { Product } from '@affiliate-gaming/shared'
+import type { ProductEntity as Product } from './product.entity'
 
 @Controller('products')
 export class ProductsController {

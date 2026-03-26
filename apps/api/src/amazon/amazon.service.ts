@@ -2,7 +2,7 @@ import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { SignatureV4 } from '@aws-sdk/signature-v4';
 import { Sha256 } from '@aws-crypto/sha256-js';
-import type { Product } from '@affiliate-gaming/shared';
+import type { ProductEntity as Product } from '../products/product.entity';
 
 // ─── Tipos internos de la PA-API v5 ───────────────────────────────────────────
 
@@ -243,6 +243,7 @@ export class AmazonService implements OnModuleInit {
       available: listing?.Availability?.Type === 'Now',
       createdAt: now,
       updatedAt: now,
+      category: undefined as never,
     };
   }
 }
