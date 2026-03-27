@@ -24,6 +24,7 @@ Antes de explorar el proyecto con comandos de shell o lecturas múltiples, Claud
 
 1. Leer `INDEX.md` para obtener el mapa de carpetas, archivos clave y variables de entorno.
 2. Desde ahí, navegar directamente al archivo relevante sin exploraciones adicionales.
+3. Si necesita entender qué se ha hecho anteriormente, revisar las carpetas `iterations/` y `plans/` — contienen el historial de cambios y decisiones técnicas de cada iteración.
 
 Esto aplica a cualquier prompt, no solo los que comienzan con `prot - `.
 **Excepción:** si el prompt pide algo que INDEX.md claramente no puede responder (ej: contenido interno de un archivo específico), ir directo al archivo.

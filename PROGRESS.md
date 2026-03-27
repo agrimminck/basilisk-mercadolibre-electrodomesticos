@@ -1,19 +1,19 @@
 # PROGRESS.md — Bitácora del Proyecto
 
-## Iteration Index: 0
+## Iteration Index: 1
 
 **Última actualización:** 2026-03-27
 
 ---
 
-## Estado Actual: 🟡 Fase 1 — Inicialización y Setup de Arquitectura
+## Estado Actual: 🟡 Fase 2 — Integración API Mercado Libre
 
 ## Fases del Proyecto
 
 | Fase | Nombre | Estado |
 |------|--------|--------|
-| 1 | Inicialización y Setup de Arquitectura | 🟡 En curso |
-| 2 | Integración API Mercado Libre | ⏳ Pendiente |
+| 1 | Inicialización y Setup de Arquitectura | ✅ Completo |
+| 2 | Integración API Mercado Libre | 🟡 En curso |
 | 3 | UI Core — Home, Categorías, Detalle | ⏳ Pendiente |
 | 4 | Búsqueda y Filtros | ⏳ Pendiente |
 | 5 | Base de datos y caché | ⏳ Pendiente |
@@ -25,11 +25,11 @@
 ## Fase 1 — Checklist
 
 - [x] Cuenta de afiliado de Mercado Libre lista
-- [ ] Inicializar proyecto Next.js 15 con TypeScript + Tailwind v4
-- [ ] Crear estructura de carpetas base
-- [ ] Configurar `tsconfig.json` (strict mode, sin path aliases)
-- [ ] Crear `types/index.ts` con tipos base (`Product`, `Category`, `SearchResult`)
-- [ ] Crear `.env.local.example` con vars de ML (MLC)
+- [x] Inicializar proyecto Next.js 15 con TypeScript + Tailwind v4
+- [x] Crear estructura de carpetas base
+- [x] Configurar `tsconfig.json` (strict mode, sin path aliases)
+- [x] Crear `types/index.ts` con tipos base (`Product`, `Category`, `SearchResult`)
+- [x] Crear `.env.local.example` con vars de ML (MLC)
 - [ ] Commit inicial
 
 ---
