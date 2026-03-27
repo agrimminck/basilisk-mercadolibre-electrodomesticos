@@ -42,8 +42,8 @@ export interface MeliRawSearchResponse {
 // ─── Client ──────────────────────────────────────────────────────────────────
 
 const BASE_URL = 'https://api.mercadolibre.com'
-const SITE_ID = process.env.MELI_DEFAULT_SITE ?? 'MLC'
-const APP_ID = process.env.MELI_APP_ID
+const SITE_ID = (process.env.MELI_DEFAULT_SITE ?? 'MLC').trim()
+const APP_ID = process.env.MELI_APP_ID?.trim()
 
 function buildUrl(path: string, params: Record<string, string> = {}): string {
   const url = new URL(`${BASE_URL}${path}`)
