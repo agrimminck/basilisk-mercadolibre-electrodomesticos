@@ -58,6 +58,31 @@ Si el prompt NO comienza con `prot - `, omitir completamente ambos protocolos y 
 
 ---
 
+## Comando "que hago" ⚡ ESPECIAL
+
+Si el prompt del usuario es **exactamente** `que hago` (sin mayúsculas, sin signos, sin texto adicional), ejecutar este flujo:
+
+1. Leer `PROGRESS.md`.
+2. Si hay ítems pendientes (sin `[x]`) en el checklist de la fase actual → listarlos y sugerir cuál atacar primero.
+3. Si no hay pendientes inmediatos en la fase actual → leer `INDEX.md` y los **últimos 3 archivos** de la carpeta `plans/` (por número de iteración, de mayor a menor).
+4. Con esa información, proponer **una sola sugerencia concreta** de qué se podría hacer a continuación, con una breve justificación.
+
+**No ejecutar código ni modificar archivos** durante este comando. Es solo orientación.
+
+---
+
+## Comando "resume" ⚡ ESPECIAL
+
+Si el prompt del usuario es **exactamente** `resume` (sin mayúsculas, sin signos, sin texto adicional), ejecutar este flujo:
+
+1. Leer `PROGRESS.md` y obtener el `## Iteration Index: N`.
+2. Si hay ítems pendientes (sin `[x]`) en el checklist de la fase actual → ejecutarlos comenzando por el primero pendiente. **Sí modificar archivos** — este comando implica acción, no solo orientación.
+3. Si no hay pendientes en PROGRESS.md → listar los archivos en `plans/` y buscar el plan con índice mayor a N (ej: si N=5, buscar `plans/6 - *.md`).
+   - Si existe → leerlo y ejecutarlo como si hubiera sido el prompt del usuario, siguiendo el Protocolo de Inicio normalmente (sin necesidad de que el prompt empiece con `prot - `).
+4. Si no hay pendientes ni plan con índice mayor a N → responder: **"No hay nada para resumir."**
+
+---
+
 ## Protocolo de Inicio de Iteración ⚡ OBLIGATORIO (solo si prompt empieza con `prot - `)
 
 **Antes de ejecutar cualquier prompt que implique cambios de código**, Claude debe seguir estos pasos en orden:
