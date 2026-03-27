@@ -35,6 +35,13 @@ export interface SearchResult {
   products: Product[]
 }
 
+export interface SearchFilters {
+  sort?: 'relevance' | 'price_asc' | 'price_desc'
+  condition?: 'new' | 'used'
+  priceMin?: number
+  priceMax?: number
+}
+
 export interface ApiResponse<T> {
   data: T
   error?: string

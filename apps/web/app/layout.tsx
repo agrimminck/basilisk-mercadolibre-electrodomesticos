@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
+import { Header } from '../components/layout/Header'
+import { Footer } from '../components/layout/Footer'
 import './globals.css'
 
 const geist = Geist({
@@ -14,6 +16,14 @@ export const metadata: Metadata = {
   },
   description: 'Descubre las mejores ofertas y productos en MercadoLibre Chile.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
+  openGraph: {
+    siteName: 'MercadoLibre Chile — Ofertas',
+    type: 'website',
+    locale: 'es_CL',
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export default function RootLayout({
@@ -23,8 +33,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className={geist.variable}>
-      <body className="bg-slate-900 text-slate-100 antialiased">
-        {children}
+      <body className="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   )

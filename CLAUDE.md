@@ -66,6 +66,7 @@ Si el prompt del usuario es **exactamente** `que hago` (sin mayúsculas, sin sig
 2. Si hay ítems pendientes (sin `[x]`) en el checklist de la fase actual → listarlos y sugerir cuál atacar primero.
 3. Si no hay pendientes inmediatos en la fase actual → leer `INDEX.md` y los **últimos 3 archivos** de la carpeta `plans/` (por número de iteración, de mayor a menor).
 4. Con esa información, proponer **una sola sugerencia concreta** de qué se podría hacer a continuación, con una breve justificación.
+5. Si la sugerencia implica un plan nuevo (no cubierto por ningún archivo en `plans/`), preguntar al usuario: **"¿Quieres que genere el plan en `plans/` para poder ejecutarlo luego con `resume`?"** — y esperar confirmación antes de crear cualquier archivo.
 
 **No ejecutar código ni modificar archivos** durante este comando. Es solo orientación.
 
@@ -75,11 +76,11 @@ Si el prompt del usuario es **exactamente** `que hago` (sin mayúsculas, sin sig
 
 Si el prompt del usuario es **exactamente** `resume` (sin mayúsculas, sin signos, sin texto adicional), ejecutar este flujo:
 
-1. Leer `PROGRESS.md` y obtener el `## Iteration Index: N`.
-2. Si hay ítems pendientes (sin `[x]`) en el checklist de la fase actual → ejecutarlos comenzando por el primero pendiente. **Sí modificar archivos** — este comando implica acción, no solo orientación.
-3. Si no hay pendientes en PROGRESS.md → listar los archivos en `plans/` y buscar el plan con índice mayor a N (ej: si N=5, buscar `plans/6 - *.md`).
+1. Leer `PROGRESS.md` y obtener el `## Iteration Index: N` y el bloque `## Iteración N — Checklist`.
+2. Si hay ítems pendientes (`- [ ]`) en ese checklist → ejecutarlos comenzando por el primero pendiente. **Sí modificar archivos** — este comando implica acción, no solo orientación.
+3. Si no hay pendientes en el checklist → listar los archivos en `plans/` (solo nombres, sin leer su contenido) y verificar si existe `plans/{N+1} - *.md`.
    - Si existe → leerlo y ejecutarlo como si hubiera sido el prompt del usuario, siguiendo el Protocolo de Inicio normalmente (sin necesidad de que el prompt empiece con `prot - `).
-4. Si no hay pendientes ni plan con índice mayor a N → responder: **"No hay nada para resumir."**
+4. Si no existe plan con índice mayor a N → responder: **"No hay nada para resumir."**
 
 ---
 
@@ -92,7 +93,8 @@ Si el prompt del usuario es **exactamente** `resume` (sin mayúsculas, sin signo
 3. Crear `iterations/{N+1} - {slug}.md` — resumen breve del prompt
 4. Crear `plans/{N+1} - {slug}.md` — plan de implementación detallado
 5. Actualizar `## Iteration Index:` en `PROGRESS.md` al nuevo valor
-6. Recién entonces, comenzar a ejecutar el trabajo
+6. Copiar el bloque `## Verificación` del plan recién creado a `PROGRESS.md` como `## Iteración {N+1} — Checklist` (con los mismos ítems `- [ ]`)
+7. Recién entonces, comenzar a ejecutar el trabajo
 
 **El slug es el mismo** para ambos archivos: `kebab-case`, máximo 6 palabras.
 **Ejemplos:**
@@ -200,7 +202,7 @@ Al final de cada respuesta que implique cambios en el código, Claude debe inclu
 ## 📋 Protocolo de Cierre
 
 ### Actualizar PROGRESS.md
-[bloque de texto exacto para pegar]
+[bloque de texto exacto para pegar — incluir los ítems del checklist `## Iteración N — Checklist` con `[x]` en los completados y `[ ]` en los pendientes]
 
 ### Actualizar INDEX.md (si aplica)
 [bloque de texto exacto para pegar, o "Sin cambios"]

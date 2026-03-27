@@ -55,10 +55,10 @@ affiliate-meli/
 
 | Archivo | Estado | Contenido |
 |---------|--------|-----------|
-| `docs/API_MELI.md` | ⏳ Pendiente | Endpoints, auth, rate limits |
+| `docs/API_MELI.md` | ✅ Listo | Endpoints, auth, rate limits, notas de transform |
 | `docs/COMPONENTS.md` | ⏳ Pendiente | Catálogo de componentes |
 | `docs/STATE.md` | ⏳ Pendiente | Gestión de estado y caché |
-| `docs/DEPLOY.md` | ⏳ Pendiente | Variables de entorno, deploy |
+| `docs/DEPLOY.md` | ✅ Listo | Variables de entorno, pasos de deploy a Vercel |
 
 ## Variables de entorno requeridas
 
