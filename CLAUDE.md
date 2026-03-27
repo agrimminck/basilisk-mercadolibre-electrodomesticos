@@ -18,6 +18,18 @@ Diseño moderno, elegante, con un leve sentido de misterio. Arquitectura y texto
 
 ---
 
+## Orientación Rápida ⚡ OBLIGATORIO
+
+Antes de explorar el proyecto con comandos de shell o lecturas múltiples, Claude debe:
+
+1. Leer `INDEX.md` para obtener el mapa de carpetas, archivos clave y variables de entorno.
+2. Desde ahí, navegar directamente al archivo relevante sin exploraciones adicionales.
+
+Esto aplica a cualquier prompt, no solo los que comienzan con `prot - `.
+**Excepción:** si el prompt pide algo que INDEX.md claramente no puede responder (ej: contenido interno de un archivo específico), ir directo al archivo.
+
+---
+
 ## Directiva de Autonomía de Memoria ⚡ CRÍTICO
 
 Este archivo (`CLAUDE.md`) y los archivos `INDEX.md` / `PROGRESS.md` son el núcleo de contexto.
