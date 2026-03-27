@@ -9,13 +9,20 @@ import {
 } from 'typeorm'
 import { CategoryEntity } from '../categories/category.entity'
 
+// Duplicated from @affiliate-gaming/shared — the API Dockerfile builds standalone
+// without the monorepo packages/shared, so we keep a local copy here.
+export type AffiliateSource = 'amazon' | 'mercadolibre'
+
 @Entity('products')
 export class ProductEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string
 
   @Column({ unique: true })
-  asin: string
+  externalId: string
+
+  @Column({ default: 'amazon' })
+  affiliateSource: AffiliateSource
 
   @Column()
   name: string

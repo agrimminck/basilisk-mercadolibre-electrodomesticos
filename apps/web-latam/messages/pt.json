@@ -1,0 +1,46 @@
+{
+  "nav": {
+    "home": "Início",
+    "categories": "Categorias",
+    "searchPlaceholder": "Buscar produtos...",
+    "searchLabel": "Buscar"
+  },
+  "search": {
+    "title": "Resultados para \"{query}\"",
+    "empty": "Nenhum produto encontrado para \"{query}\".",
+    "emptyHint": "Tente outro termo."
+  },
+  "home": {
+    "hero": {
+      "title": "O Setup Gamer que Você Precisa",
+      "subtitle": "Comparações honestas de monitores, GPUs, periféricos e muito mais. Tudo disponível no Mercado Livre.",
+      "cta": "Explorar categorias"
+    },
+    "categories": {
+      "title": "O que você está procurando?",
+      "monitors": "Monitores",
+      "gpus": "Placas de Vídeo",
+      "peripherals": "Mouses",
+      "keyboards": "Teclados",
+      "headsets": "Headsets",
+      "gamingChairs": "Cadeiras Gamer"
+    },
+    "topPicks": "Melhores Picks"
+  },
+  "product": {
+    "viewOnStore": "Ver no Mercado Livre",
+    "reviews": "avaliações",
+    "notAvailable": "Indisponível",
+    "breadcrumb": {
+      "home": "Início"
+    }
+  },
+  "footer": {
+    "tagline": "Comparações honestas para gamers de verdade.",
+    "disclaimer": "Como afiliado do Mercado Livre, ganhamos comissões por compras qualificadas.",
+    "links": {
+      "privacy": "Privacidade",
+      "contact": "Contato"
+    }
+  }
+}

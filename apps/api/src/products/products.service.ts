@@ -11,12 +11,16 @@ export class ProductsService {
     private readonly productRepository: Repository<ProductEntity>,
   ) {}
 
-  async FindAll(categorySlug?: string, searchQuery?: string): Promise<Product[]> {
+  async FindAll(categorySlug?: string, searchQuery?: string, source?: string): Promise<Product[]> {
     const query = this.productRepository
       .createQueryBuilder('product')
       .leftJoinAndSelect('product.category', 'category')
       .where('product.available = :available', { available: true })
       .orderBy('product.rating', 'DESC', 'NULLS LAST')
+
+    if (source) {
+      query.andWhere('product.affiliateSource = :source', { source })
+    }
 
     if (categorySlug) {
       query.andWhere('category.slug = :slug', { slug: categorySlug })

@@ -104,7 +104,7 @@ export class SeedService implements OnModuleInit {
       const categoryId = categoryMap.get(product.categorySlug)
       if (!categoryId) continue
 
-      const existing = await this.productRepo.findOne({ where: { asin: product.asin } })
+      const existing = await this.productRepo.findOne({ where: { externalId: product.asin } })
       const imageUrl = AmazonImageUrl(product.asin)
       const affiliateUrl = AmazonUrl(product.asin)
 
@@ -120,6 +120,8 @@ export class SeedService implements OnModuleInit {
 
       const entity = this.productRepo.create({
         ...product,
+        externalId: product.asin,
+        affiliateSource: 'amazon',
         imageUrl,
         affiliateUrl,
         currency: 'USD',

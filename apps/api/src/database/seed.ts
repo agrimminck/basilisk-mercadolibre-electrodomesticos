@@ -499,7 +499,7 @@ async function Seed(): Promise<void> {
     const categoryId = categoryMap.get(product.categorySlug)
     if (!categoryId) continue
 
-    const exists = await productRepo.findOne({ where: { asin: product.asin } })
+    const exists = await productRepo.findOne({ where: { externalId: product.asin } })
     if (exists) {
       const newImageUrl = AmazonImageUrl(product.asin)
       const newAffiliateUrl = AmazonUrl(product.asin)
@@ -516,7 +516,8 @@ async function Seed(): Promise<void> {
     }
 
     const entity = productRepo.create({
-      asin: product.asin,
+      externalId: product.asin,
+      affiliateSource: 'amazon',
       name: product.name,
       slug: product.slug,
       description: product.description,

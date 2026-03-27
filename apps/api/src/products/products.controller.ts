@@ -10,8 +10,9 @@ export class ProductsController {
   FindAll(
     @Query('category') category?: string,
     @Query('q') q?: string,
+    @Query('source') source?: string,
   ): Promise<Product[]> {
-    return this.productsService.FindAll(category, q)
+    return this.productsService.FindAll(category, q, source)
   }
 
   @Get(':slug')

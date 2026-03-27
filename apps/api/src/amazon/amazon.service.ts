@@ -229,7 +229,8 @@ export class AmazonService implements OnModuleInit {
 
     return {
       id: item.ASIN,
-      asin: item.ASIN,
+      externalId: item.ASIN,
+      affiliateSource: 'amazon',
       name: item.ItemInfo.Title.DisplayValue,
       slug: BuildSlug(item.ItemInfo.Title.DisplayValue, item.ASIN),
       description: '',

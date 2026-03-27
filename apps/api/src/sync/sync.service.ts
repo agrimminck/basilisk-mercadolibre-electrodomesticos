@@ -38,7 +38,7 @@ export class SyncService {
       throw new NotFoundException(`Product with ASIN ${asin} not found on Amazon`)
     }
 
-    const existing = await this.productRepo.findOne({ where: { asin } })
+    const existing = await this.productRepo.findOne({ where: { externalId: asin } })
 
     if (existing) {
       await this.productRepo.update(existing.id, {
@@ -60,7 +60,8 @@ export class SyncService {
     }
 
     const created = this.productRepo.create({
-      asin,
+      externalId: asin,
+      affiliateSource: 'amazon',
       name: amazonProduct.name,
       slug: amazonProduct.slug,
       description: amazonProduct.description,
@@ -98,7 +99,7 @@ export class SyncService {
     const results: SyncResult[] = []
 
     for (const amazonProduct of amazonProducts) {
-      const existing = await this.productRepo.findOne({ where: { asin: amazonProduct.asin } })
+      const existing = await this.productRepo.findOne({ where: { externalId: amazonProduct.externalId } })
 
       if (existing) {
         await this.productRepo.update(existing.id, {
@@ -109,12 +110,13 @@ export class SyncService {
           reviewCount: amazonProduct.reviewCount,
           affiliateUrl: amazonProduct.affiliateUrl,
         })
-        results.push({ asin: amazonProduct.asin, action: 'updated', productId: existing.id, name: existing.name })
+        results.push({ asin: amazonProduct.externalId, action: 'updated', productId: existing.id, name: existing.name })
         continue
       }
 
       const created = this.productRepo.create({
-        asin: amazonProduct.asin,
+        externalId: amazonProduct.externalId,
+        affiliateSource: 'amazon',
         name: amazonProduct.name,
         slug: amazonProduct.slug,
         description: amazonProduct.description,
@@ -130,11 +132,11 @@ export class SyncService {
 
       try {
         await this.productRepo.save(created)
-        results.push({ asin: amazonProduct.asin, action: 'created', productId: created.id, name: created.name })
+        results.push({ asin: amazonProduct.externalId, action: 'created', productId: created.id, name: created.name })
       } catch {
-        // slug duplicado — el producto ya existe con otro ASIN idéntico, ignorar
-        this.logger.warn(`Skipped duplicate slug for ASIN ${amazonProduct.asin}`)
-        results.push({ asin: amazonProduct.asin, action: 'skipped', productId: '', name: amazonProduct.name })
+        // slug duplicado — el producto ya existe con otro ID idéntico, ignorar
+        this.logger.warn(`Skipped duplicate slug for ID ${amazonProduct.externalId}`)
+        results.push({ asin: amazonProduct.externalId, action: 'skipped', productId: '', name: amazonProduct.name })
       }
     }
 

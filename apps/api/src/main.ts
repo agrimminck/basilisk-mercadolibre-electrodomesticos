@@ -7,8 +7,13 @@ async function bootstrap(): Promise<void> {
 
   app.setGlobalPrefix('api');
 
+  const allowedOrigins = [
+    process.env.WEB_URL ?? 'http://localhost:3000',
+    process.env.WEB_LATAM_URL,
+  ].filter(Boolean) as string[];
+
   app.enableCors({
-    origin: process.env.WEB_URL ?? 'http://localhost:3000',
+    origin: allowedOrigins,
     methods: ['GET'],
   });
 
