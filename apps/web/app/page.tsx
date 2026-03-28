@@ -48,7 +48,7 @@ export default async function HomePage() {
           {categories.slice(0, 10).map((cat) => (
             <Link
               key={cat.id}
-              href={`/${cat.id}`}
+              href={`/${cat.slug}`}
               className="bg-zinc-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-300 hover:text-amber-400 hover:border-amber-400/40 transition-all duration-150 truncate"
             >
               {cat.name}

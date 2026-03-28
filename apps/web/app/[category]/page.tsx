@@ -1,4 +1,4 @@
-import { getCategory } from '../../lib/meli/meli-client'
+import { getCategoryBySlug } from '../../lib/meli/meli-client'
 import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
 import type { Metadata } from 'next'
@@ -9,7 +9,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params
-  const cat = await getCategory(category)
+  const cat = await getCategoryBySlug(category)
   return {
     title: `Ofertas en ${cat.name} — MercadoLibre Chile`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile. Compará precios y comprá con envío a todo el país.`,
@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params
-  const cat = await getCategory(category)
+  const cat = await getCategoryBySlug(category)
   const meliUrl = buildCategoryUrl(cat.slug)
   const desc = getCategoryDescription(cat.slug)
 
