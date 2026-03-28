@@ -1,14 +1,16 @@
 import { getCategories } from '../lib/meli/meli-client'
-import { buildCategoryUrl } from '../lib/utils/affiliate'
 import { SearchBar } from '../components/search/SearchBar'
 import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
 import { featuredProducts } from '../lib/data/featured-products'
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Mejores Ofertas — MercadoLibre Chile',
+  title: 'Ofertas Chile — Notebooks, Celulares y más en MercadoLibre',
+  description:
+    'Explorá ofertas en notebooks, celulares, televisores, electrodomésticos y más en MercadoLibre Chile. Compará precios y encontrá lo que buscás.',
 }
 
 export default async function HomePage() {
@@ -44,15 +46,13 @@ export default async function HomePage() {
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
           {categories.slice(0, 10).map((cat) => (
-            <a
+            <Link
               key={cat.id}
-              href={buildCategoryUrl(cat.slug)}
-              target="_blank"
-              rel="noopener noreferrer sponsored"
+              href={`/${cat.id}`}
               className="bg-zinc-900 border border-slate-800 rounded-xl px-4 py-3 text-sm text-slate-300 hover:text-amber-400 hover:border-amber-400/40 transition-all duration-150 truncate"
             >
               {cat.name}
-            </a>
+            </Link>
           ))}
         </div>
       </section>

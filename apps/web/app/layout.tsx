@@ -11,18 +11,22 @@ const geist = Geist({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Mejores Ofertas — MercadoLibre Chile',
-    template: '%s | MercadoLibre Chile',
+    default: 'Ofertas Chile — Notebooks, Celulares y más en MercadoLibre',
+    template: '%s | Ofertas Chile',
   },
-  description: 'Descubre las mejores ofertas y productos en MercadoLibre Chile.',
+  description:
+    'Encontrá las mejores ofertas en notebooks, celulares, electrodomésticos, televisores y más. Compará precios y comprá en MercadoLibre Chile con envío a todo el país.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   openGraph: {
-    siteName: 'MercadoLibre Chile — Ofertas',
+    siteName: 'Ofertas Chile',
     type: 'website',
     locale: 'es_CL',
   },
   twitter: {
     card: 'summary_large_image',
+  },
+  verification: {
+    google: 'qiy2NQDq_fPBZ-WBcq0PEBSRbMw3RSv4vkXvNTlpPmY',
   },
 }
 
