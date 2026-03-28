@@ -6,7 +6,7 @@
 
 ---
 
-## Estado Actual: 🟡 Fase 7 en progreso — Deploy a Vercel
+## Estado Actual: ✅ Fase 7 completa — Sitio live en Vercel
 
 | Fase | Nombre | Estado |
 |------|--------|--------|
@@ -16,7 +16,7 @@
 | 4 | Búsqueda y Filtros | ✅ |
 | 5 | Base de datos y caché | ⏳ |
 | 6 | SEO, metadata y rendimiento | ✅ |
-| 7 | Deploy a Vercel | ⏳ |
+| 7 | Deploy a Vercel | ✅ |
 
 ---
 
@@ -34,9 +34,9 @@
 
 ## Iteración 10 — Checklist
 
-- [ ] El diseño (Tailwind CSS) carga correctamente en Vercel
-- [ ] Fondo oscuro (`slate-900`) visible en home
-- [ ] Clases de color y layout aplicadas en categorías y header
+- [x] El diseño (Tailwind CSS) carga correctamente en Vercel
+- [x] Fondo oscuro (`slate-900`) visible en home
+- [x] Clases de color y layout aplicadas en categorías y header
 
 ---
 
