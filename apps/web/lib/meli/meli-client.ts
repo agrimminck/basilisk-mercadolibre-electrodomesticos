@@ -1,5 +1,6 @@
 import type { Product, Category, SearchResult, SearchFilters } from '../../types/index'
 import { transformProduct, transformCategory, transformSearchResult } from './meli-transforms'
+import { getAccessToken } from './meli-auth'
 
 // ─── Raw ML API types ────────────────────────────────────────────────────────
 
@@ -43,11 +44,9 @@ export interface MeliRawSearchResponse {
 
 const BASE_URL = 'https://api.mercadolibre.com'
 const SITE_ID = (process.env.MELI_DEFAULT_SITE ?? 'MLC').trim()
-const APP_ID = process.env.MELI_APP_ID?.trim()
 
 function buildUrl(path: string, params: Record<string, string> = {}): string {
   const url = new URL(`${BASE_URL}${path}`)
-  if (APP_ID) url.searchParams.set('app_id', APP_ID)
   for (const [key, value] of Object.entries(params)) {
     url.searchParams.set(key, value)
   }
@@ -55,8 +54,12 @@ function buildUrl(path: string, params: Record<string, string> = {}): string {
 }
 
 async function apiFetch<T>(url: string): Promise<T> {
+  const token = await getAccessToken()
   const res = await fetch(url, {
-    headers: { 'User-Agent': 'affiliate-gaming/1.0' },
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'User-Agent': 'affiliate-gaming/1.0',
+    },
     next: { revalidate: 300 },
   })
   if (!res.ok) {
