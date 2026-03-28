@@ -1,6 +1,8 @@
 import { getCategories } from '../lib/meli/meli-client'
 import { buildCategoryUrl } from '../lib/utils/affiliate'
 import { SearchBar } from '../components/search/SearchBar'
+import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
+import { featuredProducts } from '../lib/data/featured-products'
 import type { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
@@ -23,6 +25,16 @@ export default async function HomePage() {
           Explorá miles de productos en MercadoLibre Chile
         </p>
         <SearchBar />
+      </section>
+
+      {/* Destacados */}
+      <section>
+        <h2 className="text-xl font-semibold text-slate-200 mb-5">Destacados</h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {featuredProducts.map((product) => (
+            <FeaturedProductCard key={product.id} product={product} />
+          ))}
+        </div>
       </section>
 
       {/* Categorías */}
