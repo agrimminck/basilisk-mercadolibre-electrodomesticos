@@ -1,7 +1,14 @@
-import { getCategoryBySlug } from '../../lib/meli/meli-client'
+import { getCategoryBySlug, getCategories } from '../../lib/meli/meli-client'
 import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
 import type { Metadata } from 'next'
+
+export const revalidate = 3600
+
+export async function generateStaticParams() {
+  const categories = await getCategories()
+  return categories.map((cat) => ({ category: cat.slug }))
+}
 
 type Props = {
   params: Promise<{ category: string }>

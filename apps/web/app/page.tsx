@@ -5,7 +5,7 @@ import { featuredProducts } from '../lib/data/featured-products'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Ofertas Chile — Notebooks, Celulares y más en MercadoLibre',
