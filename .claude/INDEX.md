@@ -2,12 +2,12 @@
 
 ## Stack
 
-| Capa | Tecnología |
-|------|-----------|
-| Framework | Next.js 15 (App Router) |
-| Lenguaje | TypeScript strict |
-| Estilos | Tailwind CSS v4 |
-| Deploy | Vercel |
+| Capa      | Tecnología                            |
+| --------- | ------------------------------------- |
+| Framework | Next.js 15 (App Router)               |
+| Lenguaje  | TypeScript strict                     |
+| Estilos   | Tailwind CSS v4                       |
+| Deploy    | Vercel                                |
 | Afiliados | Mercado Libre API — sitio MLC (Chile) |
 
 ---
@@ -52,13 +52,13 @@ affiliate-gaming/
 
 ## Archivos clave
 
-| Archivo | Propósito |
-|---------|-----------|
-| `lib/meli/meli-auth.ts` | OAuth client_credentials — obtiene access token de ML |
-| `lib/meli/meli-client.ts` | HTTP client: todos los requests a la API ML |
+| Archivo                       | Propósito                                                        |
+| ----------------------------- | ---------------------------------------------------------------- |
+| `lib/meli/meli-auth.ts`       | OAuth client_credentials — obtiene access token de ML            |
+| `lib/meli/meli-client.ts`     | HTTP client: todos los requests a la API ML                      |
 | `lib/meli/meli-transforms.ts` | Normaliza respuestas ML → tipos internos (slugs, https, filtros) |
-| `lib/utils/affiliate.ts` | Construye URLs con `meli_affiliate_id` para tracking |
-| `types/index.ts` | Tipos globales compartidos en toda la app |
+| `lib/utils/affiliate.ts`      | Construye URLs con `meli_affiliate_id` para tracking             |
+| `types/index.ts`              | Tipos globales compartidos en toda la app                        |
 
 > Rutas de archivos relativas a `apps/web/`.
 
@@ -81,3 +81,7 @@ Ver `.env.local.example` en `apps/web/`.
 ## Documentación
 
 Ver [INDEX-DOCUMENTATION.md](INDEX-DOCUMENTATION.md) para el índice de docs generados por protocolos.
+
+## Progreso
+
+Ver [INDEX-PROGRESS.md](INDEX-PROGRESS.md) para el índice de progresos generados por protocolos.

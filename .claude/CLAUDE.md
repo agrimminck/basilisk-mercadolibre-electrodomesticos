@@ -39,7 +39,7 @@ Si necesita entender qué se ha hecho anteriormente, revisar `.claude/protocols/
 
 ## Directiva de Autonomía de Memoria ⚡ CRÍTICO
 
-Este archivo (`CLAUDE.md`) y los archivos `.claude/INDEX.md` / `.claude/PROGRESS.md` son el núcleo de contexto local.
+Este archivo (`CLAUDE.md`) y los archivos `.claude/INDEX.md` / `.claude/INDEX-PROGRESS.md` son el núcleo de contexto local. Cada protocolo mantiene su propio `PROGRESS.md` en su carpeta (`.claude/protocols/development/PROGRESS.md`, etc.).
 **El objetivo es mantenerlos lo más ligeros posible para ahorrar tokens.**
 
 ### Reglas de expansión

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read|Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=$(jq -r '.tool_input.file_path // \"\"'); if echo \"$f\" | grep -q '\\.claude/'; then echo '{\"hookSpecificOutput\":{\"hookEventName\":\"PreToolUse\",\"permissionDecision\":\"deny\",\"permissionDecisionReason\":\"Operaciones CRUD sobre .claude/ están bloqueadas por hook\"}}'; fi",
+            "statusMessage": "Verificando acceso a .claude/..."
+          }
+        ]
+      }
+    ]
+  }
+}
