@@ -1,6 +1,6 @@
 # PROGRESS.md — Bitácora del Proyecto
 
-## Iteration Index: 7
+## Iteration Index: 8
 
 **Última actualización:** 2026-03-27
 
@@ -19,6 +19,16 @@
 | 5 | Base de datos y caché | ⏳ Pendiente |
 | 6 | SEO, metadata y rendimiento | ✅ Completo |
 | 7 | Deploy a Vercel | ⏳ Pendiente |
+
+---
+
+## Iteración 8 — Checklist
+
+- [ ] `curl https://web-ten-beige-23.vercel.app/api/categories` responde 200 con array de categorías
+- [ ] `curl "https://web-ten-beige-23.vercel.app/api/search?q=notebook"` responde 200 con resultados
+- [ ] `curl https://web-ten-beige-23.vercel.app/sitemap.xml` responde 200
+- [ ] `npx tsc --noEmit` sin errores
+- [ ] Ningún archivo supera 200 líneas
 
 ---
 
