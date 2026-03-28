@@ -1,14 +1,23 @@
 import type { MetadataRoute } from 'next'
-import { getCategories } from '../lib/meli/meli-client'
 
-export const dynamic = 'force-dynamic'
+const CATEGORY_SLUGS = [
+  'computacion',
+  'celulares-y-smartphones',
+  'electrodomesticos',
+  'television-audio-y-video',
+  'herramientas-y-construccion',
+  'deportes-y-fitness',
+  'videojuegos-y-consolas',
+  'ropa-y-accesorios',
+  'hogar-y-muebles',
+  'autos-motos-y-otros',
+]
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'
-  const categories = await getCategories()
 
-  const categoryUrls: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${siteUrl}/${cat.slug}`,
+  const categoryUrls: MetadataRoute.Sitemap = CATEGORY_SLUGS.map((slug) => ({
+    url: `${siteUrl}/${slug}`,
     lastModified: new Date(),
     changeFrequency: 'daily',
     priority: 0.8,
