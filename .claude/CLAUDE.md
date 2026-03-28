@@ -1,5 +1,4 @@
 # CLAUDE.md — affiliate-gaming
-
 > Los protocolos globales están definidos en `~/.claude/CLAUDE.md` (cybercore) y se cargan automáticamente.
 > Este archivo contiene únicamente la configuración específica de este proyecto.
 
