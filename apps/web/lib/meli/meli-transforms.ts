@@ -1,5 +1,5 @@
-import type { Product, Category, SearchResult } from '../../types/index'
-import type { MeliRawItem, MeliRawCategory, MeliRawSearchResponse } from './meli-client'
+import type { Product, Category } from '../../types/index'
+import type { MeliRawItem, MeliRawCategory, MeliRawSiteCategory } from './meli-client'
 
 function toSlug(title: string): string {
   return title
@@ -45,15 +45,10 @@ export function transformCategory(raw: MeliRawCategory): Category {
   }
 }
 
-export function transformSearchResult(
-  raw: MeliRawSearchResponse,
-  query: string
-): SearchResult {
+export function transformSiteCategory(raw: MeliRawSiteCategory): Category {
   return {
-    query,
-    total: raw.paging.total,
-    offset: raw.paging.offset,
-    limit: raw.paging.limit,
-    products: raw.results.map(transformProduct),
+    id: raw.id,
+    name: raw.name,
+    slug: toSlug(raw.name),
   }
 }

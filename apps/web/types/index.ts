@@ -23,7 +23,7 @@ export interface Category {
   id: string
   name: string
   slug: string
-  totalItems: number
+  totalItems?: number
   thumbnail?: string
 }
 

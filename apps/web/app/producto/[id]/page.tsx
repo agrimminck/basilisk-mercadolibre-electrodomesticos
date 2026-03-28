@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import { getProduct } from '../../../lib/meli/meli-client'
+import { buildProductUrl } from '../../../lib/utils/affiliate'
 import { Badge } from '../../../components/ui/Badge'
 import type { Metadata } from 'next'
 
@@ -69,7 +70,7 @@ export default async function ProductPage({ params }: Props) {
           </p>
 
           <a
-            href={product.permalink}
+            href={buildProductUrl(product.permalink)}
             target="_blank"
             rel="noopener noreferrer sponsored"
             className="inline-block bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-center py-3 px-6 rounded-xl transition-colors"
