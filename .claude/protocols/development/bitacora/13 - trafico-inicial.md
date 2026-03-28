@@ -23,3 +23,22 @@
 ## Pendientes
 - [ ] Enviar sitemap a Google Search Console (acción manual)
 - [ ] Perfil en redes sociales (opcional)
+
+---
+
+## Incidencias
+
+### GSC: "sitemap couldn't be read" (2026-03-28)
+- robots.txt y sitemap.xml responden correctamente en el navegador con el contenido esperado.
+- GSC falla al leerlo — causa más probable: **mismatch de dominio**.
+- Las `<loc>` del sitemap generan URLs con `NEXT_PUBLIC_SITE_URL`. Si el property GSC está registrado con el dominio custom (iteración 12) pero la variable apunta a `web-ten-beige-23.vercel.app`, Google rechaza el sitemap.
+- **Acción requerida:** verificar que `NEXT_PUBLIC_SITE_URL` en Vercel coincida exactamente con el dominio del property GSC.
+- **Actualización (2026-03-28):** confirmado que ambos dominios son idénticos (`https://web-ten-beige-23.vercel.app`). Mismatch de dominio descartado.
+- Causas restantes a investigar: (1) sitemap recién enviado — GSC puede tardar horas/días en procesarlo; (2) posible problema con el Content-Type header que Next.js sirve para `/sitemap.xml`; (3) redirección inesperada en la ruta.
+
+### Acciones de indexación tomadas (2026-03-28)
+- Sitemap enviado a GSC — tiempo estimado de procesamiento: 24-72hs.
+- Post publicado en Twitter/X con link al sitio — acelera el rastreo via backlink externo.
+- Estimado para ver primeras URLs indexadas: 24-48hs desde el tweet.
+- **Actualización (2026-03-28):** confirmado que ambos dominios son idénticos (`https://web-ten-beige-23.vercel.app`). Mismatch de dominio descartado.
+- Causas restantes a investigar: (1) sitemap recién enviado — GSC puede tardar horas/días en procesarlo; (2) posible problema con el Content-Type header que Next.js sirve para `/sitemap.xml`; (3) redirección inesperada en la ruta.
