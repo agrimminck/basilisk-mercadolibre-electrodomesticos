@@ -5,8 +5,8 @@ export function buildSearchUrl(query: string): string {
   return `https://listado.mercadolibre.cl/${encodeURIComponent(slug)}?meli_affiliate_id=${AFFILIATE_ID}`
 }
 
-export function buildCategoryUrl(categoryId: string): string {
-  return `https://www.mercadolibre.cl/c/${categoryId}?meli_affiliate_id=${AFFILIATE_ID}`
+export function buildCategoryUrl(categorySlug: string): string {
+  return `https://listado.mercadolibre.cl/${encodeURIComponent(categorySlug)}?meli_affiliate_id=${AFFILIATE_ID}`
 }
 
 export function buildProductUrl(permalink: string): string {
