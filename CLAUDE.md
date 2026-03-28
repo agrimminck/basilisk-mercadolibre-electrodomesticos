@@ -77,10 +77,11 @@ Si el prompt del usuario es **exactamente** `que hago` (sin mayúsculas, sin sig
 Si el prompt del usuario es **exactamente** `resume` (sin mayúsculas, sin signos, sin texto adicional), ejecutar este flujo:
 
 1. Leer `PROGRESS.md` y obtener el `## Iteration Index: N` y el bloque `## Iteración N — Checklist`.
-2. Si hay ítems pendientes (`- [ ]`) en ese checklist → ejecutarlos comenzando por el primero pendiente. **Sí modificar archivos** — este comando implica acción, no solo orientación.
-3. Si no hay pendientes en el checklist → listar los archivos en `plans/` (solo nombres, sin leer su contenido) y verificar si existe `plans/{N+1} - *.md`.
-   - Si existe → leerlo y ejecutarlo como si hubiera sido el prompt del usuario, siguiendo el Protocolo de Inicio normalmente (sin necesidad de que el prompt empiece con `prot - `).
-4. Si no existe plan con índice mayor a N → responder: **"No hay nada para resumir."**
+2. Leer los archivos en `logs/` con prefijo `N -` (si existen) para tomar en cuenta hallazgos, decisiones pendientes y bloqueantes de la iteración actual antes de ejecutar.
+3. Si hay ítems pendientes (`- [ ]`) en ese checklist → ejecutarlos comenzando por el primero pendiente. **Sí modificar archivos** — este comando implica acción, no solo orientación.
+4. Si no hay pendientes en el checklist → listar los archivos en `plans/` (solo nombres, sin leer su contenido) y verificar si existe `plans/{N+1} - *.md`.
+   - Si existe → leerlo y ejecutarlo como si hubera sido el prompt del usuario, siguiendo el Protocolo de Inicio normalmente (sin necesidad de que el prompt empiece con `prot - `).
+5. Si no existe plan con índice mayor a N → responder: **"No hay nada para resumir."**
 
 ---
 
