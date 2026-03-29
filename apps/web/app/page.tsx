@@ -16,8 +16,29 @@ export const metadata: Metadata = {
 export default async function HomePage() {
   const categories = await getCategories()
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Ofertas MercadoLibre Chile',
+    url: siteUrl,
+    description: 'Las mejores ofertas y productos de MercadoLibre Chile.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: {
+        '@type': 'EntryPoint',
+        urlTemplate: `${siteUrl}/buscar?q={search_term_string}`,
+      },
+      'query-input': 'required name=search_term_string',
+    },
+  }
+
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 space-y-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero */}
       <section className="flex flex-col items-center gap-4 py-8 text-center">
         <h1 className="text-3xl font-bold text-slate-100">

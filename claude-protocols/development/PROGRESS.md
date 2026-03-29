@@ -1,7 +1,7 @@
 # PROGRESS.md — Desarrollo
 
-## Iteration Index: 13
-## Plan Index: 13
+## Iteration Index: 14
+## Plan Index: 14
 
 **Última actualización:** 2026-03-28
 
@@ -50,7 +50,19 @@
 ## Iteración 13 — Checklist
 
 - [x] Sitio registrado en Google Search Console
-- [ ] Sitemap enviado a Google
+- [x] Sitemap enviado a Google
 - [x] Meta titles y descriptions revisados en home y categorías principales
 - [x] Página de aterrizaje creada para al menos 2 categorías populares (notebooks, celulares)
 - [ ] (Opcional) Perfil en redes sociales creado con link al sitio
+
+---
+
+## Iteración 14 — Checklist
+
+- [ ] Verificar estado del sitemap en GSC (estado "Éxito", URLs > 0)
+- [ ] Solicitar indexación manual en GSC: homepage + 5 categorías principales
+- [ ] Registrar sitio en Bing Webmaster Tools y enviar sitemap
+- [x] JSON-LD WebSite agregado en homepage
+- [x] JSON-LD CollectionPage + BreadcrumbList en páginas de categoría
+- [x] `npx tsc --noEmit` sin errores
+- [ ] Rich Results Test sin errores (tras deploy)

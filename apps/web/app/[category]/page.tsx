@@ -34,8 +34,38 @@ export default async function CategoryPage({ params }: Props) {
   const meliUrl = buildCategoryUrl(cat.slug)
   const desc = getCategoryDescription(cat.slug)
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `Ofertas en ${cat.name} — MercadoLibre Chile`,
+    description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile.`,
+    url: `${siteUrl}/${category}`,
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Inicio',
+          item: siteUrl,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: cat.name,
+          item: `${siteUrl}/${category}`,
+        },
+      ],
+    },
+  }
+
   return (
     <div className="max-w-3xl mx-auto px-4 py-14 space-y-10">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="space-y-3">
         <h1 className="text-3xl font-bold text-slate-100">{cat.name}</h1>
         <p className="text-slate-400 leading-relaxed">{desc.intro}</p>
