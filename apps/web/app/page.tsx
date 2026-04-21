@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 }
 
 const CATEGORY_ICONS: Record<string, number> = {
-  'electrodomesticos-y-aires-acondicionado': 0,
+  'electrodomesticos-y-aire-acondicionado': 0,
   'lavadoras': 1,
   'television-audio-y-video': 2,
   'cocinas': 3,
@@ -92,7 +92,7 @@ export default async function HomePage() {
             </p>
             <div className="flex gap-3 items-center flex-wrap">
               <Link
-                href="/electrodomesticos-y-aires-acondicionado"
+                href="/electrodomesticos-y-aire-acondicionado"
                 className="bg-teh-ink dark:bg-teh-d-ink text-teh-bg dark:text-teh-d-bg px-6 py-3.5 text-[13px] font-medium tracking-wide hover:opacity-90 transition-opacity"
               >
                 Explorar el catálogo →
@@ -212,7 +212,7 @@ export default async function HomePage() {
                 sin tecnicismos innecesarios, para acertar a la primera.
               </p>
               <Link
-                href="/electrodomesticos-y-aires-acondicionado"
+                href="/electrodomesticos-y-aire-acondicionado"
                 className="text-[13px] font-medium border-b border-teh-accent dark:border-teh-d-accent pb-0.5 text-teh-ink dark:text-teh-d-ink hover:text-teh-accent dark:hover:text-teh-d-accent transition-colors"
               >
                 Ver electrodomésticos — mejor precio →

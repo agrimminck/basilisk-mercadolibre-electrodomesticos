@@ -37,7 +37,7 @@ const descriptions: Record<string, CategoryDescription> = {
       'Cables HDMI y accesorios AV',
     ],
   },
-  'electrodomesticos-y-aires-acondicionado': {
+  'electrodomesticos-y-aire-acondicionado': {
     intro:
       'Equipá tu hogar con refrigeradores, lavadoras, cocinas y aires acondicionados al mejor precio en MercadoLibre Chile. Grandes marcas con garantía y envío.',
     highlights: [

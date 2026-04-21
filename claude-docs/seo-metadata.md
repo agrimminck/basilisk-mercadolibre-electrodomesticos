@@ -60,7 +60,7 @@ Validar cambios con: https://search.google.com/test/rich-results
 ## Acciones indexación pendientes
 
 - [ ] **Bing verification:** descargar `BingSiteAuth.xml` desde bing.com/webmasters → colocar en `apps/web/public/` → commit + push → clic "Verify" en Bing → submit sitemap.
-- [ ] **GSC manual indexing:** solicitar indexación para home + 5 categorías (electrodomesticos-y-aires-acondicionado, television-audio-y-video, computacion, celulares-y-telefonia, herramientas-y-construccion). Límite ~10/día → 1-2 días.
+- [ ] **GSC manual indexing:** solicitar indexación para home + 5 categorías (electrodomesticos-y-aire-acondicionado, television-audio-y-video, computacion, celulares-y-telefonia, herramientas-y-construccion). Límite ~10/día → 1-2 días.
 - [ ] **JSON-LD post-rediseño:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
 - [ ] Monitorear GSC cada 3-5 días post-request.
 

@@ -2,6 +2,7 @@ import { getCategoryBySlug, getCategories } from '../../lib/meli/meli-client'
 import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
 import { ProductPlaceholder } from '../../components/ui/ProductPlaceholder'
+import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -18,7 +19,12 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params
-  const cat = await getCategoryBySlug(category)
+  let cat
+  try {
+    cat = await getCategoryBySlug(category)
+  } catch {
+    return {}
+  }
   return {
     title: `${cat.name} — Top Electro Hogar`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile. Compará precios y comprá con envío a todo el país.`,
@@ -31,7 +37,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const CATEGORY_ICONS: Record<string, number> = {
-  'electrodomesticos-y-aires-acondicionado': 0,
+  'electrodomesticos-y-aire-acondicionado': 0,
   'lavadoras': 1,
   'television-audio-y-video': 2,
   'cocinas': 3,
@@ -43,30 +49,37 @@ const FILTER_PILLS = ['Todos', 'En oferta', 'Nuevos', "Editor's picks"]
 
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params
-  const cat = await getCategoryBySlug(category)
+  let cat
+  try {
+    cat = await getCategoryBySlug(category)
+  } catch {
+    notFound()
+  }
   const meliUrl = buildCategoryUrl(cat.slug)
   const desc = getCategoryDescription(cat.slug)
   const iconSeed = CATEGORY_ICONS[category] ?? 0
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
-  const jsonLd = {
+  const jsonLdPage = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${cat.name} — Top Electro Hogar`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile.`,
     url: `${siteUrl}/${category}`,
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Inicio', item: siteUrl },
-        { '@type': 'ListItem', position: 2, name: cat.name, item: `${siteUrl}/${category}` },
-      ],
-    },
+  }
+  const jsonLdBreadcrumb = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: siteUrl },
+      { '@type': 'ListItem', position: 2, name: cat.name, item: `${siteUrl}/${category}` },
+    ],
   }
 
   return (
     <div>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPage) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
 
       {/* Category header */}
       <section className="max-w-7xl mx-auto px-6 pt-10 pb-8 border-b border-teh-rule dark:border-teh-d-rule">

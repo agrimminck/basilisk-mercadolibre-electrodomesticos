@@ -4,7 +4,7 @@ const FOOTER_COLS = [
   {
     title: 'Categorías',
     links: [
-      { href: '/electrodomesticos-y-aires-acondicionado', label: 'Electrodomésticos' },
+      { href: '/electrodomesticos-y-aire-acondicionado', label: 'Electrodomésticos' },
       { href: '/television-audio-y-video', label: 'Televisores' },
       { href: '/computacion', label: 'Computación' },
       { href: '/celulares-y-telefonia', label: 'Celulares' },
