@@ -19,13 +19,13 @@ export function SearchBar({ defaultValue = '' }: SearchBarProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="flex w-full max-w-xl">
+    <form onSubmit={handleSubmit} className="flex w-full max-w-xl min-w-0">
       <input
         type="search"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Buscar productos..."
-        className="flex-1 bg-teh-bgalt dark:bg-teh-d-bgalt border border-teh-rule dark:border-teh-d-rule rounded-l-lg px-4 py-2 text-sm text-teh-ink dark:text-teh-d-ink placeholder:text-teh-ink-muted dark:placeholder:text-teh-d-ink-muted focus:outline-none focus:border-teh-accent dark:focus:border-teh-d-accent transition-colors"
+        className="flex-1 min-w-0 bg-teh-bgalt dark:bg-teh-d-bgalt border border-teh-rule dark:border-teh-d-rule rounded-l-lg px-3 py-2 text-sm text-teh-ink dark:text-teh-d-ink placeholder:text-teh-ink-muted dark:placeholder:text-teh-d-ink-muted focus:outline-none focus:border-teh-accent dark:focus:border-teh-d-accent transition-colors"
       />
       <button
         type="submit"
