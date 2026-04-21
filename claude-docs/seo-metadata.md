@@ -45,24 +45,24 @@ Validar cambios con: https://search.google.com/test/rich-results
 
 ---
 
-## Estado indexing — snapshot 2026-03-28
+## Estado indexing — snapshot 2026-04-21
 
 | Item | Status |
 |---|---|
 | GSC registration (verification meta tag) | ✅ Verificado |
 | Sitemap submission GSC | ⚠️ Error "Sitemap could not be read" — Bing lo lee OK (11 URLs); posible cache lag GSC |
 | Homepage indexada GSC | ✅ |
-| Categorías indexadas | ⏳ Pendiente (3-5 días post-request + backlinks) |
-| Bing Webmaster Tools | ⚠️ Registrado + sitemap found (11 URLs); ownership verification pending (`BingSiteAuth.xml` en `public/`) |
+| Categorías indexadas | ⏳ Pendiente (manual indexing requests pendiente) |
+| Bing Webmaster Tools | ⚠️ Registrado + sitemap found (11 URLs); ownership verification pending (`BingSiteAuth.xml` falta en `public/`) |
 
 ---
 
 ## Acciones indexación pendientes
 
-- [ ] Resubmit sitemap a GSC (delete + re-add) si error persiste 24-48h.
-- [ ] Colocar `BingSiteAuth.xml` en `apps/web/public/` para completar verificación Bing.
-- [ ] Manual indexing requests en GSC: home + 5 categorías populares (computacion, celulares, electrodomesticos, televisores, herramientas). Límite ~10/día.
-- [ ] Monitorear GSC cada 3-5 días.
+- [ ] **Bing verification:** descargar `BingSiteAuth.xml` desde bing.com/webmasters → colocar en `apps/web/public/` → commit + push → clic "Verify" en Bing → submit sitemap.
+- [ ] **GSC manual indexing:** solicitar indexación para home + 5 categorías (electrodomesticos-y-aires-acondicionado, television-audio-y-video, computacion, celulares-y-telefonia, herramientas-y-construccion). Límite ~10/día → 1-2 días.
+- [ ] **JSON-LD post-rediseño:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
+- [ ] Monitorear GSC cada 3-5 días post-request.
 
 ---
 

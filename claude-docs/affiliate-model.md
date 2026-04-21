@@ -32,30 +32,29 @@ Modelo affiliate puro: sin API search propia, redirects a ML con tracking ID. Po
 
 ## Featured products — curación manual
 
-**Archivo:** `lib/data/featured-products.ts` — array TS estático.
+**Archivo:** `lib/data/featured-products.ts`
 
-Editar archivo = deploy Vercel (~1-2 min).
+Arquitectura actualizada 2026-04-21: array estático `featuredProductsCurated` solo define `mlcId` + `badge`. `page.tsx` hidrata título/precio/thumbnail/permalink en ISR desde ML API (`getProduct(mlcId)`).
 
 ```ts
-interface FeaturedProduct {
-  id: string;
-  title: string;
-  price: number;
-  currency: string;
-  thumbnail: string;    // URL https://
-  permalink: string;    // URL ML canónica
-  condition: 'new' | 'used';
-  badge?: string;       // "Sale" | "Hot" | custom
+type FeaturedProductCurated = {
+  id: string     // slug interno
+  mlcId: string  // ID catalog ML (ej: 'MLC16280111')
+  badge?: string // "Más vendido" | "Oferta" | "Destacado"
 }
 ```
 
-**Workflow agregar producto:**
+Productos actuales (2026-04-21): refrigerador Samsung, lavadora LG, smart TV Samsung 55" 4K, cocina Mademsa, microondas Samsung, hervidor Oster, aspiradora Electrolux, aire acondicionado Midea split.
 
-1. Buscar en ml.com, copiar `permalink`.
-2. Añadir objeto al array `featuredProducts`.
-3. Commit + push → Vercel auto-deploy.
+**Workflow cambiar producto:**
 
-**Render:** `components/products/FeaturedProductCard.tsx`. Usa `<img>` nativo (no `next/image`) para evitar whitelisting de dominios ML variados. Llama `buildProductUrl(permalink)`.
+1. Buscar en mercadolibre.cl → obtener URL tipo `…/p/MLC12345678`.
+2. Reemplazar `mlcId` en el array.
+3. Commit + push → Vercel redeploya (~2 min) + ML API refresca a los 5 min (ISR revalidate=3600).
+
+**Render:** `components/products/FeaturedProductCard.tsx`. Usa `<img>` nativo (no `next/image`) para evitar whitelisting de dominios ML. Llama `buildProductUrl(permalink)`.
+
+**Fallback:** si `getProduct(mlcId)` falla para un item, se omite de la grilla (no rompe la página).
 
 ---
 
@@ -72,3 +71,26 @@ Consumido por `app/[category]/page.tsx` para texto SEO-friendly. Agregar entry c
 `/api/search?q=X` NO ejecuta búsqueda — devuelve URL redirect a ML. Cliente navega ahí, ML muestra resultados en su UI con affiliate_id tracking.
 
 Razón: endpoint ML search bloqueado 403 (ver [`meli-integration.md`](meli-integration.md)). No hay alternativa técnica.
+
+---
+
+## Newsletter capture — retención sin fricción
+
+Implementado 2026-04-21. Sin registro completo (Ley 19.628 Chile + alto effort).
+
+**Stack:** Resend free tier (3000 emails/mes, 100/día).
+
+**Archivos:**
+- `app/api/newsletter/route.ts` — `POST` valida email → `resend.contacts.create()` → maneja 409 (ya suscrito) sin error
+- `components/ui/NewsletterBanner.tsx` — Client Component, form email + submit, estados idle/loading/success/error
+
+**Ubicación en página:** homepage entre featured products y editorial strip.
+
+**Env vars requeridas:**
+
+| Var | Scope | Fuente |
+|---|---|---|
+| `RESEND_API_KEY` | Server | resend.com → API Keys |
+| `RESEND_AUDIENCE_ID` | Server | resend.com → Audiences → crear audience → copiar ID |
+
+Activar: agregar ambas vars en Vercel + redeploy.
