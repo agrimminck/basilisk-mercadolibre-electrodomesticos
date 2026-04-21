@@ -14,6 +14,7 @@
   --color-teh-ink-soft: #5c4f42;
   --color-teh-ink-muted: #8b7e6f;
   --color-teh-rule: #d9d0c1;
+  --color-teh-rule-soft: #e5dccd;
   --color-teh-tag: #f0e5d4;
   --color-teh-accent: #b85c4f;
   --color-teh-accent2: #c8883a;
@@ -24,6 +25,8 @@
   --color-teh-d-ink-soft: #bdb09e;
   --color-teh-d-ink-muted: #7d7265;
   --color-teh-d-rule: #35302a;
+  --color-teh-d-rule-soft: #2b2621;
+  --color-teh-d-tag: #2e2822;
   --color-teh-d-accent: #d68d7d;
   --color-teh-d-accent2: #d9a65a;
 }
