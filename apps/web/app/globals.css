@@ -1,1 +1,29 @@
 @import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: var(--font-inter-tight), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-newsreader), Georgia, serif;
+  --font-brand: var(--font-nunito), ui-sans-serif, sans-serif;
+
+  --color-teh-bg: #f5f1ea;
+  --color-teh-bgalt: #ede7dc;
+  --color-teh-surface: #faf7f1;
+  --color-teh-ink: #1f1a15;
+  --color-teh-ink-soft: #5c4f42;
+  --color-teh-ink-muted: #8b7e6f;
+  --color-teh-rule: #d9d0c1;
+  --color-teh-tag: #f0e5d4;
+  --color-teh-accent: #b85c4f;
+  --color-teh-accent2: #c8883a;
+  --color-teh-d-bg: #1c1815;
+  --color-teh-d-bgalt: #15110e;
+  --color-teh-d-surface: #241f1a;
+  --color-teh-d-ink: #f0e8dc;
+  --color-teh-d-ink-soft: #bdb09e;
+  --color-teh-d-ink-muted: #7d7265;
+  --color-teh-d-rule: #35302a;
+  --color-teh-d-accent: #d68d7d;
+  --color-teh-d-accent2: #d9a65a;
+}

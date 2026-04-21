@@ -1,24 +1,35 @@
 import type { Metadata } from 'next'
-import { Geist } from 'next/font/google'
+import { Inter_Tight, Newsreader, Nunito } from 'next/font/google'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
 import './globals.css'
 
-const geist = Geist({
+const interTight = Inter_Tight({
   subsets: ['latin'],
-  variable: '--font-geist',
+  variable: '--font-inter-tight',
+})
+
+const newsreader = Newsreader({
+  subsets: ['latin'],
+  style: ['normal', 'italic'],
+  variable: '--font-newsreader',
+})
+
+const nunito = Nunito({
+  subsets: ['latin'],
+  variable: '--font-nunito',
 })
 
 export const metadata: Metadata = {
   title: {
-    default: 'Ofertas Chile — Notebooks, Celulares y más en MercadoLibre',
-    template: '%s | Ofertas Chile',
+    default: 'Top Electro Hogar — Electrodomésticos en MercadoLibre Chile',
+    template: '%s | Top Electro Hogar',
   },
   description:
-    'Encontrá las mejores ofertas en notebooks, celulares, electrodomésticos, televisores y más. Compará precios y comprá en MercadoLibre Chile con envío a todo el país.',
+    'Encontrá los mejores precios en refrigeradores, lavadoras, cocinas, televisores y más electrodomésticos en MercadoLibre Chile.',
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000'),
   openGraph: {
-    siteName: 'Ofertas Chile',
+    siteName: 'Top Electro Hogar',
     type: 'website',
     locale: 'es_CL',
   },
@@ -36,8 +47,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="es" className={geist.variable}>
-      <body className="bg-slate-900 text-slate-100 antialiased min-h-screen flex flex-col">
+    <html
+      lang="es"
+      className={`${interTight.variable} ${newsreader.variable} ${nunito.variable}`}
+    >
+      <body className="bg-teh-bg dark:bg-teh-d-bg text-teh-ink dark:text-teh-d-ink antialiased min-h-screen flex flex-col transition-colors duration-200">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

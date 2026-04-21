@@ -21,31 +21,31 @@ export function FeaturedProductCard({ product }: FeaturedProductCardProps) {
       href={href}
       target="_blank"
       rel="noopener noreferrer sponsored"
-      className="group flex flex-col bg-zinc-900 border border-slate-800 rounded-xl overflow-hidden hover:border-amber-400/40 transition-all duration-200 hover:shadow-lg hover:shadow-amber-400/5"
+      className="group flex flex-col bg-teh-surface dark:bg-teh-d-surface border border-teh-rule dark:border-teh-d-rule rounded-xl overflow-hidden hover:border-teh-accent/50 dark:hover:border-teh-d-accent/50 transition-all duration-200 hover:shadow-md"
     >
-      <div className="relative aspect-square bg-slate-800 overflow-hidden">
+      <div className="relative aspect-square bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.thumbnail}
           alt={product.title}
-          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-200"
+          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
         />
         {product.badge && (
-          <span className="absolute top-2 left-2 bg-amber-400 text-zinc-900 text-xs font-bold px-2 py-0.5 rounded-full">
+          <span className="absolute top-2 left-2 bg-teh-accent text-white text-xs font-bold px-2 py-0.5 rounded-full">
             {product.badge}
           </span>
         )}
       </div>
       <div className="flex flex-col gap-2 p-3 flex-1">
-        <p className="text-slate-200 text-sm leading-snug line-clamp-2 group-hover:text-white transition-colors">
+        <p className="text-teh-ink dark:text-teh-d-ink text-sm leading-snug line-clamp-2">
           {product.title}
         </p>
         <div className="mt-auto flex items-center justify-between gap-2">
-          <span className="text-amber-400 font-bold text-base">
+          <span className="text-teh-accent dark:text-teh-d-accent font-bold text-base">
             {formatPrice(product.price, product.currency)}
           </span>
-          <span className="text-xs text-slate-500 group-hover:text-amber-400/70 transition-colors">
-            Ver en ML →
+          <span className="text-xs text-teh-ink-muted dark:text-teh-d-ink-muted group-hover:text-teh-accent dark:group-hover:text-teh-d-accent transition-colors">
+            Ver oferta →
           </span>
         </div>
       </div>

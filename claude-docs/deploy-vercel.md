@@ -59,13 +59,26 @@ Todas server-only excepto `NEXT_PUBLIC_SITE_URL`.
 
 ## Dominio propio
 
-**Condición:** ejecutar solo después de confirmar tráfico orgánico (validar inversión).
+**Estado:** ✅ COMPLETADO 2026-04-21 — dominio `topelectrohogar.com` activo en Vercel (verde).
 
+**Registrador:** Register.Domains (ns01/ns02.dns.nexus como nameservers base).
+
+**DNS records agregados en Register.Domains:**
+```
+A      @    216.198.79.1          # apex → Vercel
+CNAME  www  cname.vercel-dns.com  # www → Vercel
+TXT    @    google-site-verification=erKszSvMxrCHktRlDxrUnvPgUlRjDerDXybDR0a-LDs  # GSC
+```
+
+**`NEXT_PUBLIC_SITE_URL`** actualizado a `https://topelectrohogar.com` → redeploy hecho.
+
+**GSC:** sitemap `https://topelectrohogar.com/sitemap.xml` enviado 2026-04-21, status "Couldn't fetch" inicial (normal post-propagación — Google reintenta solo).
+
+Pasos originales:
 1. Vercel Settings → Domains → Add.
-2. Configurar DNS según instrucciones Vercel (A o CNAME).
-3. Esperar propagación.
-4. Actualizar `NEXT_PUBLIC_SITE_URL` → redeploy.
-5. Re-submit sitemap a GSC con URL nueva (ver [`seo-metadata.md`](seo-metadata.md)).
+2. Agregar A record apex + CNAME www en registrador (no cambiar nameservers).
+3. Actualizar `NEXT_PUBLIC_SITE_URL` → redeploy.
+4. Re-submit sitemap a GSC con URL nueva (ver [`seo-metadata.md`](seo-metadata.md)).
 
 ---
 

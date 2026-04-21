@@ -74,16 +74,15 @@ export function FilterPanel({ basePath, params, filters }: Props) {
   const currentCondition = filters.condition ?? ''
 
   return (
-    <div className="flex flex-wrap gap-6 items-end bg-zinc-900 border border-slate-800 rounded-xl px-5 py-4">
-      {/* Sort */}
+    <div className="flex flex-wrap gap-6 items-end bg-teh-surface dark:bg-teh-d-surface border border-teh-rule dark:border-teh-d-rule rounded-xl px-5 py-4">
       <div className="flex flex-col gap-1.5">
-        <label className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <label className="text-xs font-semibold text-teh-ink-muted dark:text-teh-d-ink-muted uppercase tracking-wider">
           Ordenar por
         </label>
         <select
           value={currentSort}
           onChange={(e) => handleSortChange(e.target.value)}
-          className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-200 focus:outline-none focus:border-amber-400 transition-colors cursor-pointer"
+          className="bg-teh-bgalt dark:bg-teh-d-bgalt border border-teh-rule dark:border-teh-d-rule rounded-lg px-3 py-1.5 text-sm text-teh-ink dark:text-teh-d-ink focus:outline-none focus:border-teh-accent dark:focus:border-teh-d-accent transition-colors cursor-pointer"
         >
           {SORT_OPTIONS.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -93,9 +92,8 @@ export function FilterPanel({ basePath, params, filters }: Props) {
         </select>
       </div>
 
-      {/* Condition */}
       <div className="flex flex-col gap-1.5">
-        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <span className="text-xs font-semibold text-teh-ink-muted dark:text-teh-d-ink-muted uppercase tracking-wider">
           Condición
         </span>
         <div className="flex gap-1.5">
@@ -106,8 +104,8 @@ export function FilterPanel({ basePath, params, filters }: Props) {
               onClick={() => handleConditionChange(opt.value)}
               className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors ${
                 currentCondition === opt.value
-                  ? 'bg-amber-400 text-slate-900'
-                  : 'bg-slate-800 text-slate-300 border border-slate-700 hover:border-amber-400/50'
+                  ? 'bg-teh-accent dark:bg-teh-d-accent text-white'
+                  : 'bg-teh-bgalt dark:bg-teh-d-bgalt text-teh-ink-soft dark:text-teh-d-ink-soft border border-teh-rule dark:border-teh-d-rule hover:border-teh-accent/50 dark:hover:border-teh-d-accent/50'
               }`}
             >
               {opt.label}
@@ -116,9 +114,8 @@ export function FilterPanel({ basePath, params, filters }: Props) {
         </div>
       </div>
 
-      {/* Price range */}
       <form onSubmit={handlePriceSubmit} className="flex flex-col gap-1.5">
-        <span className="text-xs font-semibold text-slate-500 uppercase tracking-wider">
+        <span className="text-xs font-semibold text-teh-ink-muted dark:text-teh-d-ink-muted uppercase tracking-wider">
           Precio (CLP)
         </span>
         <div className="flex items-center gap-2">
@@ -128,20 +125,20 @@ export function FilterPanel({ basePath, params, filters }: Props) {
             placeholder="Mín"
             value={priceMin}
             onChange={(e) => setPriceMin(e.target.value)}
-            className="w-28 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 transition-colors"
+            className="w-28 bg-teh-bgalt dark:bg-teh-d-bgalt border border-teh-rule dark:border-teh-d-rule rounded-lg px-3 py-1.5 text-sm text-teh-ink dark:text-teh-d-ink placeholder:text-teh-ink-muted dark:placeholder:text-teh-d-ink-muted focus:outline-none focus:border-teh-accent dark:focus:border-teh-d-accent transition-colors"
           />
-          <span className="text-slate-600 text-sm">—</span>
+          <span className="text-teh-ink-muted dark:text-teh-d-ink-muted text-sm">—</span>
           <input
             type="number"
             min={0}
             placeholder="Máx"
             value={priceMax}
             onChange={(e) => setPriceMax(e.target.value)}
-            className="w-28 bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-sm text-slate-200 placeholder:text-slate-600 focus:outline-none focus:border-amber-400 transition-colors"
+            className="w-28 bg-teh-bgalt dark:bg-teh-d-bgalt border border-teh-rule dark:border-teh-d-rule rounded-lg px-3 py-1.5 text-sm text-teh-ink dark:text-teh-d-ink placeholder:text-teh-ink-muted dark:placeholder:text-teh-d-ink-muted focus:outline-none focus:border-teh-accent dark:focus:border-teh-d-accent transition-colors"
           />
           <button
             type="submit"
-            className="bg-slate-700 hover:bg-slate-600 text-slate-200 text-sm px-3 py-1.5 rounded-lg transition-colors"
+            className="bg-teh-bgalt dark:bg-teh-d-bgalt hover:bg-teh-tag dark:hover:bg-teh-d-bgalt text-teh-ink-soft dark:text-teh-d-ink-soft border border-teh-rule dark:border-teh-d-rule text-sm px-3 py-1.5 rounded-lg transition-colors"
           >
             Aplicar
           </button>

@@ -18,10 +18,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { category } = await params
   const cat = await getCategoryBySlug(category)
   return {
-    title: `Ofertas en ${cat.name} — MercadoLibre Chile`,
+    title: `${cat.name} — Top Electro Hogar`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile. Compará precios y comprá con envío a todo el país.`,
     openGraph: {
-      title: `Ofertas en ${cat.name} — MercadoLibre Chile`,
+      title: `${cat.name} — Top Electro Hogar`,
       description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile.`,
       url: `/${category}`,
     },
@@ -38,7 +38,7 @@ export default async function CategoryPage({ params }: Props) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: `Ofertas en ${cat.name} — MercadoLibre Chile`,
+    name: `${cat.name} — Top Electro Hogar`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile.`,
     url: `${siteUrl}/${category}`,
     breadcrumb: {
@@ -61,38 +61,70 @@ export default async function CategoryPage({ params }: Props) {
   }
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-14 space-y-10">
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="space-y-3">
-        <h1 className="text-3xl font-bold text-slate-100">{cat.name}</h1>
-        <p className="text-slate-400 leading-relaxed">{desc.intro}</p>
-      </div>
 
-      <div className="bg-zinc-900 border border-slate-800 rounded-2xl p-6 space-y-4">
-        <h2 className="text-base font-semibold text-slate-200">¿Qué vas a encontrar?</h2>
-        <ul className="space-y-2">
-          {desc.highlights.map((item) => (
-            <li key={item} className="flex items-start gap-2 text-slate-400 text-sm">
-              <span className="text-amber-400 mt-0.5">→</span>
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* Breadcrumb + header */}
+      <section className="border-b border-teh-rule dark:border-teh-d-rule bg-teh-bg dark:bg-teh-d-bg">
+        <div className="max-w-6xl mx-auto px-4 py-10">
+          <p className="text-xs text-teh-ink-muted dark:text-teh-d-ink-muted mb-3">
+            <a href="/" className="hover:text-teh-accent dark:hover:text-teh-d-accent transition-colors">Inicio</a>
+            <span className="mx-1.5">›</span>
+            {cat.name}
+          </p>
+          <h1 className="font-serif text-3xl sm:text-4xl font-normal text-teh-ink dark:text-teh-d-ink">
+            {cat.name}
+          </h1>
+          <p className="mt-3 text-teh-ink-soft dark:text-teh-d-ink-soft text-sm max-w-2xl leading-relaxed">
+            {desc.intro}
+          </p>
+        </div>
+      </section>
 
-      <div className="flex flex-col items-center gap-3 pt-2">
-        <a
-          href={meliUrl}
-          target="_blank"
-          rel="noopener noreferrer sponsored"
-          className="bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold py-3 px-10 rounded-xl text-lg transition-colors"
-        >
-          Ver ofertas en MercadoLibre →
-        </a>
-        <p className="text-xs text-slate-600">Serás redirigido a MercadoLibre Chile</p>
+      <div className="max-w-6xl mx-auto px-4 py-10">
+        <div className="flex flex-col lg:flex-row gap-8">
+
+          {/* Sidebar */}
+          <aside className="lg:w-56 shrink-0">
+            <div className="bg-teh-surface dark:bg-teh-d-surface border border-teh-rule dark:border-teh-d-rule rounded-xl p-5 space-y-4 sticky top-24">
+              <h2 className="text-xs font-semibold text-teh-ink-muted dark:text-teh-d-ink-muted uppercase tracking-wider">
+                Encontrarás
+              </h2>
+              <ul className="space-y-2.5">
+                {desc.highlights.map((item) => (
+                  <li key={item} className="flex items-start gap-2 text-teh-ink-soft dark:text-teh-d-ink-soft text-sm">
+                    <span className="text-teh-accent dark:text-teh-d-accent mt-0.5 shrink-0">→</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </aside>
+
+          {/* Main */}
+          <div className="flex-1 flex flex-col items-center gap-6">
+            <div className="w-full bg-teh-surface dark:bg-teh-d-surface border border-teh-rule dark:border-teh-d-rule rounded-xl p-6 text-center space-y-4">
+              <p className="text-teh-ink-soft dark:text-teh-d-ink-soft text-sm">
+                Explorá todos los productos disponibles en MercadoLibre Chile
+              </p>
+              <a
+                href={meliUrl}
+                target="_blank"
+                rel="noopener noreferrer sponsored"
+                className="inline-block bg-teh-accent dark:bg-teh-d-accent hover:opacity-90 text-white font-semibold py-3 px-10 rounded-xl text-base transition-opacity"
+              >
+                Ver ofertas en MercadoLibre →
+              </a>
+              <p className="text-xs text-teh-ink-muted dark:text-teh-d-ink-muted">
+                Serás redirigido a MercadoLibre Chile
+              </p>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   )

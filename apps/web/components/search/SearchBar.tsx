@@ -25,11 +25,11 @@ export function SearchBar({ defaultValue = '' }: SearchBarProps) {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Buscar productos..."
-        className="flex-1 bg-slate-800 border border-slate-700 rounded-l-lg px-4 py-2 text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
+        className="flex-1 bg-teh-bgalt dark:bg-teh-d-bgalt border border-teh-rule dark:border-teh-d-rule rounded-l-lg px-4 py-2 text-sm text-teh-ink dark:text-teh-d-ink placeholder:text-teh-ink-muted dark:placeholder:text-teh-d-ink-muted focus:outline-none focus:border-teh-accent dark:focus:border-teh-d-accent transition-colors"
       />
       <button
         type="submit"
-        className="bg-amber-400 hover:bg-amber-300 text-slate-900 font-semibold px-4 py-2 rounded-r-lg text-sm transition-colors"
+        className="bg-teh-accent hover:bg-teh-accent/90 dark:bg-teh-d-accent dark:hover:bg-teh-d-accent/90 text-white font-semibold px-4 py-2 rounded-r-lg text-sm transition-colors"
       >
         Buscar
       </button>
