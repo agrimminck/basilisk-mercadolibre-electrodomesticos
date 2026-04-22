@@ -70,3 +70,51 @@ Código usa la segunda forma. `types/index.ts` refleja shape reducido — NO inc
 | `GET /items/{id}` | `getProduct(id)` |
 
 Response shape item: `id, title, price, currency_id, thumbnail, permalink, condition, attributes[]`.
+
+---
+
+## 7. Aliases de slugs de categoría
+
+Problema: slugs curados hardcoded (`electrodomesticos-y-aire-acondicionado`, `television-audio-y-video`, etc.) no matchean los que genera `toSlug()` sobre los nombres reales de ML MLC → `getCategoryBySlug()` lanzaba → `notFound()` → 404 global.
+
+Fix: mapa `CATEGORY_SLUG_ALIASES` interno en `meli-client.ts` redirige slug viejo → slug canónico ML antes del lookup. URLs ya indexadas siguen resolviendo; el contenido se busca por slug canónico (claves en `category-descriptions.ts` + `category-products.ts` usan el real ML).
+
+Aliases actuales:
+
+| Slug público (viejo) | Slug ML real | ID |
+|---|---|---|
+| `electrodomesticos-y-aire-acondicionado` | `electrodomesticos` | MLC5726 |
+| `television-audio-y-video` | `electronica-audio-y-video` | MLC1000 |
+| `videojuegos-y-consolas` | `consolas-y-videojuegos` | MLC1144 |
+| `herramientas-y-construccion` | `herramientas` | MLC178483 |
+| `muebles-y-decoracion` | `hogar-y-muebles` | MLC1574 |
+
+Canonical metadata (`alternates.canonical`, openGraph URL, JSON-LD URLs) usa `cat.slug` (real) → Google resuelve duplicate content sin redirect 301.
+
+Pitfall: al agregar un alias, NO renombrar también la clave en `category-descriptions.ts` / `category-products.ts` al slug viejo — las claves van siempre al slug canónico. Lookups internos deben ir por `cat.slug`, no por el param URL.
+
+---
+
+## 8. Subcategorías virtuales (pages custom)
+
+Algunos slugs públicos (`refrigeradores`, `lavadoras`) no son categorías top-level ML — son subcategorías dentro de `MLC5726 Electrodomésticos`. `/sites/MLC` solo expone top-level, así que `getCategories()` no las devuelve.
+
+Fix: mapa `VIRTUAL_CATEGORY_IDS` (exportado) + override en `getCategoryBySlug()`:
+
+```ts
+if (virtualId = VIRTUAL_CATEGORY_IDS[slug]) {
+  const cat = await getCategory(virtualId)  // GET /categories/{id} sí acepta subcategorías
+  return { ...cat, slug, name: VIRTUAL_CATEGORY_NAMES[slug] ?? cat.name }
+}
+```
+
+Override de `slug` preserva la URL pública; override de `name` humaniza ("Refrigeradores" en lugar de "Refrigeración" que devuelve ML). `generateStaticParams()` extiende los paths SSG incluyendo las keys del mapa.
+
+Mapeos actuales:
+
+| Slug público | ID ML subcategoría | Nombre ML original | Nombre override |
+|---|---|---|---|
+| `refrigeradores` | MLC1576 | Refrigeración | Refrigeradores |
+| `lavadoras` | MLC1578 | Lavado | Lavadoras |
+
+Para agregar una subcategoría virtual: (1) encontrar ID vía `GET /categories/{parentId}` en `children_categories`; (2) agregar a ambos mapas + entry en `category-descriptions.ts` + opcional `category-products.ts`.

@@ -89,9 +89,33 @@ export async function getCategory(categoryId: string): Promise<Category> {
   return transformCategory(raw)
 }
 
+const CATEGORY_SLUG_ALIASES: Record<string, string> = {
+  'electrodomesticos-y-aire-acondicionado': 'electrodomesticos',
+  'television-audio-y-video': 'electronica-audio-y-video',
+  'videojuegos-y-consolas': 'consolas-y-videojuegos',
+  'herramientas-y-construccion': 'herramientas',
+  'muebles-y-decoracion': 'hogar-y-muebles',
+}
+
+export const VIRTUAL_CATEGORY_IDS: Record<string, string> = {
+  'refrigeradores': 'MLC1576',
+  'lavadoras': 'MLC1578',
+}
+
+const VIRTUAL_CATEGORY_NAMES: Record<string, string> = {
+  'refrigeradores': 'Refrigeradores',
+  'lavadoras': 'Lavadoras',
+}
+
 export async function getCategoryBySlug(slug: string): Promise<Category> {
+  const virtualId = VIRTUAL_CATEGORY_IDS[slug]
+  if (virtualId) {
+    const cat = await getCategory(virtualId)
+    return { ...cat, slug, name: VIRTUAL_CATEGORY_NAMES[slug] ?? cat.name }
+  }
+  const resolved = CATEGORY_SLUG_ALIASES[slug] ?? slug
   const categories = await getCategories()
-  const match = categories.find((c) => c.slug === slug)
+  const match = categories.find((c) => c.slug === resolved)
   if (!match) throw new Error(`Category not found for slug: ${slug}`)
   return getCategory(match.id)
 }

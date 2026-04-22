@@ -1,4 +1,4 @@
-import { getCategoryBySlug, getCategories, getProduct } from '../../lib/meli/meli-client'
+import { getCategoryBySlug, getCategories, getProduct, VIRTUAL_CATEGORY_IDS } from '../../lib/meli/meli-client'
 import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
 import { getCategoryProducts } from '../../lib/data/category-products'
@@ -13,7 +13,9 @@ export const revalidate = 3600
 
 export async function generateStaticParams() {
   const categories = await getCategories()
-  return categories.map((cat) => ({ category: cat.slug }))
+  const base = categories.map((cat) => ({ category: cat.slug }))
+  const virtual = Object.keys(VIRTUAL_CATEGORY_IDS).map((slug) => ({ category: slug }))
+  return [...base, ...virtual]
 }
 
 type Props = {
@@ -31,19 +33,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${cat.name} — Top Electro Hogar`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile. Compará precios y comprá con envío a todo el país.`,
+    alternates: { canonical: `/${cat.slug}` },
     openGraph: {
       title: `${cat.name} — Top Electro Hogar`,
       description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile.`,
-      url: `/${category}`,
+      url: `/${cat.slug}`,
     },
   }
 }
 
 const CATEGORY_ICONS: Record<string, number> = {
-  'electrodomesticos-y-aire-acondicionado': 0,
+  'electrodomesticos': 0,
   'lavadoras': 1,
-  'television-audio-y-video': 2,
-  'cocinas': 3,
+  'electronica-audio-y-video': 2,
+  'refrigeradores': 3,
   'computacion': 6,
   'celulares-y-telefonia': 7,
 }
@@ -85,8 +88,8 @@ export default async function CategoryPage({ params }: Props) {
   }
   const meliUrl = buildCategoryUrl(cat.slug)
   const desc = getCategoryDescription(cat.slug)
-  const iconSeed = CATEGORY_ICONS[category] ?? 0
-  const products = await hydrateCategoryProducts(category)
+  const iconSeed = CATEGORY_ICONS[cat.slug] ?? 0
+  const products = await hydrateCategoryProducts(cat.slug)
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
   const jsonLdPage = {
@@ -94,14 +97,14 @@ export default async function CategoryPage({ params }: Props) {
     '@type': 'CollectionPage',
     name: `${cat.name} — Top Electro Hogar`,
     description: `Encontrá las mejores ofertas en ${cat.name} en MercadoLibre Chile.`,
-    url: `${siteUrl}/${category}`,
+    url: `${siteUrl}/${cat.slug}`,
   }
   const jsonLdBreadcrumb = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Inicio', item: siteUrl },
-      { '@type': 'ListItem', position: 2, name: cat.name, item: `${siteUrl}/${category}` },
+      { '@type': 'ListItem', position: 2, name: cat.name, item: `${siteUrl}/${cat.slug}` },
     ],
   }
 

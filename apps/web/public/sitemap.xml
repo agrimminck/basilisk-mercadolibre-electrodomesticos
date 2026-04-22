@@ -6,27 +6,37 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/computacion</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://web-ten-beige-23.vercel.app/celulares-y-smartphones</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
     <loc>https://web-ten-beige-23.vercel.app/electrodomesticos</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/television-audio-y-video</loc>
+    <loc>https://web-ten-beige-23.vercel.app/refrigeradores</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/herramientas-y-construccion</loc>
+    <loc>https://web-ten-beige-23.vercel.app/lavadoras</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://web-ten-beige-23.vercel.app/electronica-audio-y-video</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://web-ten-beige-23.vercel.app/computacion</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://web-ten-beige-23.vercel.app/celulares-y-telefonia</loc>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://web-ten-beige-23.vercel.app/herramientas</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
@@ -36,22 +46,12 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/videojuegos-y-consolas</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://web-ten-beige-23.vercel.app/ropa-y-accesorios</loc>
+    <loc>https://web-ten-beige-23.vercel.app/consolas-y-videojuegos</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://web-ten-beige-23.vercel.app/hogar-y-muebles</loc>
-    <changefreq>daily</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://web-ten-beige-23.vercel.app/autos-motos-y-otros</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>

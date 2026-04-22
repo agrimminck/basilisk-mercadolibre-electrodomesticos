@@ -67,7 +67,7 @@ apps/web/
 | Archivo | Exports |
 |---|---|
 | `meli-auth.ts` | `getAccessToken()` — OAuth client_credentials, cache in-memory, refresh 60s antes de expiry |
-| `meli-client.ts` | `getProduct(id)`, `getCategories()`, `getCategory(id)`, `getCategoryBySlug(slug)`. Todos con `next: {revalidate:300}` (5min ISR) |
+| `meli-client.ts` | `getProduct(id)`, `getCategories()`, `getCategory(id)`, `getCategoryBySlug(slug)` (resuelve alias + subcategorías virtuales), `VIRTUAL_CATEGORY_IDS`. Todos con `next: {revalidate:300}` (5min ISR) |
 | `meli-transforms.ts` | `transformProduct`, `transformCategory`, `transformSiteCategory`, `toSlug` (kebab-case, normaliza acentos, max 80 chars) |
 | `lib/utils/affiliate.ts` | `buildProductUrl`, `buildCategoryUrl`, `buildSearchUrl` — append `?meli_affiliate_id=` respetando query existente |
 
@@ -91,6 +91,7 @@ Ver [`meli-integration.md`](meli-integration.md) para quirks API y [`affiliate-m
 
 - **Modelo affiliate-only** — endpoint ML `/search` bloqueado 403 global para apps estándar → pivot a redirects con tracking ID. Ver [`meli-integration.md`](meli-integration.md).
 - **Sin DB** — categorías y productos hardcoded en TS (`lib/data/`): `featured-products.ts` (home), `category-products.ts` (páginas de categoría), `category-descriptions.ts` (texto SEO). Curación manual, type-safe.
+- **Category slug aliases + virtual subcategorías** — slugs públicos no tienen que coincidir con los de ML API. `getCategoryBySlug()` resuelve: (1) virtual slugs (`refrigeradores`, `lavadoras`) → ML subcategoría directa por ID con override de `name`; (2) aliases (`electrodomesticos-y-aire-acondicionado` → `electrodomesticos`, etc.) → preserva URLs viejas indexadas. Claves en `category-descriptions.ts` + `category-products.ts` usan siempre el slug canónico (real ML o virtual). Canonical metadata (`alternates.canonical`) apunta a `cat.slug` → evita duplicate content. Detalle: [`meli-integration.md`](meli-integration.md) §7-8.
 - **Server Components + ISR** — `fetch` con `revalidate` + `generateStaticParams` para categorías. Sin `useEffect` para data.
 - **TypeScript strict, imports relativos** — sin path aliases.
 - **Tailwind v4** — `@import "tailwindcss"` sin `tailwind.config.js`. Deps **no** en devDependencies (ver [`deploy-vercel.md`](deploy-vercel.md)).

@@ -1,17 +1,21 @@
 import type { FeaturedProductCurated } from './featured-products'
 
 const categoryProducts: Record<string, FeaturedProductCurated[]> = {
-  'electrodomesticos-y-aire-acondicionado': [
-    { id: 'refri-mademsa-med165-negro',   mlcId: 'MLC19516037', badge: 'Más vendido' },
-    { id: 'refri-mademsa-med165-inox',    mlcId: 'MLC19516036' },
-    { id: 'lavadora-lg-frontal',          mlcId: 'MLC24826892' },
-    { id: 'cocina-mademsa-4-platos',      mlcId: 'MLC18952592' },
+  'electrodomesticos': [
+    { id: 'cocina-mademsa-4-platos',      mlcId: 'MLC18952592', badge: 'Más vendido' },
     { id: 'microondas-samsung-23l',       mlcId: 'MLC42069415' },
     { id: 'hervidor-oster-2-5l',          mlcId: 'MLC18907190' },
     { id: 'aspiradora-electrolux',        mlcId: 'MLC20537394' },
     { id: 'ac-midea-split',               mlcId: 'MLC19030680', badge: 'Oferta' },
   ],
-  'television-audio-y-video': [
+  'refrigeradores': [
+    { id: 'refri-mademsa-med165-negro',   mlcId: 'MLC19516037', badge: 'Más vendido' },
+    { id: 'refri-mademsa-med165-inox',    mlcId: 'MLC19516036' },
+  ],
+  'lavadoras': [
+    { id: 'lavadora-lg-frontal',          mlcId: 'MLC24826892', badge: 'Más vendido' },
+  ],
+  'electronica-audio-y-video': [
     { id: 'samsung-43-au7090-4k',         mlcId: 'MLC19488911', badge: 'Más vendido' },
     { id: 'samsung-55-4k',                mlcId: 'MLC20615512' },
     { id: 'tcl-55-qled-4k',               mlcId: 'MLC49863622' },
@@ -40,7 +44,7 @@ const categoryProducts: Record<string, FeaturedProductCurated[]> = {
     { id: 'xiaomi-redmi-note14-pro-12g',  mlcId: 'MLC53175787' },
     { id: 'moto-g34-5g-128gb',            mlcId: 'MLC34105052' },
   ],
-  'herramientas-y-construccion': [
+  'herramientas': [
     { id: 'bosch-gsb185-li-18v',          mlcId: 'MLC26643188', badge: 'Más vendido' },
     { id: 'bosch-gsb18v-90c',             mlcId: 'MLC28841480' },
     { id: 'bosch-gsb185-li-maletin',      mlcId: 'MLC27495962' },

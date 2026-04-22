@@ -4,17 +4,15 @@ Setup SEO técnico para acelerar indexación Google + Bing. **Estado snapshot 20
 
 ---
 
-## sitemap.ts
+## sitemap.xml
 
-**Archivo:** `apps/web/app/sitemap.ts` — dinámico.
+**Archivo:** `apps/web/public/sitemap.xml` — estático. (Doc previa decía dinámico `app/sitemap.ts`; realidad: estático en public. Al agregar/renombrar slug → actualizar manualmente.)
 
-Incluye:
-- Home `/`
-- Todas las categorías del top10 (`/[category]`)
+Incluye home `/` + 10 categorías canónicas (top-level ML reales + virtuales `refrigeradores` / `lavadoras`). **No** incluye slugs alias (`electrodomesticos-y-aire-acondicionado`, etc.) — canonical metadata ya los resuelve al slug real.
 
-Dominio base: `NEXT_PUBLIC_SITE_URL`. Cambio de dominio → actualizar env var + redeploy → sitemap regenerado con URL nueva.
+Dominio base hardcoded: `https://web-ten-beige-23.vercel.app` (literal). Cambio de dominio → find/replace en el XML + redeploy. Opcional: migrar a `app/sitemap.ts` dinámico si los slugs van a rotar con frecuencia.
 
-Crawled por GSC + Bing (2026-03-28). Si rediseño UI agrega/remueve rutas, `generateStaticParams` regenera → sitemap refleja auto.
+Crawled por GSC + Bing (2026-03-28).
 
 ---
 
@@ -60,7 +58,7 @@ Validar cambios con: https://search.google.com/test/rich-results
 ## Acciones indexación pendientes
 
 - [ ] **Bing verification:** descargar `BingSiteAuth.xml` desde bing.com/webmasters → colocar en `apps/web/public/` → commit + push → clic "Verify" en Bing → submit sitemap.
-- [ ] **GSC manual indexing:** solicitar indexación para home + 5 categorías (electrodomesticos-y-aire-acondicionado, television-audio-y-video, computacion, celulares-y-telefonia, herramientas-y-construccion). Límite ~10/día → 1-2 días.
+- [ ] **GSC manual indexing:** solicitar indexación para home + 5 categorías canónicas (electrodomesticos, electronica-audio-y-video, computacion, celulares-y-telefonia, herramientas) + 2 virtuales (refrigeradores, lavadoras). Límite ~10/día → 1-2 días. URLs alias viejas (electrodomesticos-y-aire-acondicionado, etc.) NO pedir indexación — `alternates.canonical` apunta al slug real, Google consolida.
 - [ ] **JSON-LD post-rediseño:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
 - [ ] Monitorear GSC cada 3-5 días post-request.
 

@@ -4,8 +4,8 @@ const FOOTER_COLS = [
   {
     title: 'Categorías',
     links: [
-      { href: '/electrodomesticos-y-aire-acondicionado', label: 'Electrodomésticos' },
-      { href: '/television-audio-y-video', label: 'Televisores' },
+      { href: '/electrodomesticos', label: 'Electrodomésticos' },
+      { href: '/electronica-audio-y-video', label: 'Televisores' },
       { href: '/computacion', label: 'Computación' },
       { href: '/celulares-y-telefonia', label: 'Celulares' },
     ],
@@ -15,7 +15,7 @@ const FOOTER_COLS = [
     links: [
       { href: '/refrigeradores', label: 'Elegir refrigerador' },
       { href: '/lavadoras', label: 'Elegir lavadora' },
-      { href: '/television-audio-y-video', label: 'Elegir TV' },
+      { href: '/electronica-audio-y-video', label: 'Elegir TV' },
       { href: '/', label: 'Ver todas' },
     ],
   },
