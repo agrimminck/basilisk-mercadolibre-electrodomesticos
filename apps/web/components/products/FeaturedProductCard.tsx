@@ -24,12 +24,12 @@ export function FeaturedProductCard({ product, index }: Props) {
       rel="noopener noreferrer sponsored"
       className="relative flex flex-col p-3.5 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
     >
-      <div className="relative aspect-square mb-3.5 bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
+      <div className="relative aspect-square mb-3.5 bg-white dark:bg-zinc-900 overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.thumbnail}
           alt={product.title}
-          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300 mix-blend-multiply dark:mix-blend-normal"
+          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
         />
         {product.badge && (
           <div className="absolute top-2.5 left-2.5 px-1.5 py-0.5 bg-teh-accent dark:bg-teh-d-accent text-white font-mono text-[10px] font-medium tracking-wider">

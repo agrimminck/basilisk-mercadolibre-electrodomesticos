@@ -113,14 +113,14 @@ export default async function HomePage() {
           </div>
 
           <div className="relative hidden lg:block" style={{ aspectRatio: '1 / 1.05' }}>
-            <div className="relative w-full h-full bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
+            <div className="relative w-full h-full bg-white dark:bg-zinc-900 overflow-hidden">
               {heroProduct
                 ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
                     <img
                       src={heroProduct.thumbnail}
                       alt={heroProduct.title}
-                      className="w-full h-full object-contain p-10 mix-blend-multiply dark:mix-blend-normal"
+                      className="w-full h-full object-contain p-10"
                     />
                   )
                 : <ProductPlaceholder seed={0} tone="#e8dfcc" />
@@ -167,14 +167,14 @@ export default async function HomePage() {
               className="relative block p-5 pt-7 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft min-h-[200px] hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
             >
               <div className="h-[90px] mb-4 flex items-center justify-center">
-                <div className="w-4/5 h-full">
+                <div className="w-4/5 h-full bg-white dark:bg-zinc-900">
                   {cat.heroThumbnail
                     ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
                           src={cat.heroThumbnail}
                           alt={cat.name}
-                          className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
+                          className="w-full h-full object-contain"
                         />
                       )
                     : (
