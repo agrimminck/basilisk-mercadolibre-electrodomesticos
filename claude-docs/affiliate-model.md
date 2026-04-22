@@ -30,24 +30,22 @@ Modelo affiliate puro: sin API search propia, redirects a ML con tracking ID. Po
 
 ---
 
-## Estado actual — arquitectura placeholder-only (2026-04-22)
+## Estado actual — highlights dinámicos funcionando (confirmado 2026-04-22)
 
-**Causa raíz confirmada:** listings individuales ML expiran cuando vendedor cierra anuncio. `GET /items/{id}` funciona con IDs válidos, pero no hay forma de obtenerlos sin `/search` (bloqueado). `GET /highlights` retorna catalog IDs → `buy_box_winner: null` en MLC → sin precio → inutilizable.
-
-**Arquitectura definitiva MLC:** placeholder-only + affiliate CTAs.
+**Arquitectura:** `getHighlights()` via `/highlights/{site}/category/{id}` + `/products/{id}/items?limit=1` devuelve productos reales con precio. Reemplaza curación estática expirada.
 
 | Página | Comportamiento |
 |---|---|
-| `app/[category]/page.tsx` | Llama `getHighlights(cat.id, 8)` → retorna `[]` → renderiza 8 placeholder cards + CTA "Ver todos en MercadoLibre →" |
-| `app/page.tsx` | Llama `getHighlights('MLC5726', 8)` → retorna `[]` → sección "Esta semana recomendamos" se oculta condicionalmente (`featuredProducts.length > 0`) |
+| `app/[category]/page.tsx` | `getHighlights(cat.id, 8)` → grid productos reales; si `[]` → 8 placeholder cards + CTA |
+| `app/page.tsx` | `getHighlights('MLC5726', 8)` → sección "Esta semana recomendamos"; si `[]` → sección oculta |
 
-**Archivos de curación vaciados** — arrays en `[]`/`{}` pero la estructura existe como override manual si en el futuro ML activa buy_box_winner:
+**Archivos de curación vaciados** (override manual si se necesita):
 - `lib/data/featured-products.ts` → `featuredProductsCurated: FeaturedProductCurated[] = []`
 - `lib/data/category-products.ts` → `categoryProducts: Record<string, FeaturedProductCurated[]> = {}`
 
-**`getHighlights()` en `meli-client.ts`:** implementado, future-proofed. Cuando ML active buy_box_winner en MLC, funciona sin cambios. Ver [`meli-integration.md`](meli-integration.md) §10.
+**`getHighlights()` en `meli-client.ts`:** funcional. Ver [`meli-integration.md`](meli-integration.md) §10 para implementación.
 
-**Debug endpoint:** `GET /api/highlights?slug={slug}&limit={n}` — retorna `{ categoryId, count, products }`. Útil para re-testear si ML activa soporte.
+**Debug endpoint:** `GET /api/highlights?slug={slug}&limit={n}` — retorna `{ categoryId, count, products }`.
 
 ---
 

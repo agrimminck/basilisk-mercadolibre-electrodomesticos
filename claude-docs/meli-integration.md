@@ -69,7 +69,8 @@ Código usa la segunda forma. `types/index.ts` refleja shape reducido — NO inc
 | `GET /categories/{id}` | `getCategory(id)`, `getCategoryBySlug()` | ✅ funciona |
 | `GET /items/{id}` | `getProduct(id)`, `/api/products` | ✅ funciona con IDs de listings activos; 404 con listings expirados |
 | `GET /highlights/{site}/category/{id}` | `getHighlights()` | ✅ funciona — devuelve catalog IDs, ver §10 |
-| `GET /products/{catalogId}` | dentro de `getHighlights()` | ✅ funciona — `buy_box_winner: null` en MLC, ver §10 |
+| `GET /products/{catalogId}` | dentro de `getHighlights()` — name + pictures | ✅ funciona |
+| `GET /products/{catalogId}/items?limit=1` | dentro de `getHighlights()` — price/condition | ✅ funciona en MLC, ver §10 |
 | `GET /sites/{id}/search` | — | ❌ 403 bloqueado global |
 
 Response shape item (`/items/{id}`): `id, title, price, currency_id, thumbnail, permalink, condition, attributes[]`.
@@ -132,24 +133,25 @@ Para agregar una subcategoría virtual: (1) encontrar ID vía `GET /categories/{
 
 ---
 
-## 10. `/highlights/{site}/category/{id}` — devuelve catalog IDs, no listing IDs (2026-04-22)
+## 10. `/highlights/{site}/category/{id}` — FUNCIONA en MLC (confirmado 2026-04-22)
 
 **Endpoint:** `GET /highlights/MLC/category/{categoryId}` con OAuth → 200, retorna `{ content: [{ id, position, type }] }`.
 
 **Quirk crítico:** los IDs retornados son **catalog product IDs** (tipo `"PRODUCT"` con IDs como `MLC30395039`), NO listing IDs de vendedores individuales. Estas IDs dan 404 en `GET /items/{id}`.
 
-**Fix intentado:** usar `GET /products/{catalogId}` (endpoint catálogo) → retorna data de catálogo incluyendo `buy_box_winner` (vendedor ganador con precio).
+**Fix intentado y descartado:** `buy_box_winner` en `GET /products/{catalogId}` → `null` en todos los productos MLC. No usable.
 
-**Limitación MLC:** `buy_box_winner` es `null` para TODOS los productos en MLC testeados (categorías MLC5726, MLC1576, MLC1578). En ML Chile el catálogo no tiene buy_box_winner asignado — funcionalidad incompleta vs MLA (Argentina).
-
-**Resultado:** `getHighlights()` implementado en `meli-client.ts` pero siempre retorna `[]` en MLC por este motivo. Código queda para cuando ML active buy_box_winner en Chile.
+**Fix actual (funciona):** `GET /products/{catalogId}/items?limit=1` → retorna listings activos del catálogo en MLC. Devuelve `{ results: [{ item_id, price, currency_id, condition }] }`. Si `results[0]` existe → hay listing activo.
 
 **Implementación actual** (`lib/meli/meli-client.ts`):
 1. `GET /highlights/{SITE}/category/{catId}` → catalog IDs
-2. `GET /products/{catalogId}` para cada ID → filtrar `buy_box_winner !== null`
-3. Construye `Product` desde `name`, `pictures[0].url`, `buy_box_winner.{price,currency_id,condition}`
-4. `permalink` = `https://www.mercadolibre.cl/p/{catalogId}`
+2. Para cada catalog ID, en paralelo:
+   - `GET /products/{id}` → `{ name, pictures[0].url }`
+   - `GET /products/{id}/items?limit=1` → `{ results[0].{ price, currency_id, condition } }`
+3. Si `results[0]` null → skip (throw 'no active items')
+4. Thumbnail: `pictures[0].url.replace('http://','https://').replace(/-[A-Z]\.jpg$/, '-F.jpg')` — fuerza HTTPS + tamaño F (alta calidad); catálogo devuelve `-O.jpg` (original), regex baja a `-F` para evitar imágenes enormes
+5. `permalink` = `https://www.mercadolibre.cl/p/{catalogId}`
+
+**Bug histórico:** versión anterior usaba `-I.jpg` → imágenes borrosas. Fixed en 2026-04-22.
 
 **Debug endpoint:** `GET /api/highlights?slug={slug}` o `?category={id}` — retorna `{ categoryId, count, products }`.
-
-**Implicación:** arquitectura definitiva MLC = placeholder-only + affiliate CTAs. Ver [`affiliate-model.md`](affiliate-model.md) §estado-actual.

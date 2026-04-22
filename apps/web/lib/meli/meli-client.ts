@@ -151,7 +151,9 @@ export async function getHighlights(categoryId: string, limit = 8): Promise<Prod
         ])
         const firstItem = itemsData.results?.[0]
         if (!firstItem) throw new Error('no active items')
-        const thumbnail = (cat.pictures[0]?.url ?? '').replace(/-[A-Z]\.jpg$/, '-I.jpg')
+        const thumbnail = (cat.pictures[0]?.url ?? '')
+          .replace('http://', 'https://')
+          .replace(/-[A-Z]\.jpg$/, '-F.jpg')
         return {
           id: cat.id,
           title: cat.name,
