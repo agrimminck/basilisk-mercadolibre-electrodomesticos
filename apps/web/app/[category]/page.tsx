@@ -1,9 +1,12 @@
-import { getCategoryBySlug, getCategories } from '../../lib/meli/meli-client'
+import { getCategoryBySlug, getCategories, getProduct } from '../../lib/meli/meli-client'
 import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
+import { getCategoryProducts } from '../../lib/data/category-products'
+import { FeaturedProductCard } from '../../components/products/FeaturedProductCard'
 import { ProductPlaceholder } from '../../components/ui/ProductPlaceholder'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import type { FeaturedProduct } from '../../lib/data/featured-products'
 import Link from 'next/link'
 
 export const revalidate = 3600
@@ -47,6 +50,31 @@ const CATEGORY_ICONS: Record<string, number> = {
 
 const FILTER_PILLS = ['Todos', 'En oferta', 'Nuevos', "Editor's picks"]
 
+async function hydrateCategoryProducts(slug: string): Promise<FeaturedProduct[]> {
+  const curated = getCategoryProducts(slug)
+  if (curated.length === 0) return []
+  const results = await Promise.allSettled(curated.map((c) => getProduct(c.mlcId)))
+  const products: FeaturedProduct[] = []
+  for (let i = 0; i < results.length; i++) {
+    const result = results[i]
+    if (result.status === 'rejected') continue
+    const p = result.value
+    const c = curated[i]
+    const product: FeaturedProduct = {
+      id: c.id,
+      title: p.title,
+      price: p.price,
+      currency: p.currency,
+      thumbnail: p.thumbnail,
+      permalink: p.permalink,
+      condition: p.condition,
+    }
+    if (c.badge) product.badge = c.badge
+    products.push(product)
+  }
+  return products
+}
+
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params
   let cat
@@ -58,6 +86,7 @@ export default async function CategoryPage({ params }: Props) {
   const meliUrl = buildCategoryUrl(cat.slug)
   const desc = getCategoryDescription(cat.slug)
   const iconSeed = CATEGORY_ICONS[category] ?? 0
+  const products = await hydrateCategoryProducts(category)
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
   const jsonLdPage = {
@@ -149,31 +178,36 @@ export default async function CategoryPage({ params }: Props) {
 
         {/* Content */}
         <div className="pt-8 pb-14 px-6 lg:pl-8 lg:pr-6">
-          {/* Placeholder grid with product illustrations */}
+          {/* Product grid */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <a
-                key={i}
-                href={meliUrl}
-                target="_blank"
-                rel="noopener noreferrer sponsored"
-                className="relative flex flex-col p-3 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
-              >
-                <div className="relative aspect-square mb-3 bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
-                  <ProductPlaceholder seed={iconSeed} tone="#ede4d4" />
-                  <div className="absolute top-2 right-2 font-mono text-[9px] text-teh-ink-muted dark:text-teh-d-ink-muted tracking-wider">
-                    {String(i + 1).padStart(3, '0')}
-                  </div>
-                </div>
-                <div className="text-[13px] font-medium leading-snug min-h-[36px] mb-2.5 text-teh-ink dark:text-teh-d-ink">
-                  {cat.name}
-                </div>
-                <div className="pt-2.5 border-t border-teh-rule-soft dark:border-teh-d-rule-soft flex justify-between items-center">
-                  <span className="font-mono text-[9px] tracking-wider text-teh-ink-soft dark:text-teh-d-ink-soft">MercadoLibre</span>
-                  <span className="text-teh-accent dark:text-teh-d-accent font-medium text-[11px]">Ver oferta →</span>
-                </div>
-              </a>
-            ))}
+            {products.length > 0
+              ? products.map((product, i) => (
+                  <FeaturedProductCard key={product.id} product={product} index={i + 1} />
+                ))
+              : Array.from({ length: 8 }).map((_, i) => (
+                  <a
+                    key={i}
+                    href={meliUrl}
+                    target="_blank"
+                    rel="noopener noreferrer sponsored"
+                    className="relative flex flex-col p-3 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
+                  >
+                    <div className="relative aspect-square mb-3 bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
+                      <ProductPlaceholder seed={iconSeed} tone="#ede4d4" />
+                      <div className="absolute top-2 right-2 font-mono text-[9px] text-teh-ink-muted dark:text-teh-d-ink-muted tracking-wider">
+                        {String(i + 1).padStart(3, '0')}
+                      </div>
+                    </div>
+                    <div className="text-[13px] font-medium leading-snug min-h-[36px] mb-2.5 text-teh-ink dark:text-teh-d-ink">
+                      {cat.name}
+                    </div>
+                    <div className="pt-2.5 border-t border-teh-rule-soft dark:border-teh-d-rule-soft flex justify-between items-center">
+                      <span className="font-mono text-[9px] tracking-wider text-teh-ink-soft dark:text-teh-d-ink-soft">MercadoLibre</span>
+                      <span className="text-teh-accent dark:text-teh-d-accent font-medium text-[11px]">Ver oferta →</span>
+                    </div>
+                  </a>
+                ))
+            }
           </div>
 
           {/* Main CTA */}
