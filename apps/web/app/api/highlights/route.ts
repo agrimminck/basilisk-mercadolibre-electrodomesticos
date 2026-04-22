@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getAccessToken } from '../../../lib/meli/meli-auth'
-import { getCategoryBySlug } from '../../../lib/meli/meli-client'
+import { getCategoryBySlug, getProduct } from '../../../lib/meli/meli-client'
 
 export async function GET(req: NextRequest) {
   const slug = req.nextUrl.searchParams.get('slug')
@@ -20,10 +20,26 @@ export async function GET(req: NextRequest) {
   }
 
   const token = await getAccessToken()
-  const res = await fetch(
+  const highlightsRes = await fetch(
     `https://api.mercadolibre.com/highlights/MLC/category/${resolvedCategoryId}?limit=${limit}`,
     { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }
   )
-  const data = await res.json()
-  return NextResponse.json({ resolvedCategoryId, resolvedSlugInfo, highlightsStatus: res.status, data })
+  const highlightsData = await highlightsRes.json()
+
+  // Test getProduct for first 3 highlight IDs to diagnose if /items/{id} fails
+  const testIds: string[] = (highlightsData?.content ?? []).slice(0, 3).map((c: { id: string }) => c.id)
+  const productTests = await Promise.allSettled(testIds.map((id) => getProduct(id)))
+  const productResults = productTests.map((r, i) =>
+    r.status === 'fulfilled'
+      ? { id: testIds[i], ok: true, title: r.value.title, price: r.value.price }
+      : { id: testIds[i], ok: false, error: String((r as PromiseRejectedResult).reason) }
+  )
+
+  return NextResponse.json({
+    resolvedCategoryId,
+    resolvedSlugInfo,
+    highlightsStatus: highlightsRes.status,
+    highlightsCount: testIds.length,
+    productTests: productResults,
+  })
 }
