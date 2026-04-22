@@ -26,20 +26,25 @@ export async function GET(req: NextRequest) {
   )
   const highlightsData = await highlightsRes.json()
 
-  // Test getProduct for first 3 highlight IDs to diagnose if /items/{id} fails
-  const testIds: string[] = (highlightsData?.content ?? []).slice(0, 3).map((c: { id: string }) => c.id)
-  const productTests = await Promise.allSettled(testIds.map((id) => getProduct(id)))
-  const productResults = productTests.map((r, i) =>
-    r.status === 'fulfilled'
-      ? { id: testIds[i], ok: true, title: r.value.title, price: r.value.price }
-      : { id: testIds[i], ok: false, error: String((r as PromiseRejectedResult).reason) }
-  )
+  // Test /products/{id} for first highlight ID to see catalog product shape
+  const firstId: string = (highlightsData?.content ?? [])[0]?.id ?? ''
+  let catalogProduct: unknown = null
+  let catalogStatus = 0
+  if (firstId) {
+    const catRes = await fetch(
+      `https://api.mercadolibre.com/products/${firstId}`,
+      { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }
+    )
+    catalogStatus = catRes.status
+    catalogProduct = await catRes.json()
+  }
 
   return NextResponse.json({
     resolvedCategoryId,
     resolvedSlugInfo,
     highlightsStatus: highlightsRes.status,
-    highlightsCount: testIds.length,
-    productTests: productResults,
+    firstHighlightId: firstId,
+    catalogProductStatus: catalogStatus,
+    catalogProduct,
   })
 }
