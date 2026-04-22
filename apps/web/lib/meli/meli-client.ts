@@ -124,46 +124,56 @@ interface MeliRawCatalogProduct {
   id: string
   name: string
   pictures: Array<{ url: string }>
-  buy_box_winner: {
-    item_id: string
-    price: number
-    currency_id: string
-    condition: 'new' | 'used'
-  } | null
+}
+
+interface MeliRawCatalogItem {
+  item_id: string
+  price: number
+  currency_id: string
+  condition: 'new' | 'used'
+}
+
+interface MeliRawCatalogItemsResponse {
+  results: MeliRawCatalogItem[]
 }
 
 export async function getHighlights(categoryId: string, limit = 8): Promise<Product[]> {
   try {
-    // Request more than needed to account for nulls after filtering buy_box_winner
     const fetchCount = Math.min(limit * 3, 20)
-    const url = buildUrl(`/highlights/${SITE_ID}/category/${categoryId}`, { limit: String(fetchCount) })
-    const raw = await apiFetch<{ content: Array<{ id: string }> }>(url)
+    const highlightsUrl = buildUrl(`/highlights/${SITE_ID}/category/${categoryId}`, { limit: String(fetchCount) })
+    const raw = await apiFetch<{ content: Array<{ id: string }> }>(highlightsUrl)
 
-    const catalogResults = await Promise.allSettled(
-      raw.content.map((item) => apiFetch<MeliRawCatalogProduct>(`${BASE_URL}/products/${item.id}`))
+    const results = await Promise.allSettled(
+      raw.content.map(async (entry) => {
+        const [cat, itemsData] = await Promise.all([
+          apiFetch<MeliRawCatalogProduct>(`${BASE_URL}/products/${entry.id}`),
+          apiFetch<MeliRawCatalogItemsResponse>(`${BASE_URL}/products/${entry.id}/items?limit=1`),
+        ])
+        const firstItem = itemsData.results?.[0]
+        if (!firstItem) throw new Error('no active items')
+        const thumbnail = (cat.pictures[0]?.url ?? '').replace(/-[A-Z]\.jpg$/, '-I.jpg')
+        return {
+          id: cat.id,
+          title: cat.name,
+          slug: cat.id,
+          price: firstItem.price,
+          currency: firstItem.currency_id,
+          thumbnail,
+          permalink: `https://www.mercadolibre.cl/p/${cat.id}`,
+          categoryId,
+          condition: firstItem.condition ?? 'new',
+          availableQuantity: 0,
+          soldQuantity: 0,
+          attributes: [],
+        } as Product
+      })
     )
 
     const products: Product[] = []
-    for (const result of catalogResults) {
+    for (const result of results) {
       if (products.length >= limit) break
       if (result.status === 'rejected') continue
-      const cat = result.value
-      if (!cat.buy_box_winner) continue
-      const thumbnail = (cat.pictures[0]?.url ?? '').replace(/-[A-Z]\.jpg$/, '-I.jpg')
-      products.push({
-        id: cat.id,
-        title: cat.name,
-        slug: cat.id,
-        price: cat.buy_box_winner.price,
-        currency: cat.buy_box_winner.currency_id,
-        thumbnail,
-        permalink: `https://www.mercadolibre.cl/p/${cat.id}`,
-        categoryId,
-        condition: cat.buy_box_winner.condition ?? 'new',
-        availableQuantity: 0,
-        soldQuantity: 0,
-        attributes: [],
-      })
+      products.push(result.value)
     }
     return products
   } catch {
