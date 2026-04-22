@@ -123,7 +123,10 @@ export async function getCategoryBySlug(slug: string): Promise<Category> {
 interface MeliRawCatalogProduct {
   id: string
   name: string
+  category_id: string
   pictures: Array<{ url: string }>
+  main_features: Array<{ text: string }>
+  attributes: Array<{ id: string; name: string; value_name: string | null }>
 }
 
 interface MeliRawCatalogItem {
@@ -163,6 +166,7 @@ export async function getHighlights(categoryId: string, limit = 8): Promise<Prod
           currency: firstItem.currency_id,
           thumbnail,
           pictures,
+          mainFeatures: [],
           permalink: `https://www.mercadolibre.cl/p/${cat.id}`,
           categoryId,
           condition: firstItem.condition ?? 'new',
@@ -203,11 +207,14 @@ export async function getCatalogProduct(catalogId: string): Promise<Product> {
     currency: firstItem.currency_id,
     thumbnail: pictures[0] ?? '',
     pictures,
+    mainFeatures: (cat.main_features ?? []).map(f => f.text).filter(Boolean),
     permalink: `https://www.mercadolibre.cl/p/${catalogId}`,
-    categoryId: '',
+    categoryId: cat.category_id ?? '',
     condition: firstItem.condition ?? 'new',
     availableQuantity: 0,
     soldQuantity: 0,
-    attributes: [],
+    attributes: (cat.attributes ?? [])
+      .filter(a => a.value_name !== null)
+      .map(a => ({ id: a.id, name: a.name, value: a.value_name as string })),
   }
 }
