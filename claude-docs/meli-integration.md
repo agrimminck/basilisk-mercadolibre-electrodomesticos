@@ -69,8 +69,8 @@ Código usa la segunda forma. `types/index.ts` refleja shape reducido — NO inc
 | `GET /categories/{id}` | `getCategory(id)`, `getCategoryBySlug()` | ✅ funciona |
 | `GET /items/{id}` | `getProduct(id)`, `/api/products` | ✅ funciona con IDs de listings activos; 404 con listings expirados |
 | `GET /highlights/{site}/category/{id}` | `getHighlights()` | ✅ funciona — devuelve catalog IDs, ver §10 |
-| `GET /products/{catalogId}` | dentro de `getHighlights()` — name + pictures | ✅ funciona |
-| `GET /products/{catalogId}/items?limit=1` | dentro de `getHighlights()` — price/condition | ✅ funciona en MLC, ver §10 |
+| `GET /products/{catalogId}` | `getHighlights()` + `getCatalogProduct()` — name, pictures, main_features, attributes, category_id | ✅ funciona; `category_id` presente en respuesta pero pendiente de confirmar en prod |
+| `GET /products/{catalogId}/items?limit=1` | `getHighlights()` + `getCatalogProduct()` — price/condition | ✅ funciona en MLC, ver §10 |
 | `GET /sites/{id}/search` | — | ❌ 403 bloqueado global |
 
 Response shape item (`/items/{id}`): `id, title, price, currency_id, thumbnail, permalink, condition, attributes[]`.
@@ -155,3 +155,32 @@ Para agregar una subcategoría virtual: (1) encontrar ID vía `GET /categories/{
 **Bug histórico:** versión anterior usaba `-I.jpg` → imágenes borrosas. Fixed en 2026-04-22.
 
 **Debug endpoint:** `GET /api/highlights?slug={slug}` o `?category={id}` — retorna `{ categoryId, count, products }`.
+
+---
+
+## 11. Productos relacionados en `/producto/[id]` — bug sin resolver (2026-04-22)
+
+**Síntoma:** sección "Productos relacionados" no aparece en la página de detalle.
+
+**Lógica esperada:** `getHighlights(categoryId, 5)` → filtrar producto actual → mostrar 4 cards.
+
+**Intentos y por qué fallaron:**
+
+| Intento | Por qué falló |
+|---|---|
+| Usar `product.categoryId` de `getCatalogProduct()` (campo `category_id` de `/products/{id}`) | No confirmado si `category_id` viene en respuesta prod — docs ML no lo garantizan para todos los productos. Si `undefined` → `categoryId = ''` → `related = []` |
+| Pasar `?cat={product.categoryId}` desde las cards via query param | Correcto en teoría — cards sí tienen `categoryId` del `getHighlights()` que las generó. **Pendiente confirmar** si el param llega correctamente a `searchParams` en prod (Vercel ISR puede servir versión cacheada sin query param) |
+
+**Estado actual del código:**
+```typescript
+const categoryId = cat ?? product.categoryId  // cat = searchParams.cat
+const related = categoryId
+  ? (await getHighlights(categoryId, 5)).filter(p => p.id !== id).slice(0, 4)
+  : []
+```
+
+**Para diagnosticar:** navegar a `/api/highlights?category=MLC5726` en prod. Si devuelve productos, el problema es que `categoryId` llega vacío. Si devuelve `[]`, el problema es el highlights endpoint para ese category.
+
+**Hipótesis activa:** Vercel puede estar sirviendo ISR cached del `/producto/[id]` generado sin `?cat=`, ignorando el query param. `export const revalidate = 300` + `searchParams` en Next.js 15 puede interactuar mal — la página con `searchParams` debería ser dinámica pero el ISR cache puede tener prioridad.
+
+**Siguiente paso:** remover `export const revalidate = 300` del archivo y testear si aparecen los relacionados.

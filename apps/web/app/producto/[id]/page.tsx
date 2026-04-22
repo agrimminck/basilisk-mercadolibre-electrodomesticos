@@ -4,8 +4,6 @@ import { ProductImageCarousel } from '../../../components/products/ProductImageC
 import { ProductCard } from '../../../components/products/ProductCard'
 import type { Metadata } from 'next'
 
-export const revalidate = 300
-
 type Props = {
   params: Promise<{ id: string }>
   searchParams: Promise<{ cat?: string }>
