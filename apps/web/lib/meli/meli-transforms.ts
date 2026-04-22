@@ -20,6 +20,7 @@ export function transformProduct(raw: MeliRawItem): Product {
     price: raw.price,
     currency: raw.currency_id,
     thumbnail: raw.thumbnail.replace('http://', 'https://'),
+    pictures: [raw.thumbnail.replace('http://', 'https://')],
     permalink: raw.permalink,
     categoryId: raw.category_id,
     condition: raw.condition,

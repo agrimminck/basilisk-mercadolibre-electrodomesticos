@@ -37,7 +37,19 @@ Modelo affiliate puro: sin API search propia, redirects a ML con tracking ID. Po
 | Página | Comportamiento |
 |---|---|
 | `app/[category]/page.tsx` | `getHighlights(cat.id, 8)` → grid productos reales; si `[]` → 8 placeholder cards + CTA |
-| `app/page.tsx` | `getHighlights('MLC5726', 8)` → sección "Esta semana recomendamos"; si `[]` → sección oculta |
+| `app/page.tsx` hero | `featuredProducts[0]` (primer resultado de `getHighlights('MLC5726',8)`) → imagen + título + precio real; si vacío → fallback hardcodeado |
+| `app/page.tsx` sección §02 | `getHighlights('MLC5726', 8)` → "Esta semana recomendamos"; si `[]` → sección oculta |
+| `app/page.tsx` categorías §01 | `FEATURED_CATEGORY_SLUGS` curados → `getHighlights(cat.id,1)` por cada una → imagen del primer producto activo; si vacío → `ProductPlaceholder` |
+
+**Slots de imagen:** `bg-white dark:bg-zinc-900` en todos los contenedores de imagen (`FeaturedProductCard`, hero, category cards). Imágenes ML están diseñadas para fondo blanco — no usar blend modes.
+
+**Categorías curadas en home** (`FEATURED_CATEGORY_SLUGS` en `app/page.tsx`):
+```ts
+['electrodomesticos', 'electronica-audio-y-video', 'computacion', 'celulares-y-telefonia', 'hogar-y-muebles']
+```
+Buscadas por slug en `getCategories()` resultado. Para cambiar qué categorías aparecen en home, editar este array.
+
+**Nav** (`components/layout/Header.tsx`): Catálogo / Televisores / Computación. Sin "Ofertas" (ML no tiene sección de ofertas accesible via API).
 
 **Archivos de curación vaciados** (override manual si se necesita):
 - `lib/data/featured-products.ts` → `featuredProductsCurated: FeaturedProductCurated[] = []`

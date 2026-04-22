@@ -5,6 +5,7 @@ export interface Product {
   price: number
   currency: string
   thumbnail: string
+  pictures: string[]
   permalink: string
   categoryId: string
   condition: 'new' | 'used'

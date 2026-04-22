@@ -1,4 +1,4 @@
-import { buildProductUrl } from '../../lib/utils/affiliate'
+import Link from 'next/link'
 import type { FeaturedProduct } from '../../lib/data/featured-products'
 
 function formatPrice(price: number, currency: string): string {
@@ -15,13 +15,9 @@ type Props = {
 }
 
 export function FeaturedProductCard({ product, index }: Props) {
-  const href = buildProductUrl(product.permalink)
-
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer sponsored"
+    <Link
+      href={`/producto/${product.id}`}
       className="relative flex flex-col p-3.5 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
     >
       <div className="relative aspect-square mb-3.5 bg-white dark:bg-zinc-900 overflow-hidden">
@@ -61,6 +57,6 @@ export function FeaturedProductCard({ product, index }: Props) {
           Ver oferta →
         </span>
       </div>
-    </a>
+    </Link>
   )
 }

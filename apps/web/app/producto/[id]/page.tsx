@@ -1,8 +1,9 @@
-import Image from 'next/image'
-import { getProduct } from '../../../lib/meli/meli-client'
+import { getCatalogProduct } from '../../../lib/meli/meli-client'
 import { buildProductUrl } from '../../../lib/utils/affiliate'
-import { Badge } from '../../../components/ui/Badge'
+import { ProductImageCarousel } from '../../../components/products/ProductImageCarousel'
 import type { Metadata } from 'next'
+
+export const revalidate = 300
 
 type Props = {
   params: Promise<{ id: string }>
@@ -10,7 +11,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params
-  const product = await getProduct(id)
+  const product = await getCatalogProduct(id)
   const price = new Intl.NumberFormat('es-CL', {
     style: 'currency',
     currency: product.currency,
@@ -39,60 +40,41 @@ function formatPrice(price: number, currency: string): string {
 
 export default async function ProductPage({ params }: Props) {
   const { id } = await params
-  const product = await getProduct(id)
+  const product = await getCatalogProduct(id)
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
-      <div className="grid md:grid-cols-2 gap-10">
-        {/* Imagen */}
-        <div className="relative aspect-square bg-slate-800 rounded-2xl overflow-hidden">
-          <Image
-            src={product.thumbnail}
-            alt={product.title}
-            fill
-            sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-contain p-6"
-            priority
-          />
-        </div>
+    <div className="max-w-5xl mx-auto px-6 py-12">
+      <div className="grid md:grid-cols-2 gap-10 lg:gap-16">
+        {/* Carousel */}
+        <ProductImageCarousel pictures={product.pictures} title={product.title} />
 
         {/* Info */}
-        <div className="flex flex-col gap-5">
-          <div className="flex items-start gap-3">
-            <h1 className="text-xl font-semibold text-slate-100 leading-snug flex-1">
+        <div className="flex flex-col gap-6">
+          <div>
+            <div className="font-mono text-[10px] tracking-[0.18em] uppercase text-teh-accent dark:text-teh-d-accent mb-2">
+              {product.condition === 'new' ? 'Nuevo' : 'Usado'} · MercadoLibre Chile
+            </div>
+            <h1 className="font-serif text-2xl lg:text-3xl font-normal leading-snug tracking-tight text-teh-ink dark:text-teh-d-ink">
               {product.title}
             </h1>
-            <Badge condition={product.condition} />
           </div>
 
-          <p className="text-3xl font-bold text-amber-400">
+          <div className="font-serif text-4xl font-medium tracking-tight text-teh-ink dark:text-teh-d-ink">
             {formatPrice(product.price, product.currency)}
-          </p>
+          </div>
 
           <a
             href={buildProductUrl(product.permalink)}
             target="_blank"
             rel="noopener noreferrer sponsored"
-            className="inline-block bg-amber-400 hover:bg-amber-300 text-slate-900 font-bold text-center py-3 px-6 rounded-xl transition-colors"
+            className="bg-teh-ink dark:bg-teh-d-ink text-teh-bg dark:text-teh-d-bg px-6 py-3.5 text-[13px] font-medium tracking-wide hover:opacity-90 transition-opacity text-center"
           >
-            Comprar en MercadoLibre
+            Comprar en MercadoLibre →
           </a>
 
-          {product.attributes.length > 0 && (
-            <div className="border-t border-slate-800 pt-5">
-              <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">
-                Características
-              </h2>
-              <dl className="space-y-2">
-                {product.attributes.slice(0, 10).map((attr) => (
-                  <div key={attr.id} className="flex gap-3 text-sm">
-                    <dt className="text-slate-500 shrink-0 w-36 truncate">{attr.name}</dt>
-                    <dd className="text-slate-300">{attr.value}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          )}
+          <div className="text-[12px] text-teh-ink-muted dark:text-teh-d-ink-muted font-mono tracking-wide">
+            Serás redirigido a MercadoLibre Chile para completar la compra.
+          </div>
         </div>
       </div>
     </div>

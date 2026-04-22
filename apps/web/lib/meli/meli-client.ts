@@ -151,9 +151,10 @@ export async function getHighlights(categoryId: string, limit = 8): Promise<Prod
         ])
         const firstItem = itemsData.results?.[0]
         if (!firstItem) throw new Error('no active items')
-        const thumbnail = (cat.pictures[0]?.url ?? '')
-          .replace('http://', 'https://')
-          .replace(/-[A-Z]\.jpg$/, '-F.jpg')
+        const pictures = cat.pictures
+          .map(p => (p.url ?? '').replace('http://', 'https://').replace(/-[A-Z]\.jpg$/, '-F.jpg'))
+          .filter(Boolean)
+        const thumbnail = pictures[0] ?? ''
         return {
           id: cat.id,
           title: cat.name,
@@ -161,6 +162,7 @@ export async function getHighlights(categoryId: string, limit = 8): Promise<Prod
           price: firstItem.price,
           currency: firstItem.currency_id,
           thumbnail,
+          pictures,
           permalink: `https://www.mercadolibre.cl/p/${cat.id}`,
           categoryId,
           condition: firstItem.condition ?? 'new',
@@ -180,5 +182,32 @@ export async function getHighlights(categoryId: string, limit = 8): Promise<Prod
     return products
   } catch {
     return []
+  }
+}
+
+export async function getCatalogProduct(catalogId: string): Promise<Product> {
+  const [cat, itemsData] = await Promise.all([
+    apiFetch<MeliRawCatalogProduct>(`${BASE_URL}/products/${catalogId}`),
+    apiFetch<MeliRawCatalogItemsResponse>(`${BASE_URL}/products/${catalogId}/items?limit=1`),
+  ])
+  const firstItem = itemsData.results?.[0]
+  if (!firstItem) throw new Error(`no active items for catalog product ${catalogId}`)
+  const pictures = cat.pictures
+    .map(p => (p.url ?? '').replace('http://', 'https://').replace(/-[A-Z]\.jpg$/, '-F.jpg'))
+    .filter(Boolean)
+  return {
+    id: catalogId,
+    title: cat.name,
+    slug: catalogId,
+    price: firstItem.price,
+    currency: firstItem.currency_id,
+    thumbnail: pictures[0] ?? '',
+    pictures,
+    permalink: `https://www.mercadolibre.cl/p/${catalogId}`,
+    categoryId: '',
+    condition: firstItem.condition ?? 'new',
+    availableQuantity: 0,
+    soldQuantity: 0,
+    attributes: [],
   }
 }

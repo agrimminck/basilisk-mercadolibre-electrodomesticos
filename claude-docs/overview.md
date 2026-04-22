@@ -32,7 +32,9 @@ apps/web/
 │   └── api/
 │       ├── products/route.ts      — GET ?id=
 │       ├── search/route.ts        — GET ?q= → devuelve URL redirect
-│       └── categories/route.ts    — GET categorías root
+│       ├── categories/route.ts    — GET categorías root
+│       ├── highlights/route.ts    — GET ?slug= o ?category= → debug highlights ML
+│       └── newsletter/route.ts    — POST email → Resend contacts
 ├── components/
 │   ├── layout/ (Header, Footer)
 │   ├── products/ (FeaturedProductCard, ProductCard, ProductGrid, ProductSkeleton)
@@ -52,7 +54,7 @@ apps/web/
 
 | Ruta | Tipo | Propósito |
 |---|---|---|
-| `/` | ISR 1h | Home: hero + featured + 10 categorías |
+| `/` | ISR 1h | Home: hero dinámico (primer highlight) + featured + 5 categorías curadas con imagen de highlight |
 | `/[category]` | SSG + generateStaticParams | Landing categoría + CTA ML afiliado |
 | `/buscar?q=` | Redirect | 307 a ML con affiliate_id |
 | `/producto/[id]` | Dynamic | Detalle + CTA compra |
@@ -67,7 +69,7 @@ apps/web/
 | Archivo | Exports |
 |---|---|
 | `meli-auth.ts` | `getAccessToken()` — OAuth client_credentials, cache in-memory, refresh 60s antes de expiry |
-| `meli-client.ts` | `getProduct(id)`, `getCategories()`, `getCategory(id)`, `getCategoryBySlug(slug)` (resuelve alias + subcategorías virtuales), `VIRTUAL_CATEGORY_IDS`. Todos con `next: {revalidate:300}` (5min ISR) |
+| `meli-client.ts` | `getProduct(id)`, `getCategories()`, `getCategory(id)`, `getCategoryBySlug(slug)` (resuelve alias + subcategorías virtuales), `VIRTUAL_CATEGORY_IDS`, `getHighlights(categoryId, limit)` — catalog IDs → items activos con precio. Todos con `next: {revalidate:300}` (5min ISR) |
 | `meli-transforms.ts` | `transformProduct`, `transformCategory`, `transformSiteCategory`, `toSlug` (kebab-case, normaliza acentos, max 80 chars) |
 | `lib/utils/affiliate.ts` | `buildProductUrl`, `buildCategoryUrl`, `buildSearchUrl` — append `?meli_affiliate_id=` respetando query existente |
 
@@ -90,7 +92,7 @@ Ver [`meli-integration.md`](meli-integration.md) para quirks API y [`affiliate-m
 ## Decisiones durables
 
 - **Modelo affiliate-only** — endpoint ML `/search` bloqueado 403 global para apps estándar → pivot a redirects con tracking ID. Ver [`meli-integration.md`](meli-integration.md).
-- **Sin DB** — categorías y productos hardcoded en TS (`lib/data/`): `featured-products.ts` (home), `category-products.ts` (páginas de categoría), `category-descriptions.ts` (texto SEO). Curación manual, type-safe.
+- **Sin DB** — productos vienen de `getHighlights()` (API ML dinámica). `lib/data/featured-products.ts` y `category-products.ts` son overrides de curación manual vacíos (arrays `[]`/`{}`). `category-descriptions.ts` sigue siendo curación manual (texto SEO intro + bullets sidebar).
 - **Category slug aliases + virtual subcategorías** — slugs públicos no tienen que coincidir con los de ML API. `getCategoryBySlug()` resuelve: (1) virtual slugs (`refrigeradores`, `lavadoras`) → ML subcategoría directa por ID con override de `name`; (2) aliases (`electrodomesticos-y-aire-acondicionado` → `electrodomesticos`, etc.) → preserva URLs viejas indexadas. Claves en `category-descriptions.ts` + `category-products.ts` usan siempre el slug canónico (real ML o virtual). Canonical metadata (`alternates.canonical`) apunta a `cat.slug` → evita duplicate content. Detalle: [`meli-integration.md`](meli-integration.md) §7-8.
 - **Server Components + ISR** — `fetch` con `revalidate` + `generateStaticParams` para categorías. Sin `useEffect` para data.
 - **TypeScript strict, imports relativos** — sin path aliases.
