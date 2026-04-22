@@ -1,4 +1,4 @@
-import { getCategories, getHighlights } from '../lib/meli/meli-client'
+import { getCategories, getCategory, getHighlights } from '../lib/meli/meli-client'
 import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
 import { ProductPlaceholder } from '../components/ui/ProductPlaceholder'
 import { NewsletterBanner } from '../components/ui/NewsletterBanner'
@@ -24,11 +24,19 @@ const CATEGORY_ICONS: Record<string, number> = {
 
 const SECTION_TONES = ['#ede4d4', '#e6dccd', '#e4dcc8', '#ecdfcc', '#efe5d3']
 
+function formatHeroPrice(price: number, currency: string): string {
+  return new Intl.NumberFormat('es-CL', { style: 'currency', currency, maximumFractionDigits: 0 }).format(price)
+}
+
 export default async function HomePage() {
   const [categories, featuredProducts] = await Promise.all([
     getCategories(),
     getHighlights('MLC5726', 8),
   ])
+
+  const topCategories = categories.slice(0, 5)
+  const topCategoriesDetailed = await Promise.all(topCategories.map((cat) => getCategory(cat.id)))
+  const heroProduct = featuredProducts[0] ?? null
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
   const jsonLd = {
@@ -89,11 +97,28 @@ export default async function HomePage() {
 
           <div className="relative hidden lg:block" style={{ aspectRatio: '1 / 1.05' }}>
             <div className="relative w-full h-full bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
-              <ProductPlaceholder seed={0} tone="#e8dfcc" />
+              {heroProduct
+                ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      src={heroProduct.thumbnail}
+                      alt={heroProduct.title}
+                      className="w-full h-full object-contain p-10"
+                    />
+                  )
+                : <ProductPlaceholder seed={0} tone="#e8dfcc" />
+              }
               <div className="absolute bottom-6 left-6 font-mono text-[11px] text-teh-ink-soft dark:text-teh-d-ink-soft tracking-wide">
-                <div className="opacity-60 mb-0.5">N°037</div>
-                <div>Mademsa Frost 317L Silver</div>
-                <div className="text-teh-accent dark:text-teh-d-accent mt-1">→ desde $389.990</div>
+                <div className="opacity-60 mb-0.5">N°001</div>
+                <div className="max-w-[200px] leading-tight">
+                  {heroProduct?.title ?? 'Mademsa Frost 317L Silver'}
+                </div>
+                <div className="text-teh-accent dark:text-teh-d-accent mt-1">
+                  {heroProduct
+                    ? `→ desde ${formatHeroPrice(heroProduct.price, heroProduct.currency)}`
+                    : '→ desde $389.990'
+                  }
+                </div>
               </div>
               <div className="absolute top-6 right-6 font-mono text-[10px] tracking-wider text-teh-ink-muted dark:text-teh-d-ink-muted">
                 [ 01 / 04 ]
@@ -118,7 +143,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {categories.slice(0, 5).map((cat, i) => (
+          {topCategoriesDetailed.map((cat, i) => (
             <Link
               key={cat.id}
               href={`/${cat.slug}`}
@@ -126,10 +151,22 @@ export default async function HomePage() {
             >
               <div className="h-[90px] mb-4 flex items-center justify-center">
                 <div className="w-4/5 h-full">
-                  <ProductPlaceholder
-                    seed={CATEGORY_ICONS[cat.slug] ?? i}
-                    tone={SECTION_TONES[i % SECTION_TONES.length]}
-                  />
+                  {cat.thumbnail
+                    ? (
+                        /* eslint-disable-next-line @next/next/no-img-element */
+                        <img
+                          src={cat.thumbnail.replace('http://', 'https://')}
+                          alt={cat.name}
+                          className="w-full h-full object-contain"
+                        />
+                      )
+                    : (
+                        <ProductPlaceholder
+                          seed={CATEGORY_ICONS[cat.slug] ?? i}
+                          tone={SECTION_TONES[i % SECTION_TONES.length]}
+                        />
+                      )
+                  }
                 </div>
               </div>
               <div className="text-[14px] font-medium mb-1 text-teh-ink dark:text-teh-d-ink group-hover:text-teh-accent dark:group-hover:text-teh-d-accent transition-colors">

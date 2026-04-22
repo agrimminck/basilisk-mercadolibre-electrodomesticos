@@ -4,7 +4,6 @@ import { ThemeToggle } from '../ui/ThemeToggle'
 
 const NAV_LINKS = [
   { href: '/', label: 'Catálogo' },
-  { href: '/electrodomesticos', label: 'Ofertas' },
   { href: '/electronica-audio-y-video', label: 'Televisores' },
   { href: '/computacion', label: 'Computación' },
 ]

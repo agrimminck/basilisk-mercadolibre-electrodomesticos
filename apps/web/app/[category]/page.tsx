@@ -124,7 +124,7 @@ export default async function CategoryPage({ params }: Props) {
           ))}
         </div>
         <div className="text-xs text-teh-ink-muted dark:text-teh-d-ink-muted font-mono text-[11px] hidden sm:block">
-          precios desde MercadoLibre Chile
+          precios actualizados desde MercadoLibre · cada hora
         </div>
       </section>
 
