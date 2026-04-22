@@ -18,7 +18,7 @@ type ProductCardProps = {
 export function ProductCard({ product, index }: ProductCardProps) {
   return (
     <Link
-      href={`/producto/${product.id}`}
+      href={`/producto/${product.id}${product.categoryId ? `?cat=${product.categoryId}` : ''}`}
       className="relative flex flex-col p-3 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
     >
       <div className="relative aspect-square mb-3 bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">

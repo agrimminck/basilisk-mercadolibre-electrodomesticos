@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import type { FeaturedProduct } from '../../lib/data/featured-products'
+import type { Product } from '../../types/index'
 
 function formatPrice(price: number, currency: string): string {
   return new Intl.NumberFormat('es-CL', {
@@ -10,14 +10,14 @@ function formatPrice(price: number, currency: string): string {
 }
 
 type Props = {
-  product: FeaturedProduct
+  product: Product
   index?: number
 }
 
 export function FeaturedProductCard({ product, index }: Props) {
   return (
     <Link
-      href={`/producto/${product.id}`}
+      href={`/producto/${product.id}${product.categoryId ? `?cat=${product.categoryId}` : ''}`}
       className="relative flex flex-col p-3.5 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
     >
       <div className="relative aspect-square mb-3.5 bg-white dark:bg-zinc-900 overflow-hidden">
@@ -27,11 +27,6 @@ export function FeaturedProductCard({ product, index }: Props) {
           alt={product.title}
           className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
         />
-        {product.badge && (
-          <div className="absolute top-2.5 left-2.5 px-1.5 py-0.5 bg-teh-accent dark:bg-teh-d-accent text-white font-mono text-[10px] font-medium tracking-wider">
-            {product.badge}
-          </div>
-        )}
         {index !== undefined && (
           <div className="absolute top-2.5 right-2.5 font-mono text-[9px] text-teh-ink-muted dark:text-teh-d-ink-muted tracking-wider">
             {String(index).padStart(2, '0')}

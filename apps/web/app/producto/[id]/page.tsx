@@ -8,6 +8,7 @@ export const revalidate = 300
 
 type Props = {
   params: Promise<{ id: string }>
+  searchParams: Promise<{ cat?: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -39,12 +40,13 @@ function formatPrice(price: number, currency: string): string {
   }).format(price)
 }
 
-export default async function ProductPage({ params }: Props) {
-  const { id } = await params
+export default async function ProductPage({ params, searchParams }: Props) {
+  const [{ id }, { cat }] = await Promise.all([params, searchParams])
   const product = await getCatalogProduct(id)
 
-  const related = product.categoryId
-    ? (await getHighlights(product.categoryId, 5)).filter(p => p.id !== id).slice(0, 4)
+  const categoryId = cat ?? product.categoryId
+  const related = categoryId
+    ? (await getHighlights(categoryId, 5)).filter(p => p.id !== id).slice(0, 4)
     : []
 
   return (
