@@ -29,7 +29,7 @@ export function FeaturedProductCard({ product, index }: Props) {
         <img
           src={product.thumbnail}
           alt={product.title}
-          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-contain p-3 group-hover:scale-105 transition-transform duration-300 mix-blend-multiply dark:mix-blend-normal"
         />
         {product.badge && (
           <div className="absolute top-2.5 left-2.5 px-1.5 py-0.5 bg-teh-accent dark:bg-teh-d-accent text-white font-mono text-[10px] font-medium tracking-wider">

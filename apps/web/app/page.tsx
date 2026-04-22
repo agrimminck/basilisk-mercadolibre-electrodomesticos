@@ -103,7 +103,7 @@ export default async function HomePage() {
                     <img
                       src={heroProduct.thumbnail}
                       alt={heroProduct.title}
-                      className="w-full h-full object-contain p-10"
+                      className="w-full h-full object-contain p-10 mix-blend-multiply dark:mix-blend-normal"
                     />
                   )
                 : <ProductPlaceholder seed={0} tone="#e8dfcc" />
@@ -157,7 +157,7 @@ export default async function HomePage() {
                         <img
                           src={cat.thumbnail.replace('http://', 'https://')}
                           alt={cat.name}
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
                         />
                       )
                     : (
