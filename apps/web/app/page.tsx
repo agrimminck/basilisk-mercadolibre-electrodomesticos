@@ -143,25 +143,27 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured products */}
-      <section className="max-w-7xl mx-auto px-6 py-16 border-b border-teh-rule dark:border-teh-d-rule">
-        <div className="flex justify-between items-baseline mb-10">
-          <div>
-            <div className="font-mono text-[11px] text-teh-ink-muted dark:text-teh-d-ink-muted tracking-wider mb-1.5">§ 02</div>
-            <h2 className="font-serif text-4xl font-normal tracking-tight text-teh-ink dark:text-teh-d-ink">
-              Esta semana <em className="text-teh-accent dark:text-teh-d-accent">recomendamos</em>
-            </h2>
-            <div className="text-[13px] text-teh-ink-soft dark:text-teh-d-ink-soft mt-2 max-w-[560px]">
-              Productos seleccionados con los mejores precios en MercadoLibre Chile.
+      {/* Featured products — only rendered when ML API returns live data */}
+      {featuredProducts.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 py-16 border-b border-teh-rule dark:border-teh-d-rule">
+          <div className="flex justify-between items-baseline mb-10">
+            <div>
+              <div className="font-mono text-[11px] text-teh-ink-muted dark:text-teh-d-ink-muted tracking-wider mb-1.5">§ 02</div>
+              <h2 className="font-serif text-4xl font-normal tracking-tight text-teh-ink dark:text-teh-d-ink">
+                Esta semana <em className="text-teh-accent dark:text-teh-d-accent">recomendamos</em>
+              </h2>
+              <div className="text-[13px] text-teh-ink-soft dark:text-teh-d-ink-soft mt-2 max-w-[560px]">
+                Productos seleccionados con los mejores precios en MercadoLibre Chile.
+              </div>
             </div>
           </div>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-          {featuredProducts.slice(0, 8).map((product, i) => (
-            <FeaturedProductCard key={product.id} product={product} index={i + 1} />
-          ))}
-        </div>
-      </section>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {featuredProducts.slice(0, 8).map((product, i) => (
+              <FeaturedProductCard key={product.id} product={product} index={i + 1} />
+            ))}
+          </div>
+        </section>
+      )}
 
       <NewsletterBanner />
 
