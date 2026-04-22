@@ -1,4 +1,4 @@
-import { getCategories, getCategory, getHighlights } from '../lib/meli/meli-client'
+import { getCategories, getHighlights } from '../lib/meli/meli-client'
 import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
 import { ProductPlaceholder } from '../components/ui/ProductPlaceholder'
 import { NewsletterBanner } from '../components/ui/NewsletterBanner'
@@ -28,14 +28,31 @@ function formatHeroPrice(price: number, currency: string): string {
   return new Intl.NumberFormat('es-CL', { style: 'currency', currency, maximumFractionDigits: 0 }).format(price)
 }
 
+const FEATURED_CATEGORY_SLUGS = [
+  'electrodomesticos',
+  'electronica-audio-y-video',
+  'computacion',
+  'celulares-y-telefonia',
+  'hogar-y-muebles',
+]
+
 export default async function HomePage() {
   const [categories, featuredProducts] = await Promise.all([
     getCategories(),
     getHighlights('MLC5726', 8),
   ])
 
-  const topCategories = categories.slice(0, 5)
-  const topCategoriesDetailed = await Promise.all(topCategories.map((cat) => getCategory(cat.id)))
+  const featuredCategories = FEATURED_CATEGORY_SLUGS
+    .map((slug) => categories.find((c) => c.slug === slug))
+    .filter((c): c is NonNullable<typeof c> => c != null)
+
+  const featuredCategoriesWithImage = await Promise.all(
+    featuredCategories.map(async (cat) => {
+      const highlights = await getHighlights(cat.id, 1)
+      return { ...cat, heroThumbnail: highlights[0]?.thumbnail ?? null }
+    })
+  )
+
   const heroProduct = featuredProducts[0] ?? null
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
@@ -143,7 +160,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-          {topCategoriesDetailed.map((cat, i) => (
+          {featuredCategoriesWithImage.map((cat, i) => (
             <Link
               key={cat.id}
               href={`/${cat.slug}`}
@@ -151,11 +168,11 @@ export default async function HomePage() {
             >
               <div className="h-[90px] mb-4 flex items-center justify-center">
                 <div className="w-4/5 h-full">
-                  {cat.thumbnail
+                  {cat.heroThumbnail
                     ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
                         <img
-                          src={cat.thumbnail.replace('http://', 'https://')}
+                          src={cat.heroThumbnail}
                           alt={cat.name}
                           className="w-full h-full object-contain mix-blend-multiply dark:mix-blend-normal"
                         />
