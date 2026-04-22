@@ -1,12 +1,10 @@
-import { getCategoryBySlug, getCategories, getProduct, VIRTUAL_CATEGORY_IDS } from '../../lib/meli/meli-client'
+import { getCategoryBySlug, getCategories, getHighlights, VIRTUAL_CATEGORY_IDS } from '../../lib/meli/meli-client'
 import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
-import { getCategoryProducts } from '../../lib/data/category-products'
 import { FeaturedProductCard } from '../../components/products/FeaturedProductCard'
 import { ProductPlaceholder } from '../../components/ui/ProductPlaceholder'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
-import type { FeaturedProduct } from '../../lib/data/featured-products'
 import Link from 'next/link'
 
 export const revalidate = 3600
@@ -53,31 +51,6 @@ const CATEGORY_ICONS: Record<string, number> = {
 
 const FILTER_PILLS = ['Todos', 'En oferta', 'Nuevos', "Editor's picks"]
 
-async function hydrateCategoryProducts(slug: string): Promise<FeaturedProduct[]> {
-  const curated = getCategoryProducts(slug)
-  if (curated.length === 0) return []
-  const results = await Promise.allSettled(curated.map((c) => getProduct(c.mlcId)))
-  const products: FeaturedProduct[] = []
-  for (let i = 0; i < results.length; i++) {
-    const result = results[i]
-    if (result.status === 'rejected') continue
-    const p = result.value
-    const c = curated[i]
-    const product: FeaturedProduct = {
-      id: c.id,
-      title: p.title,
-      price: p.price,
-      currency: p.currency,
-      thumbnail: p.thumbnail,
-      permalink: p.permalink,
-      condition: p.condition,
-    }
-    if (c.badge) product.badge = c.badge
-    products.push(product)
-  }
-  return products
-}
-
 export default async function CategoryPage({ params }: Props) {
   const { category } = await params
   let cat
@@ -89,7 +62,7 @@ export default async function CategoryPage({ params }: Props) {
   const meliUrl = buildCategoryUrl(cat.slug)
   const desc = getCategoryDescription(cat.slug)
   const iconSeed = CATEGORY_ICONS[cat.slug] ?? 0
-  const products = await hydrateCategoryProducts(cat.slug)
+  const products = await getHighlights(cat.id, 8)
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'
   const jsonLdPage = {

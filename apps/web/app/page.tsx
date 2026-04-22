@@ -1,9 +1,7 @@
-import { getCategories, getProduct } from '../lib/meli/meli-client'
+import { getCategories, getHighlights } from '../lib/meli/meli-client'
 import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
 import { ProductPlaceholder } from '../components/ui/ProductPlaceholder'
 import { NewsletterBanner } from '../components/ui/NewsletterBanner'
-import { featuredProductsCurated } from '../lib/data/featured-products'
-import type { FeaturedProduct } from '../lib/data/featured-products'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -26,35 +24,10 @@ const CATEGORY_ICONS: Record<string, number> = {
 
 const SECTION_TONES = ['#ede4d4', '#e6dccd', '#e4dcc8', '#ecdfcc', '#efe5d3']
 
-async function hydrateFeaturedProducts(): Promise<FeaturedProduct[]> {
-  const results = await Promise.allSettled(
-    featuredProductsCurated.map((c) => getProduct(c.mlcId))
-  )
-  const products: FeaturedProduct[] = []
-  for (let i = 0; i < results.length; i++) {
-    const result = results[i]
-    if (result.status === 'rejected') continue
-    const p = result.value
-    const c = featuredProductsCurated[i]
-    const product: FeaturedProduct = {
-      id: c.id,
-      title: p.title,
-      price: p.price,
-      currency: p.currency,
-      thumbnail: p.thumbnail,
-      permalink: p.permalink,
-      condition: p.condition,
-    }
-    if (c.badge) product.badge = c.badge
-    products.push(product)
-  }
-  return products
-}
-
 export default async function HomePage() {
   const [categories, featuredProducts] = await Promise.all([
     getCategories(),
-    hydrateFeaturedProducts(),
+    getHighlights('MLC5726', 8),
   ])
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://web-ten-beige-23.vercel.app'

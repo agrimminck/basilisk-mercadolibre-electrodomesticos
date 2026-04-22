@@ -46,6 +46,8 @@ type FeaturedProductCurated = {
 
 Productos actuales (2026-04-21): refrigerador Samsung, lavadora LG, smart TV Samsung 55" 4K, cocina Mademsa, microondas Samsung, hervidor Oster, aspiradora Electrolux, aire acondicionado Midea split.
 
+**ALERTA (2026-04-22): IDs posiblemente no hidratables** — ver §Problema IDs abajo.
+
 **Workflow cambiar producto:**
 
 1. Buscar en mercadolibre.cl → obtener URL tipo `…/p/MLC12345678`.
@@ -93,6 +95,8 @@ export function getCategoryProducts(slug: string): FeaturedProductCurated[] {
 
 **Claves = slugs canónicos** (slug real ML para top-level o slug virtual override para subcategorías). URLs públicas viejas (`electrodomesticos-y-aire-acondicionado`, etc.) siguen resolviendo vía `CATEGORY_SLUG_ALIASES` en `meli-client.ts` — ver [`meli-integration.md`](meli-integration.md) §7-8.
 
+**ALERTA (2026-04-22): IDs posiblemente no hidratables** — ver §Problema IDs abajo.
+
 **Hydratación en `[category]/page.tsx`:**
 
 ```ts
@@ -107,6 +111,43 @@ Mismo patrón que `hydrateFeaturedProducts()` en home: `Promise.allSettled` → 
 1. Buscar en mercadolibre.cl → URL tipo `…/p/MLC12345678` → usar ID del path
 2. Agregar entry en `categoryProducts[slug]` en `category-products.ts` — **slug = canónico** (real ML o virtual override)
 3. Commit + push → Vercel redeploy (~2 min) + ISR refresh a los 3600s
+
+---
+
+## Problema IDs — listings expirados + posible bloqueo /items (2026-04-22)
+
+**Situación:** todos los ~40 MLC IDs en `featured-products.ts` + `category-products.ts` devuelven 404 al hidratarse. Hay dos causas posibles (no mutuamente excluyentes):
+
+1. **IDs = listings individuales de vendedores** → expiran cuando el vendedor cierra el anuncio. IDs tipo `MLC18952592` son anuncios, no catálogo.
+2. **`GET /items/{id}` bloqueado globalmente** → PolicyAgent bloquea el endpoint para apps estándar, igual que `/search`. ML retorna 404 con OAuth en lugar de 403 para ocultar existencia. Ver [`meli-integration.md`](meli-integration.md) §9.
+
+**Pendiente confirmar causa:** verificar manualmente en browser las URLs `articulo.mercadolibre.cl/MLC-18952592`, `MLC-42069415`, `MLC-18907190`. Si los productos aparecen → endpoint bloqueado (causa 2). Si no aparecen → listings expirados (causa 1).
+
+### Opciones de fix
+
+**A — Manual + script verificación (~30 min, control editorial)**
+- User busca por categoría en ml.cl → copia IDs de URL (`/p/MLC-XXXXX` → `MLCXXXXX`)
+- ~40 IDs nuevos en 6-7 categorías
+- Script `scripts/verify-ids.sh` prueba HTTP 200 para cada ID antes de commit
+- Solo viable si causa 2 no aplica (endpoint no bloqueado)
+
+**B — Semi-automático: highlights endpoint (~1h)**
+- `GET /highlights/MLC/category/{id}` con OAuth → devuelve IDs más destacados
+- Agregar `getHighlights(categoryId)` a `meli-client.ts` + endpoint `/api/highlights?category=` para testing
+- Script local con creds Vercel genera IDs frescos automáticamente → actualiza TS files → commit
+- Curación sigue siendo estática pero script facilita rotación futura
+
+**C — Dinámico en ISR (2h, cero mantenimiento)**
+- `[category]/page.tsx` llama `getHighlights(cat.id, 8)` directo en render ISR
+- Eliminar `category-products.ts` completamente
+- Home page: `hydrateFeaturedProducts` → `getHighlights('MLC5726', 8)` o similar
+- Siempre fresh, ISR cache 5 min
+- Contra: cero control editorial (ML decide qué mostrar, puede ser genérico o de baja calidad)
+
+**Si causa 2 confirmada (endpoint /items bloqueado):** ninguna opción A/B/C funciona — `getProduct(id)` tampoco funciona. Arquitectura cambia a affiliate-only puro:
+- Páginas de categoría: texto SEO + CTA → ML
+- Sin grid de productos reales
+- Placeholders actuales + "Ver todos en MercadoLibre →" = UX válido final
 
 ---
 

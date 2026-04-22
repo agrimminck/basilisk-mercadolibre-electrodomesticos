@@ -119,3 +119,16 @@ export async function getCategoryBySlug(slug: string): Promise<Category> {
   if (!match) throw new Error(`Category not found for slug: ${slug}`)
   return getCategory(match.id)
 }
+
+export async function getHighlights(categoryId: string, limit = 8): Promise<Product[]> {
+  try {
+    const url = buildUrl(`/highlights/${SITE_ID}/category/${categoryId}`, { limit: String(limit) })
+    const raw = await apiFetch<{ content: Array<{ id: string }> }>(url)
+    const results = await Promise.allSettled(raw.content.map((item) => getProduct(item.id)))
+    return results
+      .filter((r): r is PromiseFulfilledResult<Product> => r.status === 'fulfilled')
+      .map((r) => r.value)
+  } catch {
+    return []
+  }
+}

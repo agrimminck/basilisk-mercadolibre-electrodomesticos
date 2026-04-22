@@ -62,12 +62,12 @@ Código usa la segunda forma. `types/index.ts` refleja shape reducido — NO inc
 
 ## Endpoints en uso
 
-| Endpoint | Uso en código |
-|---|---|
-| `POST /oauth/token` | `getAccessToken()` |
-| `GET /sites/{id}` | `getCategories()` (via `.categories`) |
-| `GET /categories/{id}` | `getCategory(id)`, `getCategoryBySlug()` |
-| `GET /items/{id}` | `getProduct(id)` |
+| Endpoint | Uso en código | Estado |
+|---|---|---|
+| `POST /oauth/token` | `getAccessToken()` | ✅ funciona |
+| `GET /sites/{id}` | `getCategories()` (via `.categories`) | ✅ funciona |
+| `GET /categories/{id}` | `getCategory(id)`, `getCategoryBySlug()` | ✅ funciona |
+| `GET /items/{id}` | `getProduct(id)` | ⚠️ ver §9 |
 
 Response shape item: `id, title, price, currency_id, thumbnail, permalink, condition, attributes[]`.
 
@@ -118,3 +118,19 @@ Mapeos actuales:
 | `lavadoras` | MLC1578 | Lavado | Lavadoras |
 
 Para agregar una subcategoría virtual: (1) encontrar ID vía `GET /categories/{parentId}` en `children_categories`; (2) agregar a ambos mapas + entry en `category-descriptions.ts` + opcional `category-products.ts`.
+
+---
+
+## 9. `GET /items/{id}` — posiblemente bloqueado globalmente (2026-04-22)
+
+**Síntoma:** IDs de `featured-products.ts` y `category-products.ts` devuelven 404 con OAuth válido (mismo token que funciona para `/categories`). Sin auth → 403 `PolicyAgent`.
+
+**Patrón sospechoso:** ML devuelve 404 en vez de 403 con token — oculta existencia del recurso en lugar de denegar explícitamente. Mismo comportamiento que `/search` antes de confirmar su bloqueo.
+
+**Hipótesis:** PolicyAgent bloqueó `/items/{id}` para apps estándar igual que `/search`. Scopes `offline_access read write` no desbloquean acceso a items individuales.
+
+**Causa alternativa (descartada parcialmente):** los IDs actuales son listings individuales de vendedores — expiran cuando el vendedor cierra el anuncio. Pero incluso IDs recientes (≤30 min) también devuelven 404, lo que apunta a bloqueo de endpoint, no solo IDs vencidos.
+
+**Implicación:** si el bloqueo es global, `getProduct(id)` nunca funcionará sin partnership ML. El modelo de hydratación ISR de `featured-products.ts` y `category-products.ts` no puede traer datos reales. Ver [`affiliate-model.md`](affiliate-model.md) §IDs + opciones de fix.
+
+**Pendiente confirmar:** verificar manualmente en browser si los IDs testados (MLC18952592, MLC42069415, MLC18907190) aparecen en ml.cl. Si SÍ aparecen → el endpoint está bloqueado, los IDs son válidos. Si NO aparecen → listings expirados (causa trivial).
