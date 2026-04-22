@@ -90,7 +90,7 @@ Ver [`meli-integration.md`](meli-integration.md) para quirks API y [`affiliate-m
 ## Decisiones durables
 
 - **Modelo affiliate-only** — endpoint ML `/search` bloqueado 403 global para apps estándar → pivot a redirects con tracking ID. Ver [`meli-integration.md`](meli-integration.md).
-- **Sin DB** — categorías y productos destacados hardcoded en TS (`lib/data/`). Curación manual, type-safe.
+- **Sin DB** — categorías y productos hardcoded en TS (`lib/data/`): `featured-products.ts` (home), `category-products.ts` (páginas de categoría), `category-descriptions.ts` (texto SEO). Curación manual, type-safe.
 - **Server Components + ISR** — `fetch` con `revalidate` + `generateStaticParams` para categorías. Sin `useEffect` para data.
 - **TypeScript strict, imports relativos** — sin path aliases.
 - **Tailwind v4** — `@import "tailwindcss"` sin `tailwind.config.js`. Deps **no** en devDependencies (ver [`deploy-vercel.md`](deploy-vercel.md)).

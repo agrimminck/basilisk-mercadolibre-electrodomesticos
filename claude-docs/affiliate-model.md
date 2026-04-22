@@ -66,6 +66,70 @@ Consumido por `app/[category]/page.tsx` para texto SEO-friendly. Agregar entry c
 
 ---
 
+## Category products — curación manual por categoría
+
+**Archivo:** `lib/data/category-products.ts` — CREADO 2026-04-22
+
+Mismo patrón que featured products. Cada slug de categoría tiene array de `FeaturedProductCurated[]`. Página de categoría hidrata en ISR.
+
+```ts
+export function getCategoryProducts(slug: string): FeaturedProductCurated[] {
+  return categoryProducts[slug] ?? []
+}
+```
+
+**Cobertura actual:**
+
+| Slug | Productos | Marcas |
+|---|---|---|
+| `electrodomesticos-y-aire-acondicionado` | 8 | Mademsa, LG, Samsung, Oster, Electrolux, Midea |
+| `television-audio-y-video` | 8 | Samsung, TCL, LG, Philips |
+| `computacion` | 7 | ASUS Vivobook Go 14, HP 245 G10 |
+| `celulares-y-telefonia` | 8 | Samsung A16, Xiaomi Redmi Note 14 Pro, Moto G34 |
+| `herramientas-y-construccion` | 8 | Bosch GSB 18V, Makita esmeriles |
+| deportes, videojuegos, muebles | 0 → fallback placeholders | — |
+
+**Hydratación en `[category]/page.tsx`:**
+
+```ts
+async function hydrateCategoryProducts(slug: string): Promise<FeaturedProduct[]>
+```
+
+Mismo patrón que `hydrateFeaturedProducts()` en home: `Promise.allSettled` → filter rejected → merge curated badge con live data de ML API. Si `getCategoryProducts(slug)` retorna `[]` → renderiza placeholder grid original.
+
+**Workflow agregar/rotar productos:**
+1. Buscar en mercadolibre.cl → URL tipo `…/p/MLC12345678` → usar ID del path
+2. Agregar entry en `categoryProducts[slug]` en `category-products.ts`
+3. Commit + push → Vercel redeploy (~2 min) + ISR refresh a los 3600s
+
+**⚠️ BUG PENDIENTE:** `/electrodomesticos-y-aire-acondicionado` devuelve 404. Probable slug mismatch entre `toSlug(nombre ML API)` y el slug hardcodeado. Ver sección de diagnóstico abajo.
+
+---
+
+## Bug pendiente — 404 en electrodomésticos
+
+**Síntoma:** `topelectrohogar.com/electrodomesticos-y-aire-acondicionado` → 404.
+
+**Causa probable:** `getCategoryBySlug('electrodomesticos-y-aire-acondicionado')` falla porque el nombre devuelto por ML API para esa categoría, al pasarlo por `toSlug()`, genera un slug diferente.
+
+**Diagnóstico:**
+1. Hacer `GET https://api.mercadolibre.com/sites/MLC` → ver `.categories[].name`
+2. Aplicar `toSlug()` a cada nombre → encontrar el que debería ser electrodomésticos
+3. Si el slug generado ≠ `electrodomesticos-y-aire-acondicionado` → ese es el bug
+
+**Fix probable:**
+- Opción A: Cambiar la clave en `category-descriptions.ts` y `category-products.ts` al slug real que genera ML API
+- Opción B: Agregar alias/mapping en `getCategoryBySlug()` para cubrir variantes
+
+**Archivos a tocar:**
+- `lib/meli/meli-client.ts` — `getCategoryBySlug()`, `getCategories()`
+- `lib/meli/meli-transforms.ts` — `toSlug()`
+- `lib/data/category-descriptions.ts` — clave del slug
+- `lib/data/category-products.ts` — clave del slug
+- `app/[category]/page.tsx` — `notFound()` cuando falla
+
+---
+
 ## Por qué `/api/search` no busca
 
 `/api/search?q=X` NO ejecuta búsqueda — devuelve URL redirect a ML. Cliente navega ahí, ML muestra resultados en su UI con affiliate_id tracking.
