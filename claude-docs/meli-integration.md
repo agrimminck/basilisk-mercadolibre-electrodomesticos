@@ -67,9 +67,12 @@ Código usa la segunda forma. `types/index.ts` refleja shape reducido — NO inc
 | `POST /oauth/token` | `getAccessToken()` | ✅ funciona |
 | `GET /sites/{id}` | `getCategories()` (via `.categories`) | ✅ funciona |
 | `GET /categories/{id}` | `getCategory(id)`, `getCategoryBySlug()` | ✅ funciona |
-| `GET /items/{id}` | `getProduct(id)` | ⚠️ ver §9 |
+| `GET /items/{id}` | `getProduct(id)`, `/api/products` | ✅ funciona con IDs de listings activos; 404 con listings expirados |
+| `GET /highlights/{site}/category/{id}` | `getHighlights()` | ✅ funciona — devuelve catalog IDs, ver §10 |
+| `GET /products/{catalogId}` | dentro de `getHighlights()` | ✅ funciona — `buy_box_winner: null` en MLC, ver §10 |
+| `GET /sites/{id}/search` | — | ❌ 403 bloqueado global |
 
-Response shape item: `id, title, price, currency_id, thumbnail, permalink, condition, attributes[]`.
+Response shape item (`/items/{id}`): `id, title, price, currency_id, thumbnail, permalink, condition, attributes[]`.
 
 ---
 
@@ -121,16 +124,32 @@ Para agregar una subcategoría virtual: (1) encontrar ID vía `GET /categories/{
 
 ---
 
-## 9. `GET /items/{id}` — posiblemente bloqueado globalmente (2026-04-22)
+## 9. `GET /items/{id}` — solo funciona con IDs de listings activos (confirmado 2026-04-22)
 
-**Síntoma:** IDs de `featured-products.ts` y `category-products.ts` devuelven 404 con OAuth válido (mismo token que funciona para `/categories`). Sin auth → 403 `PolicyAgent`.
+**Causa confirmada:** IDs hardcodeados eran listings individuales de vendedores → expiran cuando el vendedor cierra el anuncio. NO es bloqueo de endpoint — el endpoint sí funciona con IDs válidos de listings activos.
 
-**Patrón sospechoso:** ML devuelve 404 en vez de 403 con token — oculta existencia del recurso en lugar de denegar explícitamente. Mismo comportamiento que `/search` antes de confirmar su bloqueo.
+**Problema derivado:** no hay forma de obtener IDs frescos de listings sin `/search` (bloqueado 403). Ver §10 para intento con highlights.
 
-**Hipótesis:** PolicyAgent bloqueó `/items/{id}` para apps estándar igual que `/search`. Scopes `offline_access read write` no desbloquean acceso a items individuales.
+---
 
-**Causa alternativa (descartada parcialmente):** los IDs actuales son listings individuales de vendedores — expiran cuando el vendedor cierra el anuncio. Pero incluso IDs recientes (≤30 min) también devuelven 404, lo que apunta a bloqueo de endpoint, no solo IDs vencidos.
+## 10. `/highlights/{site}/category/{id}` — devuelve catalog IDs, no listing IDs (2026-04-22)
 
-**Implicación:** si el bloqueo es global, `getProduct(id)` nunca funcionará sin partnership ML. El modelo de hydratación ISR de `featured-products.ts` y `category-products.ts` no puede traer datos reales. Ver [`affiliate-model.md`](affiliate-model.md) §IDs + opciones de fix.
+**Endpoint:** `GET /highlights/MLC/category/{categoryId}` con OAuth → 200, retorna `{ content: [{ id, position, type }] }`.
 
-**Pendiente confirmar:** verificar manualmente en browser si los IDs testados (MLC18952592, MLC42069415, MLC18907190) aparecen en ml.cl. Si SÍ aparecen → el endpoint está bloqueado, los IDs son válidos. Si NO aparecen → listings expirados (causa trivial).
+**Quirk crítico:** los IDs retornados son **catalog product IDs** (tipo `"PRODUCT"` con IDs como `MLC30395039`), NO listing IDs de vendedores individuales. Estas IDs dan 404 en `GET /items/{id}`.
+
+**Fix intentado:** usar `GET /products/{catalogId}` (endpoint catálogo) → retorna data de catálogo incluyendo `buy_box_winner` (vendedor ganador con precio).
+
+**Limitación MLC:** `buy_box_winner` es `null` para TODOS los productos en MLC testeados (categorías MLC5726, MLC1576, MLC1578). En ML Chile el catálogo no tiene buy_box_winner asignado — funcionalidad incompleta vs MLA (Argentina).
+
+**Resultado:** `getHighlights()` implementado en `meli-client.ts` pero siempre retorna `[]` en MLC por este motivo. Código queda para cuando ML active buy_box_winner en Chile.
+
+**Implementación actual** (`lib/meli/meli-client.ts`):
+1. `GET /highlights/{SITE}/category/{catId}` → catalog IDs
+2. `GET /products/{catalogId}` para cada ID → filtrar `buy_box_winner !== null`
+3. Construye `Product` desde `name`, `pictures[0].url`, `buy_box_winner.{price,currency_id,condition}`
+4. `permalink` = `https://www.mercadolibre.cl/p/{catalogId}`
+
+**Debug endpoint:** `GET /api/highlights?slug={slug}` o `?category={id}` — retorna `{ categoryId, count, products }`.
+
+**Implicación:** arquitectura definitiva MLC = placeholder-only + affiliate CTAs. Ver [`affiliate-model.md`](affiliate-model.md) §estado-actual.

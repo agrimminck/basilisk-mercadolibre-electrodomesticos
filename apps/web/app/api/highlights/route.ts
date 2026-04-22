@@ -1,23 +1,28 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { getCategoryBySlug, getHighlights } from '../../../lib/meli/meli-client'
+import { getAccessToken } from '../../../lib/meli/meli-auth'
 
 export async function GET(req: NextRequest) {
-  const slug = req.nextUrl.searchParams.get('slug')
-  const limit = parseInt(req.nextUrl.searchParams.get('limit') ?? '8', 10)
+  // Tests /products/{catalogId}/items — bridge catalog → active listings
+  // Usage: /api/highlights?catalogId=MLC30395039
+  const catalogId = req.nextUrl.searchParams.get('catalogId') ?? 'MLC30395039'
+  const token = await getAccessToken()
 
-  let categoryId = req.nextUrl.searchParams.get('category') ?? 'MLC5726'
-  let slugInfo: unknown = null
+  const res = await fetch(
+    `https://api.mercadolibre.com/products/${catalogId}/items?limit=3`,
+    { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }
+  )
+  const data = await res.json()
 
-  if (slug) {
-    try {
-      const cat = await getCategoryBySlug(slug)
-      categoryId = cat.id
-      slugInfo = { slug: cat.slug, name: cat.name, id: cat.id }
-    } catch (err) {
-      return NextResponse.json({ error: `slug resolution failed: ${String(err)}` }, { status: 400 })
-    }
+  // Also test first item directly if present
+  const firstItemId: string = data?.results?.[0]?.item_id ?? data?.results?.[0]?.id ?? ''
+  let itemTest: unknown = null
+  if (firstItemId) {
+    const itemRes = await fetch(
+      `https://api.mercadolibre.com/items/${firstItemId}?attributes=id,title,price,currency_id,thumbnail,permalink,condition`,
+      { headers: { Authorization: `Bearer ${token}` }, cache: 'no-store' }
+    )
+    itemTest = await itemRes.json()
   }
 
-  const products = await getHighlights(categoryId, limit)
-  return NextResponse.json({ categoryId, slugInfo, count: products.length, products })
+  return NextResponse.json({ catalogId, productsItemsStatus: res.status, firstItemId, data, itemTest })
 }
