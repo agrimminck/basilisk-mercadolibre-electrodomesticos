@@ -293,9 +293,9 @@ export default function GuiaRefrigerador() {
             </div>
           </div>
           <GuideImage
-            src="https://images.unsplash.com/photo-1774716925718-82ea2f2eb01b?w=1200&q=85&auto=format&fit=crop"
-            alt="Cocina minimalista blanca con electrodomésticos modernos integrados"
-            caption="Blanco atemporal: combina con cualquier rediseño futuro."
+            src="https://images.unsplash.com/photo-1771003936708-bfeb23b5d082?w=1200&q=85&auto=format&fit=crop"
+            alt="Cocina blanca con refrigerador inoxidable y luz natural"
+            caption="Inox en cocina blanca: elegante, pero las huellas son parte del trato."
           />
         </section>
 
