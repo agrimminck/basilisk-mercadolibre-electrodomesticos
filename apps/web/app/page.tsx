@@ -3,6 +3,7 @@ import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
 import Image from 'next/image'
 import { ProductPlaceholder } from '../components/ui/ProductPlaceholder'
 import { NewsletterBanner } from '../components/ui/NewsletterBanner'
+import { FadeIn } from '../components/ui/FadeIn'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 
@@ -114,7 +115,7 @@ export default async function HomePage() {
           </div>
 
           <div className="relative hidden lg:block" style={{ aspectRatio: '1 / 1.05' }}>
-            <div className="relative w-full h-full bg-white dark:bg-zinc-900 overflow-hidden">
+            <div className="relative w-full h-full bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
               {heroProduct
                 ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -162,13 +163,13 @@ export default async function HomePage() {
         </div>
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
           {featuredCategoriesWithImage.map((cat, i) => (
+            <FadeIn key={cat.id} delay={i * 60}>
             <Link
-              key={cat.id}
               href={`/${cat.slug}`}
-              className="relative block p-5 pt-7 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft min-h-[200px] hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
+              className="relative block p-5 pt-7 bg-teh-bg dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft min-h-[200px] hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
             >
               <div className="h-[90px] mb-4 flex items-center justify-center">
-                <div className="w-4/5 h-full bg-white dark:bg-zinc-900">
+                <div className="w-4/5 h-full bg-teh-bgalt dark:bg-teh-d-bgalt">
                   {cat.heroThumbnail
                     ? (
                         /* eslint-disable-next-line @next/next/no-img-element */
@@ -194,6 +195,7 @@ export default async function HomePage() {
                 0{i + 1}
               </div>
             </Link>
+            </FadeIn>
           ))}
         </div>
       </section>
@@ -214,7 +216,9 @@ export default async function HomePage() {
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
             {featuredProducts.slice(0, 8).map((product, i) => (
-              <FeaturedProductCard key={product.id} product={product} index={i + 1} />
+              <FadeIn key={product.id} delay={i * 55}>
+                <FeaturedProductCard product={product} index={i + 1} />
+              </FadeIn>
             ))}
           </div>
         </section>

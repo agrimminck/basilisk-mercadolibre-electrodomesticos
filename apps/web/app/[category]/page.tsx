@@ -3,6 +3,7 @@ import { buildCategoryUrl } from '../../lib/utils/affiliate'
 import { getCategoryDescription } from '../../lib/data/category-descriptions'
 import { FeaturedProductCard } from '../../components/products/FeaturedProductCard'
 import { ProductPlaceholder } from '../../components/ui/ProductPlaceholder'
+import { FadeIn } from '../../components/ui/FadeIn'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
 import Link from 'next/link'
@@ -158,7 +159,9 @@ export default async function CategoryPage({ params }: Props) {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-10">
             {products.length > 0
               ? products.map((product, i) => (
-                  <FeaturedProductCard key={product.id} product={product} index={i + 1} />
+                  <FadeIn key={product.id} delay={i * 55}>
+                    <FeaturedProductCard product={product} index={i + 1} />
+                  </FadeIn>
                 ))
               : Array.from({ length: 8 }).map((_, i) => (
                   <a

@@ -19,10 +19,10 @@ export function FeaturedProductCard({ product, index }: Props) {
   return (
     <Link
       href={`/producto/${product.id}${product.categoryId ? `?cat=${product.categoryId}` : ''}`}
-      className="relative flex flex-col p-3.5 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
+      className="relative flex flex-col p-3.5 bg-teh-bg dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
     >
       <WishlistButton product={product} />
-      <div className="relative aspect-square mb-3.5 bg-white dark:bg-zinc-900 overflow-hidden">
+      <div className="relative aspect-square mb-3.5 bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={product.thumbnail}
