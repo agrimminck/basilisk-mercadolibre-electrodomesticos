@@ -43,24 +43,27 @@ Validar cambios con: https://search.google.com/test/rich-results
 
 ---
 
-## Estado indexing — snapshot 2026-04-21
+## Estado indexing — snapshot 2026-04-23
+
+**SITIO BLOQUEADO** — `middleware.ts` devuelve 404 en todas las rutas. No indexar hasta que esté listo.
 
 | Item | Status |
 |---|---|
 | GSC registration (verification meta tag) | ✅ Verificado |
-| Sitemap submission GSC | ⚠️ Error "Sitemap could not be read" — Bing lo lee OK (11 URLs); posible cache lag GSC |
-| Homepage indexada GSC | ✅ |
-| Categorías indexadas | ⏳ Pendiente (manual indexing requests pendiente) |
-| Bing Webmaster Tools | ⚠️ Registrado + sitemap found (11 URLs); ownership verification pending (`BingSiteAuth.xml` falta en `public/`) |
+| Páginas indexadas GSC | ✅ Ninguna (GSC confirma 0 URLs indexadas — bueno) |
+| Sitemap submission GSC | ⏸ Pendiente hasta que sitio esté listo |
+| Bing Webmaster Tools | ⏸ Pendiente hasta que sitio esté listo |
 
 ---
 
-## Acciones indexación pendientes
+## Acciones indexación pendientes (hacer cuando sitio esté listo)
 
-- [ ] **Bing verification:** descargar `BingSiteAuth.xml` desde bing.com/webmasters → colocar en `apps/web/public/` → commit + push → clic "Verify" en Bing → submit sitemap.
-- [ ] **GSC manual indexing:** solicitar indexación para home + 5 categorías canónicas (electrodomesticos, electronica-audio-y-video, computacion, celulares-y-telefonia, herramientas) + 2 virtuales (refrigeradores, lavadoras). Límite ~10/día → 1-2 días. URLs alias viejas (electrodomesticos-y-aire-acondicionado, etc.) NO pedir indexación — `alternates.canonical` apunta al slug real, Google consolida.
-- [ ] **JSON-LD post-rediseño:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
-- [ ] Monitorear GSC cada 3-5 días post-request.
+1. **Quitar middleware:** eliminar `apps/web/middleware.ts` → commit + push → verificar que rutas responden 200.
+2. **Bing verification:** descargar `BingSiteAuth.xml` desde bing.com/webmasters → colocar en `apps/web/public/` → commit + push → clic "Verify" → submit sitemap.
+3. **GSC sitemap:** submit `{NEXT_PUBLIC_SITE_URL}/sitemap.xml` en GSC → Coverage.
+4. **GSC manual indexing:** solicitar indexación para home + 5 categorías canónicas (electrodomesticos, electronica-audio-y-video, computacion, celulares-y-telefonia, herramientas) + 2 virtuales (refrigeradores, lavadoras). Límite ~10/día → 1-2 días. URLs alias viejas NO pedir indexación — `alternates.canonical` apunta al slug real, Google consolida.
+5. **JSON-LD:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
+6. Monitorear GSC cada 3-5 días post-request.
 
 ---
 
