@@ -55,6 +55,27 @@ function DataRow({ label, value }: { label: string; value: string }) {
   )
 }
 
+function GuideImage({ src, alt, caption }: { src: string; alt: string; caption?: string }) {
+  return (
+    <figure className="my-8 -mx-2 sm:mx-0">
+      <div className="relative aspect-video overflow-hidden">
+        <Image
+          src={src}
+          alt={alt}
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 768px"
+        />
+      </div>
+      {caption && (
+        <figcaption className="mt-2 text-[12px] text-teh-ink-muted dark:text-teh-d-ink-muted font-mono tracking-wide">
+          {caption}
+        </figcaption>
+      )}
+    </figure>
+  )
+}
+
 export default function GuiaRefrigerador() {
   return (
     <>
@@ -102,9 +123,10 @@ export default function GuiaRefrigerador() {
           </h2>
           <p className="text-[15px] leading-relaxed text-teh-ink-soft dark:text-teh-d-ink-soft mb-5">
             Parece obvio pero el 30% de las devoluciones en ML son por esto. Mide el hueco
-            disponible y réstale margen de ventilación: <strong className="text-teh-ink dark:text-teh-d-ink">5 cm a cada lado</strong> y{' '}
-            <strong className="text-teh-ink dark:text-teh-d-ink">10 cm arriba</strong>. Sin ventilación el compresor trabaja más y la vida útil
-            cae a la mitad.
+            disponible y réstale margen de ventilación:{' '}
+            <strong className="text-teh-ink dark:text-teh-d-ink">5 cm a cada lado</strong> y{' '}
+            <strong className="text-teh-ink dark:text-teh-d-ink">10 cm arriba</strong>. Sin ventilación el compresor
+            trabaja más y la vida útil cae a la mitad.
           </p>
           <p className="text-[15px] leading-relaxed text-teh-ink-soft dark:text-teh-d-ink-soft mb-5">
             También mide el pasillo de acceso antes de llegar al hueco — hay departamentos
@@ -135,6 +157,11 @@ export default function GuiaRefrigerador() {
           <Tip>
             Si cocinas en cantidad y freezas preparaciones, suma 50–80 L extra al rango de tu familia.
           </Tip>
+          <GuideImage
+            src="https://images.unsplash.com/photo-1643494847705-74808059bf07?w=1200&q=85&auto=format&fit=crop"
+            alt="Refrigerador bien organizado con frutas, verduras y alimentos frescos"
+            caption="Un frigo bien dimensionado para la familia: todo visible, nada aplastado."
+          />
         </section>
 
         {/* 3. Tipo */}
@@ -173,6 +200,11 @@ export default function GuiaRefrigerador() {
               </p>
             </div>
           </div>
+          <GuideImage
+            src="https://images.unsplash.com/photo-1630459065645-549fe5a56db4?w=1200&q=85&auto=format&fit=crop"
+            alt="Refrigerador top-mount negro con dispensador de agua integrado"
+            caption="Top-mount clásico: freezer arriba, frío abajo. Simple y confiable."
+          />
         </section>
 
         {/* 4. Eficiencia */}
@@ -182,7 +214,8 @@ export default function GuiaRefrigerador() {
             La diferencia en la cuenta de luz.
           </h2>
           <p className="text-[15px] leading-relaxed text-teh-ink-soft dark:text-teh-d-ink-soft mb-5">
-            En Chile la etiqueta energética va de <strong className="text-teh-ink dark:text-teh-d-ink">G (peor) a A (mejor)</strong>. Un refrigerador
+            En Chile la etiqueta energética va de{' '}
+            <strong className="text-teh-ink dark:text-teh-d-ink">G (peor) a A (mejor)</strong>. Un refrigerador
             clase A++ versus uno clase D puede significar{' '}
             <strong className="text-teh-ink dark:text-teh-d-ink">$30.000–60.000 CLP menos por año</strong> en
             electricidad. En 3–4 años recuperas la diferencia de precio.
@@ -229,7 +262,7 @@ export default function GuiaRefrigerador() {
             El refrigerador va a estar en tu cocina 12 años. Elige un acabado que resista
             rediseños y cambios de gusto.
           </p>
-          <div className="space-y-4">
+          <div className="space-y-4 mb-6">
             <div>
               <p className="text-[15px] font-medium text-teh-ink dark:text-teh-d-ink mb-1">Inoxidable real</p>
               <p className="text-[15px] leading-relaxed text-teh-ink-soft dark:text-teh-d-ink-soft">
@@ -259,6 +292,11 @@ export default function GuiaRefrigerador() {
               </p>
             </div>
           </div>
+          <GuideImage
+            src="https://images.unsplash.com/photo-1774716925718-82ea2f2eb01b?w=1200&q=85&auto=format&fit=crop"
+            alt="Cocina minimalista blanca con electrodomésticos modernos integrados"
+            caption="Blanco atemporal: combina con cualquier rediseño futuro."
+          />
         </section>
 
         {/* 7. Marcas */}
