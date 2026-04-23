@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter_Tight, Newsreader, Nunito } from 'next/font/google'
 import { Header } from '../components/layout/Header'
 import { Footer } from '../components/layout/Footer'
+import { WishlistProvider } from '../components/ui/WishlistContext'
 import './globals.css'
 
 const interTight = Inter_Tight({
@@ -52,9 +53,11 @@ export default function RootLayout({
       className={`${interTight.variable} ${newsreader.variable} ${nunito.variable}`}
     >
       <body className="bg-teh-bg dark:bg-teh-d-bg text-teh-ink dark:text-teh-d-ink antialiased min-h-screen flex flex-col transition-colors duration-200">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <WishlistProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </WishlistProvider>
       </body>
     </html>
   )

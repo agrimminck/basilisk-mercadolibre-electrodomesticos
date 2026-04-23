@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Product } from '../../types/index'
+import { WishlistButton } from '../ui/WishlistButton'
 
 function formatPrice(price: number, currency: string): string {
   return new Intl.NumberFormat('es-CL', {
@@ -21,6 +22,7 @@ export function ProductCard({ product, index }: ProductCardProps) {
       href={`/producto/${product.id}${product.categoryId ? `?cat=${product.categoryId}` : ''}`}
       className="relative flex flex-col p-3 bg-teh-surface dark:bg-teh-d-surface border border-teh-rule-soft dark:border-teh-d-rule-soft hover:border-teh-accent/40 dark:hover:border-teh-d-accent/40 transition-colors group"
     >
+      <WishlistButton product={product} />
       <div className="relative aspect-square mb-3 bg-teh-bgalt dark:bg-teh-d-bgalt overflow-hidden">
         <Image
           src={product.thumbnail}

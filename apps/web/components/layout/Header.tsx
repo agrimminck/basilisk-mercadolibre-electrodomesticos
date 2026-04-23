@@ -1,11 +1,12 @@
 import Link from 'next/link'
 import { SearchBar } from '../search/SearchBar'
 import { ThemeToggle } from '../ui/ThemeToggle'
+import { WishlistNavIcon } from '../ui/WishlistNavIcon'
 
 const NAV_LINKS = [
   { href: '/', label: 'Catálogo' },
-  { href: '/electronica-audio-y-video', label: 'Televisores' },
-  { href: '/computacion', label: 'Computación' },
+  { href: '/refrigeradores', label: 'Refrigeradores' },
+  { href: '/lavadoras', label: 'Lavadoras' },
 ]
 
 export function Header() {
@@ -71,6 +72,7 @@ export function Header() {
               </svg>
             </Link>
 
+            <WishlistNavIcon />
             <ThemeToggle />
           </div>
 
