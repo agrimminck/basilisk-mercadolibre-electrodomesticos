@@ -228,7 +228,7 @@ export default async function HomePage() {
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 items-center">
             <div className="aspect-[4/3] bg-teh-surface dark:bg-teh-d-surface overflow-hidden relative">
               <Image
-                src="https://images.unsplash.com/photo-1610733374054-59454fe657cd?w=1200&q=85&auto=format&fit=crop"
+                src="https://images.unsplash.com/photo-1762545352529-1e624dad0548?w=1200&q=85&auto=format&fit=crop"
                 alt="Cocina moderna con refrigerador"
                 fill
                 className="object-cover"
