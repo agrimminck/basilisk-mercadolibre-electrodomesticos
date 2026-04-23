@@ -1,5 +1,6 @@
 import { getCategories, getHighlights } from '../lib/meli/meli-client'
 import { FeaturedProductCard } from '../components/products/FeaturedProductCard'
+import Image from 'next/image'
 import { ProductPlaceholder } from '../components/ui/ProductPlaceholder'
 import { NewsletterBanner } from '../components/ui/NewsletterBanner'
 import type { Metadata } from 'next'
@@ -225,8 +226,14 @@ export default async function HomePage() {
       <section className="bg-teh-bgalt dark:bg-teh-d-bgalt border-b border-teh-rule dark:border-teh-d-rule">
         <div className="max-w-7xl mx-auto px-6 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.3fr] gap-12 items-center">
-            <div className="aspect-[4/3] bg-teh-surface dark:bg-teh-d-surface overflow-hidden">
-              <ProductPlaceholder seed={5} tone="#f5f1ea" />
+            <div className="aspect-[4/3] bg-teh-surface dark:bg-teh-d-surface overflow-hidden relative">
+              <Image
+                src="https://images.unsplash.com/photo-Sl1C05NNVwU?w=1200&q=85&auto=format&fit=crop"
+                alt="Cocina moderna con refrigerador"
+                fill
+                className="object-cover"
+                sizes="(max-width: 1024px) 100vw, 45vw"
+              />
             </div>
             <div>
               <div className="font-mono text-[11px] text-teh-ink-muted dark:text-teh-d-ink-muted tracking-wider mb-3">
