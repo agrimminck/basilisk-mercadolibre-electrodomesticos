@@ -293,9 +293,9 @@ export default function GuiaRefrigerador() {
             </div>
           </div>
           <GuideImage
-            src="https://images.unsplash.com/photo-1771003936708-bfeb23b5d082?w=1200&q=85&auto=format&fit=crop"
-            alt="Cocina blanca con refrigerador inoxidable y luz natural"
-            caption="Inox en cocina blanca: elegante, pero las huellas son parte del trato."
+            src="https://images.unsplash.com/photo-1642497590397-7f4384a19966?w=1200&q=85&auto=format&fit=crop"
+            alt="Cocina funcional con refrigerador plateado y cocina a gas"
+            caption="Inox en cocina real: práctico, versátil, dura tanto como la casa."
           />
         </section>
 
