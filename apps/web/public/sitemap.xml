@@ -1,58 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/</loc>
+    <loc>https://topelectrohogar.com/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/electrodomesticos</loc>
+    <loc>https://topelectrohogar.com/electrodomesticos</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/refrigeradores</loc>
+    <loc>https://topelectrohogar.com/refrigeradores</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/lavadoras</loc>
+    <loc>https://topelectrohogar.com/lavadoras</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/electronica-audio-y-video</loc>
+    <loc>https://topelectrohogar.com/electronica-audio-y-video</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/computacion</loc>
+    <loc>https://topelectrohogar.com/computacion</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/celulares-y-telefonia</loc>
+    <loc>https://topelectrohogar.com/celulares-y-telefonia</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/herramientas</loc>
+    <loc>https://topelectrohogar.com/herramientas</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/deportes-y-fitness</loc>
+    <loc>https://topelectrohogar.com/deportes-y-fitness</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/consolas-y-videojuegos</loc>
+    <loc>https://topelectrohogar.com/consolas-y-videojuegos</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://web-ten-beige-23.vercel.app/hogar-y-muebles</loc>
+    <loc>https://topelectrohogar.com/hogar-y-muebles</loc>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://topelectrohogar.com/guia/como-elegir-refrigerador</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>

@@ -248,10 +248,10 @@ export default async function HomePage() {
                 sin tecnicismos innecesarios, para acertar a la primera.
               </p>
               <Link
-                href="/electrodomesticos"
+                href="/guia/como-elegir-refrigerador"
                 className="text-[13px] font-medium border-b border-teh-accent dark:border-teh-d-accent pb-0.5 text-teh-ink dark:text-teh-d-ink hover:text-teh-accent dark:hover:text-teh-d-accent transition-colors"
               >
-                Ver electrodomésticos — mejor precio →
+                Leer la guía completa →
               </Link>
             </div>
           </div>
