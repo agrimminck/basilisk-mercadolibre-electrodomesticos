@@ -16,15 +16,15 @@ const FOOTER_COLS = [
       { href: '/refrigeradores', label: 'Elegir refrigerador' },
       { href: '/lavadoras', label: 'Elegir lavadora' },
       { href: '/electronica-audio-y-video', label: 'Elegir TV' },
-      { href: '/', label: 'Ver todas' },
+      { href: '/categorias', label: 'Ver todas' },
     ],
   },
   {
     title: 'Sobre nosotros',
     links: [
-      { href: '/', label: 'Cómo funciona' },
-      { href: '/', label: 'Política de afiliados' },
-      { href: '/', label: 'Contacto' },
+      { href: '/como-funciona', label: 'Cómo funciona' },
+      { href: '/afiliados', label: 'Política de afiliados' },
+      { href: '/contacto', label: 'Contacto' },
     ],
   },
 ]

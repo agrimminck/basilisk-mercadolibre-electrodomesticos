@@ -98,7 +98,7 @@ export default async function HomePage() {
                 Explorar el catálogo →
               </Link>
               <Link
-                href="/"
+                href="/categorias"
                 className="border border-teh-rule dark:border-teh-d-rule px-6 py-3.5 text-[13px] font-medium tracking-wide text-teh-ink-soft dark:text-teh-d-ink-soft hover:border-teh-ink-soft dark:hover:border-teh-d-ink-soft transition-colors"
               >
                 Ver categorías
@@ -155,7 +155,7 @@ export default async function HomePage() {
             <h2 className="font-serif text-4xl font-normal tracking-tight text-teh-ink dark:text-teh-d-ink">Por categoría</h2>
           </div>
           <Link
-            href="/"
+            href="/categorias"
             className="text-[13px] text-teh-ink-soft dark:text-teh-d-ink-soft border-b border-teh-rule dark:border-teh-d-rule pb-0.5 hover:text-teh-ink dark:hover:text-teh-d-ink transition-colors"
           >
             Ver todas →

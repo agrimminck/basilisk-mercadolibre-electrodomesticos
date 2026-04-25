@@ -10,6 +10,7 @@ export interface Product {
   permalink: string
   categoryId: string
   condition: 'new' | 'used'
+  originalPrice?: number
   availableQuantity: number
   soldQuantity: number
   attributes: ProductAttribute[]

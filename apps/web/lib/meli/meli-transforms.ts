@@ -25,6 +25,7 @@ export function transformProduct(raw: MeliRawItem): Product {
     permalink: raw.permalink,
     categoryId: raw.category_id,
     condition: raw.condition,
+    originalPrice: raw.original_price,
     availableQuantity: raw.available_quantity,
     soldQuantity: raw.sold_quantity,
     attributes: raw.attributes

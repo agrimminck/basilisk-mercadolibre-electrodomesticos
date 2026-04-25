@@ -4,7 +4,7 @@ import { ThemeToggle } from '../ui/ThemeToggle'
 import { WishlistNavIcon } from '../ui/WishlistNavIcon'
 
 const NAV_LINKS = [
-  { href: '/', label: 'Catálogo' },
+  { href: '/categorias', label: 'Categorías' },
   { href: '/refrigeradores', label: 'Refrigeradores' },
   { href: '/lavadoras', label: 'Lavadoras' },
 ]

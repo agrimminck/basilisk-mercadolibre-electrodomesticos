@@ -13,6 +13,7 @@ export interface MeliRawItem {
   permalink: string
   category_id: string
   condition: 'new' | 'used'
+  original_price?: number
   available_quantity: number
   sold_quantity: number
   attributes: Array<{
