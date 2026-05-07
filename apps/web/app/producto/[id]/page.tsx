@@ -4,6 +4,10 @@ import { ProductImageCarousel } from '../../../components/products/ProductImageC
 import { ProductCard } from '../../../components/products/ProductCard'
 import type { Metadata } from 'next'
 
+// Force dynamic: page consumes searchParams (?cat=) — no ISR cache.
+// Trade-off: no route-level caching; per-fetch caching (revalidate:300) still applies.
+export const dynamic = 'force-dynamic'
+
 type Props = {
   params: Promise<{ id: string }>
   searchParams: Promise<{ cat?: string }>
@@ -42,7 +46,9 @@ export default async function ProductPage({ params, searchParams }: Props) {
   const [{ id }, { cat }] = await Promise.all([params, searchParams])
   const product = await getCatalogProduct(id)
 
-  const categoryId = cat ?? product.categoryId
+  // Use ?cat= searchParam first (passed by ProductCard links), fall back to product's own categoryId.
+  // Treat empty string as absent to avoid sending blank categoryId to ML highlights endpoint.
+  const categoryId = cat?.trim() || product.categoryId?.trim() || null
   const related = categoryId
     ? (await getHighlights(categoryId, 5)).filter(p => p.id !== id).slice(0, 4)
     : []

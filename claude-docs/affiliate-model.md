@@ -137,3 +137,5 @@ Implementado 2026-04-21. Sin registro completo (Ley 19.628 Chile + alto effort).
 | `RESEND_AUDIENCE_ID` | Server | resend.com → Audiences → crear audience → copiar ID |
 
 Activar: agregar ambas vars en Vercel + redeploy.
+
+**Nota implementación:** Resend se init lazy (dentro del handler) — si `RESEND_API_KEY` no está en Vercel retorna 500 interno en lugar de crashear build. Fix aplicado 2026-05-07.

@@ -30,21 +30,6 @@ export interface Category {
   thumbnail?: string
 }
 
-export interface SearchResult {
-  query: string
-  total: number
-  offset: number
-  limit: number
-  products: Product[]
-}
-
-export interface SearchFilters {
-  sort?: 'relevance' | 'price_asc' | 'price_desc'
-  condition?: 'new' | 'used'
-  priceMin?: number
-  priceMax?: number
-}
-
 export interface ApiResponse<T> {
   data: T
   error?: string

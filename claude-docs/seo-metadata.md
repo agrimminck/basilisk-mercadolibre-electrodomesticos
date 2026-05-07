@@ -6,13 +6,11 @@ Setup SEO técnico para acelerar indexación Google + Bing. **Estado snapshot 20
 
 ## sitemap.xml
 
-**Archivo:** `apps/web/public/sitemap.xml` — estático. (Doc previa decía dinámico `app/sitemap.ts`; realidad: estático en public. Al agregar/renombrar slug → actualizar manualmente.)
+**Archivo:** `apps/web/public/sitemap.xml` — estático.
 
 Incluye home `/` + 10 categorías canónicas (top-level ML reales + virtuales `refrigeradores` / `lavadoras`). **No** incluye slugs alias (`electrodomesticos-y-aire-acondicionado`, etc.) — canonical metadata ya los resuelve al slug real.
 
-Dominio base hardcoded: `https://web-ten-beige-23.vercel.app` (literal). Cambio de dominio → find/replace en el XML + redeploy. Opcional: migrar a `app/sitemap.ts` dinámico si los slugs van a rotar con frecuencia.
-
-Crawled por GSC + Bing (2026-03-28).
+Dominio base: `https://topelectrohogar.com` (actualizado 2026-04-21 al setear dominio propio). Al agregar/renombrar slug → actualizar manualmente. Opcional: migrar a `app/sitemap.ts` dinámico si los slugs van a rotar con frecuencia.
 
 ---
 
@@ -43,27 +41,24 @@ Validar cambios con: https://search.google.com/test/rich-results
 
 ---
 
-## Estado indexing — snapshot 2026-04-23
+## Estado indexing — snapshot 2026-05-07
 
-**SITIO BLOQUEADO** — `middleware.ts` devuelve 404 en todas las rutas. No indexar hasta que esté listo.
+Middleware `apps/web/middleware.ts` no existe en el árbol de archivos (fue eliminado). Sitio live en `https://topelectrohogar.com`.
 
 | Item | Status |
 |---|---|
 | GSC registration (verification meta tag) | ✅ Verificado |
-| Páginas indexadas GSC | ✅ Ninguna (GSC confirma 0 URLs indexadas — bueno) |
-| Sitemap submission GSC | ⏸ Pendiente hasta que sitio esté listo |
-| Bing Webmaster Tools | ⏸ Pendiente hasta que sitio esté listo |
+| Bing verification (`BingSiteAuth.xml`) | ✅ Presente en `apps/web/public/` |
+| Sitemap submission GSC | ✅ Enviado (submit 2026-04-21) — monitorear Coverage |
+| Bing Webmaster Tools | ✅ XML presente — verificar status en panel Bing |
 
 ---
 
-## Acciones indexación pendientes (hacer cuando sitio esté listo)
+## Acciones pendientes
 
-1. **Quitar middleware:** eliminar `apps/web/middleware.ts` → commit + push → verificar que rutas responden 200.
-2. **Bing verification:** descargar `BingSiteAuth.xml` desde bing.com/webmasters → colocar en `apps/web/public/` → commit + push → clic "Verify" → submit sitemap.
-3. **GSC sitemap:** submit `{NEXT_PUBLIC_SITE_URL}/sitemap.xml` en GSC → Coverage.
-4. **GSC manual indexing:** solicitar indexación para home + 5 categorías canónicas (electrodomesticos, electronica-audio-y-video, computacion, celulares-y-telefonia, herramientas) + 2 virtuales (refrigeradores, lavadoras). Límite ~10/día → 1-2 días. URLs alias viejas NO pedir indexación — `alternates.canonical` apunta al slug real, Google consolida.
-5. **JSON-LD:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
-6. Monitorear GSC cada 3-5 días post-request.
+1. **Monitorear GSC Coverage** — solicitar indexación manual home + 5 categorías si aún no indexadas (límite ~10/día).
+2. **JSON-LD:** validar en https://search.google.com/test/rich-results — home debe detectar `WebSite` + `SearchAction`; categoría debe detectar `CollectionPage` + `BreadcrumbList`.
+3. Monitorear GSC cada 3-5 días post-request.
 
 ---
 

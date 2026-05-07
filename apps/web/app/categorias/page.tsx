@@ -7,7 +7,7 @@ export const revalidate = 3600
 
 export const metadata: Metadata = {
   title: 'Categorías — Top Electro Hogar',
-  description: 'Exploré todas las categorías de electrodomésticos disponibles en MercadoLibre Chile.',
+  description: 'Explorá todas las categorías de electrodomésticos disponibles en MercadoLibre Chile.',
   alternates: { canonical: '/categorias' },
 }
 

@@ -83,9 +83,12 @@ Ver [`meli-integration.md`](meli-integration.md) para quirks API y [`affiliate-m
 |---|---|---|
 | `MELI_APP_ID` | Server | OAuth client_id (también fallback rate limit sin token) |
 | `MELI_CLIENT_SECRET` | Server | OAuth secret |
-| `MELI_AFFILIATE_ID` | Server | Tracking param en todas las URLs ML (p.ej. `ag20260214123344`) |
+| `MELI_AFFILIATE_ID` | Server | Tracking param en URLs ML desde Server Components (p.ej. `ag20260214123344`) |
+| `NEXT_PUBLIC_MELI_AFFILIATE_ID` | Public | Mismo valor que `MELI_AFFILIATE_ID` — usado por `lib/utils/affiliate-client.ts` para `/lista` page (Client Component) |
 | `MELI_DEFAULT_SITE` | Config | Fijo `MLC` (Chile) |
-| `NEXT_PUBLIC_SITE_URL` | Public | Dominio canónico para OG + sitemap |
+| `NEXT_PUBLIC_SITE_URL` | Public | Dominio canónico para OG + sitemap (prod: `https://topelectrohogar.com`) |
+| `RESEND_API_KEY` | Server | Resend API key (newsletter). Opcional — sin esta var, `/api/newsletter` retorna 500. |
+| `RESEND_AUDIENCE_ID` | Server | ID de audience Resend. Obligatorio si `RESEND_API_KEY` presente. |
 
 ---
 

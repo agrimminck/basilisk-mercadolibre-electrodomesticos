@@ -7,14 +7,22 @@ Deploy Next.js 15 a Vercel. Monorepo con Next bajo `apps/web/`.
 ## Env vars requeridas (Production + Preview)
 
 ```
-MELI_APP_ID           # ML Developers → Mis aplicaciones
-MELI_CLIENT_SECRET    # ML Developers → Mis aplicaciones
-MELI_AFFILIATE_ID     # Programa de Asociados ML (p.ej. ag20260214123344)
-MELI_DEFAULT_SITE     # Fijo: MLC
-NEXT_PUBLIC_SITE_URL  # Dominio canónico (Vercel subdomain o dominio propio)
+MELI_APP_ID                    # ML Developers → Mis aplicaciones
+MELI_CLIENT_SECRET             # ML Developers → Mis aplicaciones
+MELI_AFFILIATE_ID              # Programa de Asociados ML (p.ej. ag20260214123344) — server only
+NEXT_PUBLIC_MELI_AFFILIATE_ID  # Mismo valor que MELI_AFFILIATE_ID — expuesto al cliente para /lista
+MELI_DEFAULT_SITE              # Fijo: MLC
+NEXT_PUBLIC_SITE_URL           # Dominio canónico (prod: https://topelectrohogar.com)
 ```
 
-Todas server-only excepto `NEXT_PUBLIC_SITE_URL`.
+Server-only: `MELI_APP_ID`, `MELI_CLIENT_SECRET`, `MELI_AFFILIATE_ID`.
+Public (expuestas al browser): `NEXT_PUBLIC_MELI_AFFILIATE_ID`, `NEXT_PUBLIC_SITE_URL`.
+
+Opcionales (newsletter):
+```
+RESEND_API_KEY      # Resend API key — sin esta var /api/newsletter retorna 500
+RESEND_AUDIENCE_ID  # ID audience Resend — obligatorio si RESEND_API_KEY presente
+```
 
 ---
 

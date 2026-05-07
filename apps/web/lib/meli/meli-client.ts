@@ -60,7 +60,7 @@ async function apiFetch<T>(url: string): Promise<T> {
   const res = await fetch(url, {
     headers: {
       'Authorization': `Bearer ${token}`,
-      'User-Agent': 'affiliate-gaming/1.0',
+      'User-Agent': 'top-electro-hogar/1.0',
     },
     next: { revalidate: 300 },
   })
@@ -68,6 +68,17 @@ async function apiFetch<T>(url: string): Promise<T> {
     throw new Error(`MeliClient error ${res.status}: ${res.statusText} — ${url}`)
   }
   return res.json() as Promise<T>
+}
+
+// ─── Helpers ─────────────────────────────────────────────────────────────────
+
+/** Normalize ML catalog picture URL: force HTTPS + downscale to -F size. */
+function normalizePictureUrl(url: string): string {
+  return (url ?? '').replace('http://', 'https://').replace(/-[A-Z]\.jpg$/, '-F.jpg')
+}
+
+function normalizePictures(pictures: Array<{ url: string }>): string[] {
+  return pictures.map(p => normalizePictureUrl(p.url)).filter(Boolean)
 }
 
 // ─── Public API ──────────────────────────────────────────────────────────────
@@ -155,17 +166,14 @@ export async function getHighlights(categoryId: string, limit = 8): Promise<Prod
         ])
         const firstItem = itemsData.results?.[0]
         if (!firstItem) throw new Error('no active items')
-        const pictures = cat.pictures
-          .map(p => (p.url ?? '').replace('http://', 'https://').replace(/-[A-Z]\.jpg$/, '-F.jpg'))
-          .filter(Boolean)
-        const thumbnail = pictures[0] ?? ''
+        const pictures = normalizePictures(cat.pictures)
         return {
           id: cat.id,
           title: cat.name,
           slug: cat.id,
           price: firstItem.price,
           currency: firstItem.currency_id,
-          thumbnail,
+          thumbnail: pictures[0] ?? '',
           pictures,
           mainFeatures: [],
           permalink: `https://www.mercadolibre.cl/p/${cat.id}`,
@@ -197,9 +205,7 @@ export async function getCatalogProduct(catalogId: string): Promise<Product> {
   ])
   const firstItem = itemsData.results?.[0]
   if (!firstItem) throw new Error(`no active items for catalog product ${catalogId}`)
-  const pictures = cat.pictures
-    .map(p => (p.url ?? '').replace('http://', 'https://').replace(/-[A-Z]\.jpg$/, '-F.jpg'))
-    .filter(Boolean)
+  const pictures = normalizePictures(cat.pictures)
   return {
     id: catalogId,
     title: cat.name,

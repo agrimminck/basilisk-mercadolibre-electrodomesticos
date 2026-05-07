@@ -2,10 +2,7 @@
 
 import { useWishlist } from '../../components/ui/WishlistContext'
 import { buildProductUrlClient } from '../../lib/utils/affiliate-client'
-import type { Metadata } from 'next'
 import Link from 'next/link'
-
-// Note: metadata export doesn't work in client components — set via layout or head tags if needed
 
 function formatPrice(price: number, currency: string): string {
   return new Intl.NumberFormat('es-CL', { style: 'currency', currency, maximumFractionDigits: 0 }).format(price)

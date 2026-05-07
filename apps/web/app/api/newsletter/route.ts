@@ -1,7 +1,12 @@
 import { Resend } from 'resend'
 import { NextRequest, NextResponse } from 'next/server'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+// Lazy init — Resend throws at construction when API key is undefined (build-time safe)
+function getResend(): Resend {
+  const key = process.env.RESEND_API_KEY
+  if (!key) throw new Error('RESEND_API_KEY not set')
+  return new Resend(key)
+}
 const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID ?? ''
 
 function isValidEmail(email: string): boolean {
@@ -25,7 +30,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 })
   }
 
-  const { error } = await resend.contacts.create({
+  const { error } = await getResend().contacts.create({
     email,
     audienceId: AUDIENCE_ID,
     unsubscribed: false,

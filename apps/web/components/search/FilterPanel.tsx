@@ -2,7 +2,12 @@
 
 import { useState, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
-import type { SearchFilters } from '../../types/index'
+type SearchFilters = {
+  sort?: 'relevance' | 'price_asc' | 'price_desc'
+  condition?: 'new' | 'used'
+  priceMin?: number
+  priceMax?: number
+}
 
 type Props = {
   basePath: string
