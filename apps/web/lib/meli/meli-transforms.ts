@@ -1,7 +1,15 @@
 import type { Product, Category } from '../../types/index'
 import type { MeliRawItem, MeliRawCategory, MeliRawSiteCategory } from './meli-client'
 
-function toSlug(title: string): string {
+/**
+ * Normalize a free-form title into a URL-safe slug.
+ * - Lowercases
+ * - Strips diacritics (acentos, ñ → n)
+ * - Drops non-alphanumeric (except dashes/spaces)
+ * - Collapses whitespace into single dashes
+ * - Truncates at 80 chars
+ */
+export function toSlug(title: string): string {
   return title
     .toLowerCase()
     .normalize('NFD')
