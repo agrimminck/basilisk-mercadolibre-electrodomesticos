@@ -99,6 +99,7 @@ Ver [`meli-integration.md`](meli-integration.md) para quirks API y [`affiliate-m
 - **Category slug aliases + virtual subcategorías** — slugs públicos no tienen que coincidir con los de ML API. `getCategoryBySlug()` resuelve: (1) virtual slugs (`refrigeradores`, `lavadoras`) → ML subcategoría directa por ID con override de `name`; (2) aliases (`electrodomesticos-y-aire-acondicionado` → `electrodomesticos`, etc.) → preserva URLs viejas indexadas. Claves en `category-descriptions.ts` + `category-products.ts` usan siempre el slug canónico (real ML o virtual). Canonical metadata (`alternates.canonical`) apunta a `cat.slug` → evita duplicate content. Detalle: [`meli-integration.md`](meli-integration.md) §7-8.
 - **Server Components + ISR** — `fetch` con `revalidate` + `generateStaticParams` para categorías. Sin `useEffect` para data.
 - **TypeScript strict, imports relativos** — sin path aliases.
+- **API contract `ApiResponse<T>` discriminated union** — `apps/web/lib/types/api-response.ts` define `{ok:true,data:T} | {ok:false,error,statusCode?}`. Aplica a `/api/{products,search,categories,highlights}`. Reemplazó casts `null as unknown as T` en error paths. Callers discriminan via `if (!body.ok)` antes de acceder `body.data`. Newsletter mantiene shape propio (`{ok:true,already?}` / `{error}`) — único consumer (`NewsletterBanner`) usa sólo `res.ok` HTTP status.
 - **Tailwind v4** — `@import "tailwindcss"` sin `tailwind.config.js`. Deps **no** en devDependencies (ver [`deploy-vercel.md`](deploy-vercel.md)).
 
 ---

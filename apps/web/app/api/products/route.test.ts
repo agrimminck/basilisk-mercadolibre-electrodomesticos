@@ -23,7 +23,9 @@ describe('GET /api/products', () => {
     const res = await GET(makeReq('http://localhost/api/products'))
     expect(res.status).toBe(400)
     const body = await res.json()
+    expect(body.ok).toBe(false)
     expect(body.error).toMatch(/Provide \?id=/)
+    expect(body.data).toBeUndefined()
     expect(getProductMock).not.toHaveBeenCalled()
   })
 
@@ -33,7 +35,9 @@ describe('GET /api/products', () => {
     const res = await GET(makeReq('http://localhost/api/products?id=MLC1'))
     expect(res.status).toBe(200)
     const body = await res.json()
+    expect(body.ok).toBe(true)
     expect(body.data).toEqual(product)
+    expect(body.error).toBeUndefined()
     expect(getProductMock).toHaveBeenCalledWith('MLC1')
   })
 
@@ -42,7 +46,9 @@ describe('GET /api/products', () => {
     const res = await GET(makeReq('http://localhost/api/products?id=MLC999'))
     expect(res.status).toBe(502)
     const body = await res.json()
+    expect(body.ok).toBe(false)
     expect(body.error).toMatch(/503/)
+    expect(body.data).toBeUndefined()
   })
 
   it('returns 502 with 404 message when MeLi responds 404', async () => {
@@ -50,6 +56,7 @@ describe('GET /api/products', () => {
     const res = await GET(makeReq('http://localhost/api/products?id=NOPE'))
     expect(res.status).toBe(502)
     const body = await res.json()
+    expect(body.ok).toBe(false)
     expect(body.error).toMatch(/404/)
   })
 })

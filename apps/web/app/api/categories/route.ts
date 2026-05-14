@@ -1,13 +1,20 @@
 import { NextResponse } from 'next/server'
 import { getCategories } from '../../../lib/meli/meli-client'
-import type { ApiResponse, Category } from '../../../types/index'
+import type { ApiResponse } from '../../../lib/types/api-response'
+import type { Category } from '../../../types/index'
 
 export async function GET(): Promise<NextResponse<ApiResponse<Category[]>>> {
   try {
     const data = await getCategories()
-    return NextResponse.json({ data }, { headers: { 'Cache-Control': 'public, s-maxage=3600' } })
+    return NextResponse.json<ApiResponse<Category[]>>(
+      { ok: true, data },
+      { headers: { 'Cache-Control': 'public, s-maxage=3600' } }
+    )
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error'
-    return NextResponse.json({ data: [], error: message }, { status: 502 })
+    return NextResponse.json<ApiResponse<Category[]>>(
+      { ok: false, error: message, statusCode: 502 },
+      { status: 502 }
+    )
   }
 }

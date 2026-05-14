@@ -30,7 +30,4 @@ export interface Category {
   thumbnail?: string
 }
 
-export interface ApiResponse<T> {
-  data: T
-  error?: string
-}
+export type { ApiResponse } from '../lib/types/api-response'
